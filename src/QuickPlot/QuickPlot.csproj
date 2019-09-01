@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <Description>This is a placeholder package. DO NOT DOWNLOAD!</Description>
+    <PackageReleaseNotes>This is a placeholder package. DO NOT DOWNLOAD!</PackageReleaseNotes>
+    <Company />
+    <Authors />
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/swharden/QuickPlot</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>
