@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QuickPlot.Properties
+namespace FormsTest.Properties
 {
 
 

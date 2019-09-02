@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickPlot
+namespace QuickPlot.Tools
 {
     public class Benchmark : IDisposable
     {
