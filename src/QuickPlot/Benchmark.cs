@@ -28,7 +28,7 @@ namespace QuickPlot
         public string GetMessage()
         {
             stopwatch.Stop();
-            return string.Format("completed in {0:0.00} ms", elapsedMilliseconds);
+            return string.Format("completed in {0:0.00} ms {1:0.00} Hz", elapsedMilliseconds, 1000.0 / elapsedMilliseconds);
         }
 
         public void Dispose()
