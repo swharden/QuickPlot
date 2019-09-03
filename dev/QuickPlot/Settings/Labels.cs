@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickPlot.Layout
+namespace QuickPlot.Settings
 {
-    public struct Padding
+    public struct Labels
     {
-        public int left, right, top, bottom;
+        public string left, right, bottom, top;
     }
 }

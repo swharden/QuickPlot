@@ -12,60 +12,53 @@ namespace QuickPlot
         public List<Plot> plots = new List<Plot>();
         public Plot plot;
 
+        /// <summary>
+        /// Create a Figure (which contains one or more plots)
+        /// </summary>
         public Figure()
         {
-            SubPlot(0); // first plot is selected by default
+            Subplot(0);
         }
 
-        public void SubPlot(int subPlotIndex)
+        /// <summary>
+        /// Activate a subplot
+        /// </summary>
+        public void Subplot(int subPlotIndex)
         {
-            // create subplots if needed
             while (plots.Count < subPlotIndex + 1)
                 plots.Add(new Plot());
 
-            // activate this index
             plot = plots[subPlotIndex];
         }
 
-        public Bitmap Render(Bitmap bmp, int columns = 1)
+        /// <summary>
+        /// Render the figure onto an existing Bitmap
+        /// </summary>
+        public Bitmap Render(Bitmap bmp)
         {
-            // render onto an existing bitmap
+            var layout = new Layout();
+            //layout.Grid(bmp.Size, plots.Count, 2);
+            layout.Special(bmp.Size);
+            layout.ShrinkAll(10);
+
+            // render each plot inside its layout rectangle
             using (var gfx = Graphics.FromImage(bmp))
             {
-                gfx.Clear(Tools.Misc.RandomColor);
+                gfx.Clear(Color.Gray);
                 for (int i=0; i<plots.Count; i++)
-                {
-                    Rectangle subPlotRect = SubplotRect(bmp.Size, 2, 2, i);
-                    subPlotRect = Tools.Misc.Contract(subPlotRect, 10, 10);
-                    gfx.FillRectangle(Brushes.White, subPlotRect);
-                    gfx.DrawRectangle(Pens.Black, subPlotRect);
-                    gfx.DrawString($"{i}: {plots[i].labels.top}",
-                         new Font(FontFamily.GenericMonospace, 10), 
-                         Brushes.Black, subPlotRect.X, subPlotRect.Y);
-                    Console.WriteLine(i);
-                }
+                    plots[i].Render(bmp, gfx, layout.rects[i]);
             }
             return bmp;
         }
 
+        /// <summary>
+        /// Render the figure onto a new Bitmap
+        /// </summary>
         public Bitmap Render(int width, int height)
         {
             // create a bitmap of a certain size and render onto it
             Bitmap bmp = new Bitmap(width, height);
             return Render(bmp);
-        }
-
-        public Rectangle SubplotRect(Size figSize, int columns, int rows, int index)
-        {
-            int subPlotWidth = figSize.Width / columns;
-            int subPlotHeight = figSize.Height / rows;
-            Size subPlotSize = new Size(subPlotWidth, subPlotHeight);
-
-            int column = index % columns;
-            int row = index / rows;
-            Point subPlotOrigin = new Point(column * subPlotSize.Width, row * subPlotSize.Height);
-
-            return new Rectangle(subPlotOrigin, subPlotSize);
         }
     }
 }

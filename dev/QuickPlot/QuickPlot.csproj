@@ -43,9 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Figure.cs" />
-    <Compile Include="Layout\Labels.cs" />
-    <Compile Include="Layout\Padding.cs" />
-    <Compile Include="Layout\SubImage.cs" />
+    <Compile Include="Layout.cs" />
+    <Compile Include="Settings\Labels.cs" />
+    <Compile Include="Settings\Padding.cs" />
+    <Compile Include="Settings\SubImage.cs" />
     <Compile Include="Plot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Benchmark.cs" />
