@@ -27,51 +27,23 @@ namespace QuickPlot
             plot = plots[subPlotIndex];
         }
 
-        private void RenderFrame(Bitmap bmp, Graphics gfx, Plot plot, Layout.SubImage sub, int padding = 5)
-        {
-            sub.ShrinkAll(padding);
-            Rectangle rect = new Rectangle(sub.left, sub.top, sub.Width, sub.Height);
-            gfx.DrawRectangle(Pens.Black, rect);
-
-            FontFamily fmly = new FontFamily(System.Drawing.Text.GenericFontFamilies.Monospace);
-            FontStyle style = FontStyle.Regular;
-            float fontSize = 10;
-            Font fnt = new Font(fmly, fontSize, style);
-            Brush brsh = new SolidBrush(Color.Black);
-            gfx.DrawString(plot.labels.top, fnt, brsh, sub.left, sub.top);
-        }
-
-        Layout.SubImage GetSubplotDims(int width, int height, int row = 0, int col = 0, int rows = 1, int cols = 1)
-        {
-            int subPlotHeight = height / rows;
-            int subPlotWidth = width / cols;
-
-            int left = row * subPlotWidth;
-            int right = left + subPlotWidth;
-
-            int top = col * subPlotHeight;
-            int bottom = top + subPlotHeight;
-
-            return new Layout.SubImage(left, right, bottom, top);
-        }
-
-        public Bitmap Render(Bitmap bmp)
+        public Bitmap Render(Bitmap bmp, int columns = 1)
         {
             // render onto an existing bitmap
             using (var gfx = Graphics.FromImage(bmp))
             {
                 gfx.Clear(Tools.Misc.RandomColor);
-
-                SubPlot(3); // ensure 4 plots exist
-                plots[0].labels.top = "one";
-                plots[1].labels.top = "two";
-                plots[2].labels.top = "three";
-                plots[3].labels.top = "four";
-
-                RenderFrame(bmp, gfx, plots[0], GetSubplotDims(bmp.Width, bmp.Height, 0, 0, 2, 2));
-                RenderFrame(bmp, gfx, plots[1], GetSubplotDims(bmp.Width, bmp.Height, 0, 1, 2, 2));
-                RenderFrame(bmp, gfx, plots[2], GetSubplotDims(bmp.Width, bmp.Height, 1, 0, 2, 2));
-                RenderFrame(bmp, gfx, plots[3], GetSubplotDims(bmp.Width, bmp.Height, 1, 1, 2, 2));
+                for (int i=0; i<plots.Count; i++)
+                {
+                    Rectangle subPlotRect = SubplotRect(bmp.Size, 2, 2, i);
+                    subPlotRect = Tools.Misc.Contract(subPlotRect, 10, 10);
+                    gfx.FillRectangle(Brushes.White, subPlotRect);
+                    gfx.DrawRectangle(Pens.Black, subPlotRect);
+                    gfx.DrawString($"{i}: {plots[i].labels.top}",
+                         new Font(FontFamily.GenericMonospace, 10), 
+                         Brushes.Black, subPlotRect.X, subPlotRect.Y);
+                    Console.WriteLine(i);
+                }
             }
             return bmp;
         }
@@ -81,6 +53,19 @@ namespace QuickPlot
             // create a bitmap of a certain size and render onto it
             Bitmap bmp = new Bitmap(width, height);
             return Render(bmp);
+        }
+
+        public Rectangle SubplotRect(Size figSize, int columns, int rows, int index)
+        {
+            int subPlotWidth = figSize.Width / columns;
+            int subPlotHeight = figSize.Height / rows;
+            Size subPlotSize = new Size(subPlotWidth, subPlotHeight);
+
+            int column = index % columns;
+            int row = index / rows;
+            Point subPlotOrigin = new Point(column * subPlotSize.Width, row * subPlotSize.Height);
+
+            return new Rectangle(subPlotOrigin, subPlotSize);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuickPlot.Layout
 {
+
     public class SubImage
     {
         public int left, right, bottom, top;

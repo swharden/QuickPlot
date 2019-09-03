@@ -18,5 +18,14 @@ namespace QuickPlot.Tools
                 return color;
             }
         }
+
+        public static Rectangle Contract(Rectangle rect, int x, int y)
+        {
+            rect.X += x;
+            rect.Width -= x * 2;
+            rect.Y += y;
+            rect.Height -= y * 2;
+            return rect;
+        }
     }
 }

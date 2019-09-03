@@ -45,10 +45,18 @@ namespace FormsTest
             using (var bench = new QuickPlot.Tools.Benchmark())
             {
                 var fig = new QuickPlot.Figure();
+
+                fig.SubPlot(0);
                 fig.plot.labels.top = "plot one";
 
                 fig.SubPlot(1);
                 fig.plot.labels.top = "plot two";
+
+                fig.SubPlot(2);
+                fig.plot.labels.top = "plot three";
+
+                fig.SubPlot(2);
+                fig.plot.labels.top = "plot four";
 
                 pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);
                 Text = bench.GetMessage();
