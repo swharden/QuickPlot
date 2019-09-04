@@ -60,5 +60,31 @@ namespace QuickPlot.Tools
 
             return sf;
         }
+
+        public static void MarkRectangle(Bitmap bmp, Graphics gfx, Rectangle rect, Color color, string label, bool showDimensions = false)
+        {
+            color = Color.FromArgb(50, color); // semitransparent
+            Pen pen = new Pen(color);
+            Brush brush = new SolidBrush(color);
+            Font fnt = new Font(FontFamily.GenericMonospace, 8);
+            gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
+            if (showDimensions)
+                gfx.DrawString($"{label}: {rect.Width}x{rect.Height}", fnt, brush, rect.X, rect.Y);
+            else
+                gfx.DrawString(label, fnt, brush, rect.X, rect.Y);
+        }
+
+        public static Rectangle Contract(Rectangle rect, int px)
+        {
+            return Contract(rect, px, px, px, px);
+        }
+        public static Rectangle Contract(Rectangle rect, int left = 0, int right = 0, int bottom = 0, int top = 0)
+        {
+            rect.X += left;
+            rect.Width -= (left + right);
+            rect.Y += top;
+            rect.Height -= (top + bottom);
+            return rect;
+        }
     }
 }

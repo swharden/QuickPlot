@@ -14,9 +14,38 @@ namespace QuickPlot
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
+
+            // determine size of tick labels
+            int scaleSizeL = 50;
+            int scaleSizeR = 50;
+            int scaleSizeB = 20;
+
+            // create rectangles for all the scales
+
             gfx.FillRectangle(Brushes.White, rect);
-            //gfx.DrawRectangle(Pens.Black, rect);
+            Tools.Misc.MarkRectangle(bmp, gfx, rect, Color.Blue, "plot");
             RenderLabels(bmp, gfx, rect);
+            rect = Tools.Misc.Contract(rect, 20);
+
+            Rectangle rectScaleL = rect;
+            rectScaleL.Width = scaleSizeL;
+            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleL, Color.Green, "scaleL");
+
+            Rectangle rectScaleB = rect;
+            rectScaleB.Width = scaleSizeR;
+            rectScaleB.X += (rect.Width - rectScaleB.Width);
+            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleB, Color.Blue, "scaleB");
+
+            Rectangle rectScaleR = rect;
+            rectScaleR.Height = scaleSizeB;
+            rectScaleR.Y = rect.Y + rect.Height - rectScaleR.Height;
+            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleR, Color.Red, "scaleR");
+
+            // determine how big the data area is
+            Rectangle rectData = rect;
+            rectData = Tools.Misc.Contract(rectData, left: scaleSizeL, right: scaleSizeR, bottom: scaleSizeB);
+            Tools.Misc.MarkRectangle(bmp, gfx, rectData, Color.Black, "data");
+
             return bmp;
         }
 
