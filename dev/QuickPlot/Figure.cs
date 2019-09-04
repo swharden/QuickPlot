@@ -44,7 +44,7 @@ namespace QuickPlot
             // render each plot inside its layout rectangle
             using (var gfx = Graphics.FromImage(bmp))
             {
-                gfx.Clear(Color.Gray);
+                gfx.Clear(Color.White);
                 for (int i=0; i<plots.Count; i++)
                     plots[i].Render(bmp, gfx, layout.rects[i]);
             }

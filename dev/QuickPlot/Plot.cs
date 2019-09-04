@@ -14,37 +14,37 @@ namespace QuickPlot
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
+            Region plotRegion = new Region(bmp, gfx, rect);
+            plotRegion.Label("plotArea", Color.Gray, 100);
 
             // determine size of tick labels
             int scaleSizeL = 50;
             int scaleSizeR = 50;
             int scaleSizeB = 20;
 
-            // create rectangles for all the scales
+            // add a little padding to be pretty
+            plotRegion.Contract(20);
 
-            gfx.FillRectangle(Brushes.White, rect);
-            Tools.Misc.MarkRectangle(bmp, gfx, rect, Color.Blue, "plot");
-            RenderLabels(bmp, gfx, rect);
-            rect = Tools.Misc.Contract(rect, 20);
+            Region scaleLeftRegion = new Region(plotRegion);
+            scaleLeftRegion.Width = scaleSizeL;
+            scaleLeftRegion.Label("scaleL", Color.Green, 100);
 
-            Rectangle rectScaleL = rect;
-            rectScaleL.Width = scaleSizeL;
-            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleL, Color.Green, "scaleL");
+            Region scaleRightRegion = new Region(plotRegion);
+            scaleRightRegion.Width = scaleSizeR;
+            scaleRightRegion.X = plotRegion.X2 - scaleSizeR; // TODO: TrimTo(right: 100)
+            scaleRightRegion.Label("scaleR", Color.Orange, 100);
 
-            Rectangle rectScaleB = rect;
-            rectScaleB.Width = scaleSizeR;
-            rectScaleB.X += (rect.Width - rectScaleB.Width);
-            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleB, Color.Blue, "scaleB");
-
-            Rectangle rectScaleR = rect;
-            rectScaleR.Height = scaleSizeB;
-            rectScaleR.Y = rect.Y + rect.Height - rectScaleR.Height;
-            Tools.Misc.MarkRectangle(bmp, gfx, rectScaleR, Color.Red, "scaleR");
+            Region scaleBottomRegion = new Region(plotRegion);
+            scaleBottomRegion.Height = scaleSizeB;
+            scaleBottomRegion.Y += plotRegion.Height - scaleSizeB;
+            scaleBottomRegion.Label("scaleB", Color.Blue, 100);
 
             // determine how big the data area is
-            Rectangle rectData = rect;
-            rectData = Tools.Misc.Contract(rectData, left: scaleSizeL, right: scaleSizeR, bottom: scaleSizeB);
-            Tools.Misc.MarkRectangle(bmp, gfx, rectData, Color.Black, "data");
+            Region dataRegion = new Region(plotRegion);
+            dataRegion.Contract(left: scaleSizeL, right: scaleSizeR, bottom: scaleSizeB);
+            dataRegion.Label("data", Color.Magenta, 100);
+
+            Console.WriteLine(dataRegion);
 
             return bmp;
         }
