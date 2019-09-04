@@ -51,21 +51,25 @@ namespace FormsTest
                 fig.Subplot(0);
                 fig.plot.labels.top = "plot one";
                 fig.plot.labels.left = "vertical units";
+                fig.plot.labels.right = "vertical units too";
                 fig.plot.labels.bottom = "horizontal units";
 
                 fig.Subplot(1);
                 fig.plot.labels.top = "plot two";
                 fig.plot.labels.left = "vertical units";
+                fig.plot.labels.right = "vertical units too";
                 fig.plot.labels.bottom = "horizontal units";
 
                 fig.Subplot(2);
                 fig.plot.labels.top = "plot three";
                 fig.plot.labels.left = "vertical units";
+                fig.plot.labels.right = "vertical units too";
                 fig.plot.labels.bottom = "horizontal units";
 
                 fig.Subplot(3);
                 fig.plot.labels.top = "plot four";
                 fig.plot.labels.left = "vertical units";
+                fig.plot.labels.right = "vertical units too";
                 fig.plot.labels.bottom = "horizontal units";
 
                 pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);

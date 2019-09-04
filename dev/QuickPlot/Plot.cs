@@ -14,18 +14,53 @@ namespace QuickPlot
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
-            // render the current plot within the rectangle of the larger image
             gfx.FillRectangle(Brushes.White, rect);
             //gfx.DrawRectangle(Pens.Black, rect);
-            gfx.DrawString($"{labels.top}",
-                 new Font(FontFamily.GenericMonospace, 10),
-                 Brushes.Black, rect.X, rect.Y);
+            RenderLabels(bmp, gfx, rect);
             return bmp;
         }
 
-        private void RenderLabels()
+        private void RenderLabels(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
+            // title
+            gfx.DrawString($"{labels.top}",
+                font: new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
+                brush: Brushes.Black,
+                x: rect.X + (rect.Width / 2),
+                y: rect.Y,
+                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.top)
+                );
 
+            // lower axis label
+            gfx.DrawString($"{labels.bottom}",
+                font: new Font(FontFamily.GenericSansSerif, 10),
+                brush: Brushes.Black,
+                x: rect.X + (rect.Width / 2),
+                y: rect.Y + rect.Height,
+                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.bottom)
+                );
+
+            // left axis label
+            gfx.RotateTransform(-90);
+            gfx.DrawString(labels.left,
+                font: new Font(FontFamily.GenericSansSerif, 10),
+                brush: Brushes.Black,
+                x: -rect.Y - (rect.Height / 2),
+                y: rect.X,
+                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.top)
+                );
+            gfx.ResetTransform();
+
+            // right axis label
+            gfx.RotateTransform(-90);
+            gfx.DrawString(labels.right,
+                font: new Font(FontFamily.GenericSansSerif, 10),
+                brush: Brushes.Black,
+                x: -rect.Y - (rect.Height / 2),
+                y: rect.X + rect.Width,
+                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.bottom)
+                );
+            gfx.ResetTransform();
         }
     }
 }
