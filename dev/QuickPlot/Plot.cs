@@ -9,13 +9,13 @@ namespace QuickPlot
 {
     public class Plot
     {
-        public Settings.Padding padding;
-        public Settings.Labels labels;
+        public Settings.AxisLabels labels;
         public Settings.Axes axes;
 
         public Plot()
         {
             axes = new Settings.Axes();
+            labels = new Settings.AxisLabels();
         }
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
@@ -35,28 +35,28 @@ namespace QuickPlot
             //  - whether they are null
             //  - how large things are
 
-            if (labels.top != null)
+            if (labels.title.IsValid)
             {
                 int titleHeight = 20;
                 layout.title.Match(layout.plotArea);
                 layout.title.ShrinkTo(top: titleHeight);
             }
 
-            if (labels.bottom != null)
+            if (labels.x.IsValid)
             {
                 int labelBottomHeight = 20;
                 layout.labelX.Match(layout.plotArea);
                 layout.labelX.ShrinkTo(bottom: labelBottomHeight);
             }
 
-            if (labels.left != null)
+            if (labels.y.IsValid)
             {
                 int labelLeftWidth = 20;
                 layout.labelY.Match(layout.plotArea);
                 layout.labelY.ShrinkTo(left: labelLeftWidth);
             }
 
-            if (labels.right != null)
+            if (labels.y2.IsValid)
             {
                 int labelRightWidth = 20;
                 layout.labelY2.Match(layout.plotArea);
