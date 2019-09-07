@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Figure.cs" />
+    <Compile Include="Settings\Advanced.cs" />
     <Compile Include="SubplotLayout.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Renderer\GDI.cs" />

@@ -47,11 +47,14 @@
             this.cbXScale = new System.Windows.Forms.CheckBox();
             this.cbYScale = new System.Windows.Forms.CheckBox();
             this.cbY2Scale = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.cbShowLayout = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -253,11 +256,33 @@
             this.cbY2Scale.UseVisualStyleBackColor = true;
             this.cbY2Scale.CheckedChanged += new System.EventHandler(this.CbY2Scale_CheckedChanged);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.cbShowLayout);
+            this.groupBox4.Location = new System.Drawing.Point(491, 12);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(200, 62);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Developer Settings";
+            // 
+            // cbShowLayout
+            // 
+            this.cbShowLayout.AutoSize = true;
+            this.cbShowLayout.Location = new System.Drawing.Point(6, 19);
+            this.cbShowLayout.Name = "cbShowLayout";
+            this.cbShowLayout.Size = new System.Drawing.Size(88, 17);
+            this.cbShowLayout.TabIndex = 0;
+            this.cbShowLayout.Text = "Show Layout";
+            this.cbShowLayout.UseVisualStyleBackColor = true;
+            this.cbShowLayout.CheckedChanged += new System.EventHandler(this.CbShowLayout_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(834, 495);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -275,6 +300,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,6 +327,8 @@
         private System.Windows.Forms.CheckBox cbXScale;
         private System.Windows.Forms.CheckBox cbYScale;
         private System.Windows.Forms.CheckBox cbY2Scale;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox cbShowLayout;
     }
 }
 

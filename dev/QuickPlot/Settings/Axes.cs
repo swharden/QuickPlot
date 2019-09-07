@@ -17,10 +17,10 @@ namespace QuickPlot.Settings
 
         public Axes()
         {
-            labelTitle = new AxisLabel();
-            labelX = new AxisLabel();
-            labelY = new AxisLabel();
-            labelY2 = new AxisLabel();
+            labelTitle = new AxisLabel(fontSize: 12, bold: true);
+            labelX = new AxisLabel(fontSize: 10);
+            labelY = new AxisLabel(fontSize: 10);
+            labelY2 = new AxisLabel(fontSize: 10);
         }
     }
 }

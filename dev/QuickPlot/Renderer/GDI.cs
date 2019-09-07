@@ -12,7 +12,9 @@ namespace QuickPlot.Renderer
         public static Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect, Plot plt)
         {
             Settings.PlotLayout layout = LayOut(gfx, rect, plt);
-            OutlineLayoutRegions(gfx, layout);
+            if (plt.advancedSettings.showLayout)
+                OutlineLayoutRegions(gfx, layout);
+            RenderLabels(layout, gfx, plt);
             return bmp;
         }
 
@@ -38,7 +40,7 @@ namespace QuickPlot.Renderer
             color = Color.FromArgb(alpha, color);
             Brush brush = new SolidBrush(color);
             Font fnt = new Font(FontFamily.GenericMonospace, 8);
-            
+
             if (region.rect.Width >= region.rect.Height)
             {
                 gfx.DrawString(label, fnt, brush, region.rect.X, region.rect.Y);
@@ -77,15 +79,7 @@ namespace QuickPlot.Renderer
 
         public static SizeF MeasureString(Graphics gfx, Settings.AxisLabel label)
         {
-            return MeasureString(gfx, label.text, label.fontSize, label.fontFamily, label.bold);
-        }
-
-        public static SizeF MeasureString(Graphics gfx, string s, float fontSize, string fontFamily, bool bold)
-        {
-            FontStyle style = (bold) ? FontStyle.Bold : FontStyle.Regular;
-            Font fnt = new Font(fontFamily, fontSize, style);
-            SizeF stringSize = gfx.MeasureString(s, fnt);
-            return stringSize;
+            return gfx.MeasureString(label.text, label.Font);
         }
 
         private static Settings.PlotLayout LayOut(Graphics gfx, Rectangle rect, Plot plt)
@@ -206,5 +200,21 @@ namespace QuickPlot.Renderer
 
         public enum AlignHoriz { left, center, right };
         public enum AlignVert { top, center, bottom };
+        
+        private static void RenderLabels(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        {
+            StringFormat sfCentCent = StringFormat(AlignHoriz.center, AlignVert.center);
+            gfx.DrawString(plt.axes.labelTitle.text, plt.axes.labelTitle.Font, plt.axes.labelTitle.Brush, layout.title.Center, sfCentCent);
+            gfx.DrawString(plt.axes.labelX.text, plt.axes.labelX.Font, plt.axes.labelX.Brush, layout.labelX.Center, sfCentCent);
+
+            gfx.RotateTransform(-90);
+            gfx.DrawString(plt.axes.labelY.text, plt.axes.labelY.Font, plt.axes.labelY.Brush, layout.labelY.CenterRotNeg90, sfCentCent);
+            gfx.ResetTransform();
+
+            gfx.RotateTransform(90);
+            gfx.DrawString(plt.axes.labelY2.text, plt.axes.labelY2.Font, plt.axes.labelY2.Brush, layout.labelY2.CenterRotPos90, sfCentCent);
+            gfx.ResetTransform();
+        }
     }
+
 }

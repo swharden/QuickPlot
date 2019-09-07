@@ -59,6 +59,7 @@ namespace FormsTest
                     fig.plot.axes.enableX = cbXScale.Checked;
                     fig.plot.axes.enableY = cbYScale.Checked;
                     fig.plot.axes.enableY2 = cbY2Scale.Checked;
+                    fig.plot.advancedSettings.showLayout = cbShowLayout.Checked;
                 }
 
                 pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);
@@ -128,6 +129,11 @@ namespace FormsTest
         }
 
         private void CbY2Scale_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbShowLayout_CheckedChanged(object sender, EventArgs e)
         {
             GeneratePlot();
         }

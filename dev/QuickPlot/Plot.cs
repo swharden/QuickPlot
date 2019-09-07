@@ -11,6 +11,7 @@ namespace QuickPlot
     public class Plot
     {
         public Settings.Axes axes;
+        public Settings.Advanced advancedSettings;
 
         /// <summary>
         /// A Plot contains a data area, scales, and labels.
@@ -19,6 +20,7 @@ namespace QuickPlot
         public Plot()
         {
             axes = new Settings.Axes();
+            advancedSettings = new Settings.Advanced();
         }
     }
 }

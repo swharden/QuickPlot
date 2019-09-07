@@ -17,6 +17,9 @@ namespace QuickPlot
         public bool enabled = true;
 
         public Point Point { get { return new Point(rect.X, rect.Y); } }
+        public Point Center { get { return new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2); } }
+        public Point CenterRotNeg90 { get { return new Point(-Center.Y, Center.X); } }
+        public Point CenterRotPos90 { get { return new Point(Center.Y, -Center.X); } }
         public Size Size { get { return new Size(rect.Width, rect.Height); } set { rect.Width = value.Width; rect.Height = value.Height; } }
         public int X { get { return rect.X; } set { rect.X = value; } }
         public int X2 { get { return rect.X + rect.Width; } }
