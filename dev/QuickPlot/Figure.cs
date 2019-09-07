@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace QuickPlot
 {
+
     public class Figure
     {
         public List<Plot> plots = new List<Plot>();
         public Plot plot;
+
+        private enum GraphicsFramework { GDI, Skia };
+        private GraphicsFramework renderMethod = GraphicsFramework.GDI;
 
         /// <summary>
         /// Create a Figure (which contains one or more plots)
@@ -36,18 +40,36 @@ namespace QuickPlot
         /// </summary>
         public Bitmap Render(Bitmap bmp)
         {
-            var layout = new Layout();
-            //layout.Grid(bmp.Size, plots.Count, 2);
-            layout.Special(bmp.Size);
+            // determine the layout of Plots in the Figure. 
+            // This requires knowing Bitmap dimensions.
+            var layout = new SubplotLayout();
+            //layout.ArrangeGrid(bmp.Size, plots.Count, 2);
+            layout.ArrangeCustom(bmp.Size);
+
+            // adjust layout to accomodate inter-plot spacing
             layout.ShrinkAll(10);
 
             // render each plot inside its layout rectangle
-            using (var gfx = Graphics.FromImage(bmp))
+            switch (renderMethod)
             {
-                gfx.Clear(Color.White);
-                for (int i=0; i<plots.Count; i++)
-                    plots[i].Render(bmp, gfx, layout.rects[i]);
+                case GraphicsFramework.GDI:
+                    using (var gfx = Graphics.FromImage(bmp))
+                    {
+                        gfx.Clear(Color.White);
+                        for (int i = 0; i < plots.Count; i++)
+                            Renderer.GDI.Render(bmp, gfx, layout.rects[i], plots[i]);
+                    }
+                    break;
+
+                case GraphicsFramework.Skia:
+                    for (int i = 0; i < plots.Count; i++)
+                        Renderer.Skia.Render(bmp, layout.rects[i], plots[i]);
+                    break;
+
+                default:
+                    throw new NotImplementedException();
             }
+
             return bmp;
         }
 

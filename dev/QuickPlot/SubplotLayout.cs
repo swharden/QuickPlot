@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace QuickPlot
 {
-    // The Layout helps arrange subplots on a Figure
-    public class Layout
+    /// <summary>
+    /// Contains position information about subplots in a Figure
+    /// </summary>
+    public class SubplotLayout
     {
         public List<Rectangle> rects = new List<Rectangle>();
 
-        public void Grid(Size figSize, int plotCount, int columns)
+        public void ArrangeGrid(Size figSize, int plotCount, int columns)
         {
             int rows = plotCount / columns;
             int subPlotWidth = figSize.Width / columns;
@@ -29,7 +31,7 @@ namespace QuickPlot
             }
         }
 
-        public void Special(Size figSize)
+        public void ArrangeCustom(Size figSize)
         {
             // create a special layout with 3 on top and 1 on the bottom
             int plotCount = 6;

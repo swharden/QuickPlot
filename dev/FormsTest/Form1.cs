@@ -52,10 +52,10 @@ namespace FormsTest
                 for (int i=0; i<4; i++)
                 {
                     fig.Subplot(i);
-                    fig.plot.labels.title.text = (cbTitle.Checked) ? "title" : null;
-                    fig.plot.labels.y.text = (cbYLabel.Checked) ? "vertical units" : null;
-                    fig.plot.labels.y2.text = (cbY2Label.Checked) ? "more vertical units" : null;
-                    fig.plot.labels.x.text = (cbXLabel.Checked) ? "horizontal units" : null;
+                    fig.plot.axes.labelTitle.text = (cbTitle.Checked) ? "title" : null;
+                    fig.plot.axes.labelY.text = (cbYLabel.Checked) ? "vertical units" : null;
+                    fig.plot.axes.labelY2.text = (cbY2Label.Checked) ? "more vertical units" : null;
+                    fig.plot.axes.labelX.text = (cbXLabel.Checked) ? "horizontal units" : null;
                     fig.plot.axes.enableX = cbXScale.Checked;
                     fig.plot.axes.enableY = cbYScale.Checked;
                     fig.plot.axes.enableY2 = cbY2Scale.Checked;

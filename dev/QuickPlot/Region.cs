@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 namespace QuickPlot
 {
     /// <summary>
-    /// The region of an image we are encouraged to work in
+    /// Rection.rect is the area of the Image (Region.bmp) we are expected to work in.
+    /// This object should be GDI-Free.
     /// </summary>
     public class Region
     {
-        public readonly Bitmap bmp;
-        public readonly Graphics gfx;
         public Rectangle rect;
         public bool enabled = true;
 
@@ -29,38 +28,28 @@ namespace QuickPlot
 
         public override string ToString()
         {
-            //return $"Region of bmp [{bmp.Width}, {bmp.Height}] at ({X}, {Y}) of size [{Width}, {Height}]";
-            return $"Region of bmp [{bmp.Width}, {bmp.Height}]: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
+            //return $"Region of bmp [{bmp.Width}, {bmp.Height}]: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
+            return $"Region: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
         }
 
-        /*
         public Region()
         {
-            this.rect = new Rectangle(0, 0, 0, 0);
-            this.bmp = null;
-            this.gfx = null;
-        }
-        */
-
-        public Region(Region reg)
-        {
-            this.rect = reg.rect;
-            this.bmp = reg.bmp;
-            this.gfx = reg.gfx;
+            rect = new Rectangle(0, 0, 0, 0);
         }
 
-        public Region(Bitmap bmp, Graphics gfx)
+        public Region(Region region)
         {
-            rect = new Rectangle(new Point(0, 0), bmp.Size);
-            this.bmp = bmp;
-            this.gfx = gfx;
+            rect = region.rect;
         }
 
-        public Region(Bitmap bmp, Graphics gfx, Rectangle initialRegion)
+        public Region(Size size)
         {
-            this.rect = initialRegion;
-            this.bmp = bmp;
-            this.gfx = gfx;
+            rect = new Rectangle(new Point(0, 0), size);
+        }
+
+        public Region(Rectangle rect)
+        {
+            this.rect = rect;
         }
 
         public void ShrinkBy(int px)
@@ -135,46 +124,5 @@ namespace QuickPlot
             Height = 0;
         }
 
-        public void Fill(Color color, int alpha = 255)
-        {
-            color = Color.FromArgb(alpha, color);
-            Brush brush = new SolidBrush(color);
-            gfx.FillRectangle(brush, rect);
-        }
-
-        public void Outline(Color color, int alpha = 255)
-        {
-            color = Color.FromArgb(alpha, color);
-            Pen pen = new Pen(color);
-            gfx.DrawRectangle(pen, rect.X, rect.Y, rect.Width - 1, rect.Height - 1);
-        }
-
-        public void Label(string label, Color color, int alpha = 255, bool outlineToo = true, bool fillToo = true)
-        {
-            if (!IsValid)
-                return;
-
-            color = Color.FromArgb(alpha, color);
-            Brush brush = new SolidBrush(color);
-            Font fnt = new Font(FontFamily.GenericMonospace, 8);
-
-            if (Width >= Height)
-            {
-                gfx.DrawString(label, fnt, brush, rect.X, rect.Y);
-            }
-            else
-            {
-                var sf = Tools.Misc.StringFormat(h: AlignHoriz.left, v: AlignVert.bottom);
-                gfx.RotateTransform(90);
-                gfx.DrawString(label, fnt, brush, rect.Y, -rect.X, sf);
-                gfx.ResetTransform();
-            }
-
-
-            if (fillToo)
-                Fill(color, alpha / 10);
-            if (outlineToo)
-                Outline(color, alpha);
-        }
     }
 }

@@ -19,40 +19,20 @@ namespace QuickPlot.Settings
         public readonly Region scaleX, scaleY, scaleY2;
         public readonly Region data;
 
-        public PlotLayout(Bitmap bmp, Graphics gfx, Rectangle rect)
+        public PlotLayout(Rectangle rect)
         {
-            plotArea = new Region(bmp, gfx, rect);
+            plotArea = new Region(rect);
 
-            Rectangle rectZero = new Rectangle(0, 0, 0, 0);
+            title = new Region();
+            labelX = new Region();
+            labelY = new Region();
+            labelY2 = new Region();
 
-            title = new Region(bmp, gfx, rectZero);
-            labelX = new Region(bmp, gfx, rectZero);
-            labelY = new Region(bmp, gfx, rectZero);
-            labelY2 = new Region(bmp, gfx, rectZero);
+            scaleX = new Region();
+            scaleY = new Region();
+            scaleY2 = new Region();
 
-            scaleX = new Region(bmp, gfx, rectZero);
-            scaleY = new Region(bmp, gfx, rectZero);
-            scaleY2 = new Region(bmp, gfx, rectZero);
-
-            data = new Region(bmp, gfx, rectZero);
-        }
-
-        public void LabelRegions()
-        {
-            int transparency = 200;
-
-            plotArea.Label("", Color.LightGray, transparency);
-
-            title.Label("title", Color.Gray, transparency);
-            labelX.Label("labelX", Color.Gray, transparency);
-            labelY.Label("labelY", Color.Gray, transparency);
-            labelY2.Label("labelY2", Color.Gray, transparency);
-
-            scaleX.Label("scaleX", Color.Green, transparency);
-            scaleY.Label("scaleY", Color.Green, transparency);
-            scaleY2.Label("scaleY2", Color.Green, transparency);
-
-            data.Label("data", Color.Magenta, transparency);
+            data = new Region();
         }
 
         public void ShrinkToRemoveOverlaps()

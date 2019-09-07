@@ -168,6 +168,8 @@
             // cbYLabel
             // 
             this.cbYLabel.AutoSize = true;
+            this.cbYLabel.Checked = true;
+            this.cbYLabel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbYLabel.Location = new System.Drawing.Point(74, 19);
             this.cbYLabel.Name = "cbYLabel";
             this.cbYLabel.Size = new System.Drawing.Size(62, 17);
@@ -179,6 +181,8 @@
             // cbXLabel
             // 
             this.cbXLabel.AutoSize = true;
+            this.cbXLabel.Checked = true;
+            this.cbXLabel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbXLabel.Location = new System.Drawing.Point(6, 42);
             this.cbXLabel.Name = "cbXLabel";
             this.cbXLabel.Size = new System.Drawing.Size(62, 17);
@@ -190,6 +194,8 @@
             // cbTitle
             // 
             this.cbTitle.AutoSize = true;
+            this.cbTitle.Checked = true;
+            this.cbTitle.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbTitle.Location = new System.Drawing.Point(6, 19);
             this.cbTitle.Name = "cbTitle";
             this.cbTitle.Size = new System.Drawing.Size(46, 17);
@@ -213,6 +219,8 @@
             // cbXScale
             // 
             this.cbXScale.AutoSize = true;
+            this.cbXScale.Checked = true;
+            this.cbXScale.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbXScale.Location = new System.Drawing.Point(6, 19);
             this.cbXScale.Name = "cbXScale";
             this.cbXScale.Size = new System.Drawing.Size(33, 17);
@@ -224,6 +232,8 @@
             // cbYScale
             // 
             this.cbYScale.AutoSize = true;
+            this.cbYScale.Checked = true;
+            this.cbYScale.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbYScale.Location = new System.Drawing.Point(45, 19);
             this.cbYScale.Name = "cbYScale";
             this.cbYScale.Size = new System.Drawing.Size(33, 17);
