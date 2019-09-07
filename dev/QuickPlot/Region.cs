@@ -103,6 +103,14 @@ namespace QuickPlot
             }
         }
 
+        public void Shift(int right = 0, int left = 0, int down = 0, int up = 0)
+        {
+            X += right;
+            X -= left;
+            Y -= up;
+            Y += down;
+        }
+
         public void MatchX(Region regToMatch)
         {
             X = regToMatch.X;

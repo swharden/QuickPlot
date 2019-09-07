@@ -20,129 +20,83 @@ namespace QuickPlot
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
-            Layout layout = new Layout(bmp, gfx, rect);
-
-            Region plotRegion = new Region(bmp, gfx, rect);
-            plotRegion.Label("plotArea", Color.Gray, 100);
-            plotRegion.ShrinkBy(20); // add a little padding to be pretty
-
-            // determine size of tick labels
-            int scaleSizeL = 50;
-            int scaleSizeR = 50;
-            int scaleSizeB = 20;
-            int labelBottomHeight = 20;
-            int labelLeftWidth = 20;
-            int labelRightWidth = 20;
-            int titleHeight = 20;
-
-            // lay-out all the components and dont worry about overlaps
-
-            if (labels.top != null)
-            {
-                layout.title.Match(plotRegion);
-                layout.title.ShrinkTo(top: titleHeight);
-                plotRegion.ShrinkBy(top: titleHeight);
-            }
-
-            if (labels.bottom != null)
-            {
-                layout.labelX.Match(plotRegion);
-                layout.labelX.ShrinkTo(bottom: labelBottomHeight);
-                plotRegion.ShrinkBy(bottom: labelBottomHeight);
-            }
-
-            if (labels.left != null)
-            {
-                layout.labelY.Match(plotRegion);
-                layout.labelY.ShrinkTo(left: labelLeftWidth);
-                plotRegion.ShrinkBy(left: labelLeftWidth);
-            }
-
-            if (labels.right != null)
-            {
-                layout.labelY2.Match(plotRegion);
-                layout.labelY2.ShrinkTo(right: labelRightWidth);
-                plotRegion.ShrinkBy(right: labelRightWidth);
-            }
-
-            if (axes.enableX)
-            {
-                layout.scaleX.Match(plotRegion);
-                layout.scaleX.ShrinkTo(bottom: scaleSizeB);
-                plotRegion.ShrinkBy(bottom: scaleSizeB);
-            }
-
-            if (axes.enableY)
-            {
-                layout.scaleY.Match(plotRegion);
-                layout.scaleY.ShrinkTo(left: scaleSizeL);
-                plotRegion.ShrinkBy(left: scaleSizeL);
-            }
-
-            if (axes.enableY2)
-            {
-                layout.scaleY2.Match(plotRegion);
-                layout.scaleY2.ShrinkTo(right: scaleSizeR);
-                plotRegion.ShrinkBy(right: scaleSizeR);
-            }
-
-            layout.data.Match(plotRegion);
-
-            // fine-tune regions after the layout is established
-            layout.scaleX.MatchX(layout.data);
-            layout.labelY.MatchY(layout.data);
-            layout.labelY2.MatchY(layout.data);
-            layout.labelX.MatchX(layout.data);
-
-            // draw all the regions
+            Settings.PlotLayout layout = LayOut(bmp, gfx, rect);
             layout.LabelRegions();
-
 
             return bmp;
         }
 
-        private class Layout
+        private Settings.PlotLayout LayOut(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
-            public readonly Region plotArea;
-            public readonly Region title, labelX, labelY, labelY2;
-            public readonly Region scaleX, scaleY, scaleY2;
-            public readonly Region data;
+            // create a layout for this plot
+            Settings.PlotLayout layout = new Settings.PlotLayout(bmp, gfx, rect);
 
-            public Layout(Bitmap bmp, Graphics gfx, Rectangle plotAreaRect)
+            // adjust the layout components based on:
+            //  - whether they are null
+            //  - how large things are
+
+            if (labels.top != null)
             {
-                plotArea = new Region(bmp, gfx, plotAreaRect);
-
-                Rectangle zero = new Rectangle(0, 0, 0, 0);
-
-                title = new Region(bmp, gfx, zero);
-                labelX = new Region(bmp, gfx, zero);
-                labelY = new Region(bmp, gfx, zero);
-                labelY2 = new Region(bmp, gfx, zero);
-
-                scaleX = new Region(bmp, gfx, zero);
-                scaleY = new Region(bmp, gfx, zero);
-                scaleY2 = new Region(bmp, gfx, zero);
-
-                data = new Region(bmp, gfx, zero);
+                int titleHeight = 20;
+                layout.title.Match(layout.plotArea);
+                layout.title.ShrinkTo(top: titleHeight);
             }
 
-            public void LabelRegions()
+            if (labels.bottom != null)
             {
-                int transparency = 200;
-
-                plotArea.Label("plotArea", Color.Gray, transparency);
-
-                title.Label("title", Color.Gray, transparency);
-                labelX.Label("labelX", Color.Gray, transparency);
-                labelY.Label("labelY", Color.Gray, transparency);
-                labelY2.Label("labelY2", Color.Gray, transparency);
-
-                scaleX.Label("scaleX", Color.Green, transparency);
-                scaleY.Label("scaleY", Color.Green, transparency);
-                scaleY2.Label("scaleY2", Color.Green, transparency);
-
-                data.Label("data", Color.Magenta, transparency);
+                int labelBottomHeight = 20;
+                layout.labelX.Match(layout.plotArea);
+                layout.labelX.ShrinkTo(bottom: labelBottomHeight);
             }
+
+            if (labels.left != null)
+            {
+                int labelLeftWidth = 20;
+                layout.labelY.Match(layout.plotArea);
+                layout.labelY.ShrinkTo(left: labelLeftWidth);
+            }
+
+            if (labels.right != null)
+            {
+                int labelRightWidth = 20;
+                layout.labelY2.Match(layout.plotArea);
+                layout.labelY2.ShrinkTo(right: labelRightWidth);
+            }
+
+            if (axes.enableX)
+            {
+                int scaleSizeB = 20;
+                layout.scaleX.Match(layout.plotArea);
+                layout.scaleX.ShrinkTo(bottom: scaleSizeB);
+                layout.scaleX.Shift(up: layout.labelX.Height);
+            }
+
+            if (axes.enableY)
+            {
+                int scaleSizeL = 50;
+                layout.scaleY.Match(layout.plotArea);
+                layout.scaleY.ShrinkTo(left: scaleSizeL);
+                layout.scaleY.Shift(right: layout.labelY.Width);
+            }
+
+            if (axes.enableY2)
+            {
+                int scaleSizeR = 50;
+                layout.scaleY2.Match(layout.plotArea);
+                layout.scaleY2.ShrinkTo(right: scaleSizeR);
+                layout.scaleY2.Shift(left: layout.labelY2.Width);
+            }
+
+            layout.data.Match(layout.plotArea);
+            layout.data.ShrinkBy(
+                left: layout.labelY.Width + layout.scaleY.Width,
+                right: layout.labelY2.Width + layout.scaleY2.Width,
+                bottom: layout.labelX.Height + layout.scaleX.Height,
+                top: layout.title.Height);
+
+            layout.ShrinkToRemoveOverlaps();
+
+            return layout;
         }
     }
 }
