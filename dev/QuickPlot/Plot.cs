@@ -11,85 +11,138 @@ namespace QuickPlot
     {
         public Settings.Padding padding;
         public Settings.Labels labels;
+        public Settings.Axes axes;
+
+        public Plot()
+        {
+            axes = new Settings.Axes();
+        }
 
         public Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect)
         {
+            Layout layout = new Layout(bmp, gfx, rect);
+
             Region plotRegion = new Region(bmp, gfx, rect);
             plotRegion.Label("plotArea", Color.Gray, 100);
+            plotRegion.ShrinkBy(20); // add a little padding to be pretty
 
             // determine size of tick labels
             int scaleSizeL = 50;
             int scaleSizeR = 50;
             int scaleSizeB = 20;
+            int labelBottomHeight = 20;
+            int labelLeftWidth = 20;
+            int labelRightWidth = 20;
+            int titleHeight = 20;
 
-            // add a little padding to be pretty
-            plotRegion.Contract(20);
+            // lay-out all the components and dont worry about overlaps
 
-            Region scaleLeftRegion = new Region(plotRegion);
-            scaleLeftRegion.Width = scaleSizeL;
-            scaleLeftRegion.Label("scaleL", Color.Green, 100);
+            if (labels.top != null)
+            {
+                layout.title.Match(plotRegion);
+                layout.title.ShrinkTo(top: titleHeight);
+                plotRegion.ShrinkBy(top: titleHeight);
+            }
 
-            Region scaleRightRegion = new Region(plotRegion);
-            scaleRightRegion.Width = scaleSizeR;
-            scaleRightRegion.X = plotRegion.X2 - scaleSizeR; // TODO: TrimTo(right: 100)
-            scaleRightRegion.Label("scaleR", Color.Orange, 100);
+            if (labels.bottom != null)
+            {
+                layout.labelX.Match(plotRegion);
+                layout.labelX.ShrinkTo(bottom: labelBottomHeight);
+                plotRegion.ShrinkBy(bottom: labelBottomHeight);
+            }
 
-            Region scaleBottomRegion = new Region(plotRegion);
-            scaleBottomRegion.Height = scaleSizeB;
-            scaleBottomRegion.Y += plotRegion.Height - scaleSizeB;
-            scaleBottomRegion.Label("scaleB", Color.Blue, 100);
+            if (labels.left != null)
+            {
+                layout.labelY.Match(plotRegion);
+                layout.labelY.ShrinkTo(left: labelLeftWidth);
+                plotRegion.ShrinkBy(left: labelLeftWidth);
+            }
 
-            // determine how big the data area is
-            Region dataRegion = new Region(plotRegion);
-            dataRegion.Contract(left: scaleSizeL, right: scaleSizeR, bottom: scaleSizeB);
-            dataRegion.Label("data", Color.Magenta, 100);
+            if (labels.right != null)
+            {
+                layout.labelY2.Match(plotRegion);
+                layout.labelY2.ShrinkTo(right: labelRightWidth);
+                plotRegion.ShrinkBy(right: labelRightWidth);
+            }
 
-            Console.WriteLine(dataRegion);
+            if (axes.enableX)
+            {
+                layout.scaleX.Match(plotRegion);
+                layout.scaleX.ShrinkTo(bottom: scaleSizeB);
+                plotRegion.ShrinkBy(bottom: scaleSizeB);
+            }
+
+            if (axes.enableY)
+            {
+                layout.scaleY.Match(plotRegion);
+                layout.scaleY.ShrinkTo(left: scaleSizeL);
+                plotRegion.ShrinkBy(left: scaleSizeL);
+            }
+
+            if (axes.enableY2)
+            {
+                layout.scaleY2.Match(plotRegion);
+                layout.scaleY2.ShrinkTo(right: scaleSizeR);
+                plotRegion.ShrinkBy(right: scaleSizeR);
+            }
+
+            layout.data.Match(plotRegion);
+
+            // fine-tune regions after the layout is established
+            layout.scaleX.MatchX(layout.data);
+            layout.labelY.MatchY(layout.data);
+            layout.labelY2.MatchY(layout.data);
+            layout.labelX.MatchX(layout.data);
+
+            // draw all the regions
+            layout.LabelRegions();
+
 
             return bmp;
         }
 
-        private void RenderLabels(Bitmap bmp, Graphics gfx, Rectangle rect)
+        private class Layout
         {
-            // title
-            gfx.DrawString($"{labels.top}",
-                font: new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
-                brush: Brushes.Black,
-                x: rect.X + (rect.Width / 2),
-                y: rect.Y,
-                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.top)
-                );
+            public readonly Region plotArea;
+            public readonly Region title, labelX, labelY, labelY2;
+            public readonly Region scaleX, scaleY, scaleY2;
+            public readonly Region data;
 
-            // lower axis label
-            gfx.DrawString($"{labels.bottom}",
-                font: new Font(FontFamily.GenericSansSerif, 10),
-                brush: Brushes.Black,
-                x: rect.X + (rect.Width / 2),
-                y: rect.Y + rect.Height,
-                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.bottom)
-                );
+            public Layout(Bitmap bmp, Graphics gfx, Rectangle plotAreaRect)
+            {
+                plotArea = new Region(bmp, gfx, plotAreaRect);
 
-            // left axis label
-            gfx.RotateTransform(-90);
-            gfx.DrawString(labels.left,
-                font: new Font(FontFamily.GenericSansSerif, 10),
-                brush: Brushes.Black,
-                x: -rect.Y - (rect.Height / 2),
-                y: rect.X,
-                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.top)
-                );
-            gfx.ResetTransform();
+                Rectangle zero = new Rectangle(0, 0, 0, 0);
 
-            // right axis label
-            gfx.RotateTransform(-90);
-            gfx.DrawString(labels.right,
-                font: new Font(FontFamily.GenericSansSerif, 10),
-                brush: Brushes.Black,
-                x: -rect.Y - (rect.Height / 2),
-                y: rect.X + rect.Width,
-                format: Tools.Misc.StringFormat(AlignHoriz.center, AlignVert.bottom)
-                );
-            gfx.ResetTransform();
+                title = new Region(bmp, gfx, zero);
+                labelX = new Region(bmp, gfx, zero);
+                labelY = new Region(bmp, gfx, zero);
+                labelY2 = new Region(bmp, gfx, zero);
+
+                scaleX = new Region(bmp, gfx, zero);
+                scaleY = new Region(bmp, gfx, zero);
+                scaleY2 = new Region(bmp, gfx, zero);
+
+                data = new Region(bmp, gfx, zero);
+            }
+
+            public void LabelRegions()
+            {
+                int transparency = 200;
+
+                plotArea.Label("plotArea", Color.Gray, transparency);
+
+                title.Label("title", Color.Gray, transparency);
+                labelX.Label("labelX", Color.Gray, transparency);
+                labelY.Label("labelY", Color.Gray, transparency);
+                labelY2.Label("labelY2", Color.Gray, transparency);
+
+                scaleX.Label("scaleX", Color.Green, transparency);
+                scaleY.Label("scaleY", Color.Green, transparency);
+                scaleY2.Label("scaleY2", Color.Green, transparency);
+
+                data.Label("data", Color.Magenta, transparency);
+            }
         }
     }
 }

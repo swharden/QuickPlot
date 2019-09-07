@@ -48,29 +48,18 @@ namespace FormsTest
             {
                 var fig = new QuickPlot.Figure();
 
-                fig.Subplot(0);
-                fig.plot.labels.top = "plot one";
-                fig.plot.labels.left = "vertical units";
-                fig.plot.labels.right = "vertical units too";
-                fig.plot.labels.bottom = "horizontal units";
-
-                fig.Subplot(1);
-                fig.plot.labels.top = "plot two";
-                fig.plot.labels.left = "vertical units";
-                fig.plot.labels.right = "vertical units too";
-                fig.plot.labels.bottom = "horizontal units";
-
-                fig.Subplot(2);
-                fig.plot.labels.top = "plot three";
-                fig.plot.labels.left = "vertical units";
-                fig.plot.labels.right = "vertical units too";
-                fig.plot.labels.bottom = "horizontal units";
-
-                fig.Subplot(3);
-                fig.plot.labels.top = "plot four";
-                fig.plot.labels.left = "vertical units";
-                fig.plot.labels.right = "vertical units too";
-                fig.plot.labels.bottom = "horizontal units";
+                // create several plots
+                for (int i=0; i<4; i++)
+                {
+                    fig.Subplot(i);
+                    fig.plot.labels.top = (cbTitle.Checked) ? "title" : null;
+                    fig.plot.labels.left = (cbYLabel.Checked) ? "vertical units" : null;
+                    fig.plot.labels.right = (cbY2Label.Checked) ? "more vertical units" : null;
+                    fig.plot.labels.bottom = (cbXLabel.Checked) ? "horizontal units" : null;
+                    fig.plot.axes.enableX = cbXScale.Checked;
+                    fig.plot.axes.enableY = cbYScale.Checked;
+                    fig.plot.axes.enableY2 = cbY2Scale.Checked;
+                }
 
                 pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);
                 lblStatus.Text = bench.GetMessage();
@@ -106,6 +95,41 @@ namespace FormsTest
             double meanSec = meanMsec / 1000.0;
             double meanHz = Math.Round(1.0 / meanSec, 3);
             lblStatus.Text = $"Rendered {times.Length} times in {Math.Round(times.Sum(), 3)} msec ({meanHz} Hz)";
+        }
+
+        private void CbTitle_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbXLabel_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbYLabel_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbY2Label_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbYScale_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbXScale_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
+        }
+
+        private void CbY2Scale_CheckedChanged(object sender, EventArgs e)
+        {
+            GeneratePlot();
         }
     }
 }

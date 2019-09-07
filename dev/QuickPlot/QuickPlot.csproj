@@ -45,6 +45,7 @@
     <Compile Include="Figure.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Region.cs" />
+    <Compile Include="Settings\Axes.cs" />
     <Compile Include="Settings\Labels.cs" />
     <Compile Include="Settings\Padding.cs" />
     <Compile Include="Settings\SubImage.cs" />

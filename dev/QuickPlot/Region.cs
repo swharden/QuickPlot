@@ -18,7 +18,7 @@ namespace QuickPlot
         public bool enabled = true;
 
         public Point Point { get { return new Point(rect.X, rect.Y); } }
-        public Size Size { get { return new Size(rect.Width, rect.Height); } }
+        public Size Size { get { return new Size(rect.Width, rect.Height); } set { rect.Width = value.Width; rect.Height = value.Height; } }
         public int X { get { return rect.X; } set { rect.X = value; } }
         public int X2 { get { return rect.X + rect.Width; } }
         public int Y { get { return rect.Y; } set { rect.Y = value; } }
@@ -32,6 +32,15 @@ namespace QuickPlot
             //return $"Region of bmp [{bmp.Width}, {bmp.Height}] at ({X}, {Y}) of size [{Width}, {Height}]";
             return $"Region of bmp [{bmp.Width}, {bmp.Height}]: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
         }
+
+        /*
+        public Region()
+        {
+            this.rect = new Rectangle(0, 0, 0, 0);
+            this.bmp = null;
+            this.gfx = null;
+        }
+        */
 
         public Region(Region reg)
         {
@@ -54,17 +63,68 @@ namespace QuickPlot
             this.gfx = gfx;
         }
 
-        public void Contract(int px)
+        public void ShrinkBy(int px)
         {
-            Contract(px, px, px, px);
+            ShrinkBy(px, px, px, px);
         }
 
-        public void Contract(int left = 0, int right = 0, int bottom = 0, int top = 0)
+        public void ShrinkBy(int left = 0, int right = 0, int bottom = 0, int top = 0)
         {
             rect.X += left;
             rect.Width -= (left + right);
             rect.Y += top;
             rect.Height -= (top + bottom);
+        }
+
+        public void ShrinkTo(int? left = null, int? right = null, int? bottom = null, int? top = null)
+        {
+            if (left != null)
+            {
+                Width = (int)left;
+            }
+
+            if (right != null)
+            {
+                int shrinkBy = Width - (int)right;
+                X += shrinkBy;
+                Width = (int)right;
+            }
+
+            if (bottom != null)
+            {
+                int shrinkBy = Height - (int)bottom;
+                Y += shrinkBy;
+                Height = (int)bottom;
+            }
+
+            if (top != null)
+            {
+                Height = (int)top;
+            }
+        }
+
+        public void MatchX(Region regToMatch)
+        {
+            X = regToMatch.X;
+            Width = regToMatch.Width;
+        }
+
+        public void MatchY(Region regToMatch)
+        {
+            Y = regToMatch.Y;
+            Height = regToMatch.Height;
+        }
+
+        public void Match(Region regToMatch)
+        {
+            MatchX(regToMatch);
+            MatchY(regToMatch);
+        }
+
+        public void SizeZero()
+        {
+            Width = 0;
+            Height = 0;
         }
 
         public void Fill(Color color, int alpha = 255)
@@ -89,7 +149,20 @@ namespace QuickPlot
             color = Color.FromArgb(alpha, color);
             Brush brush = new SolidBrush(color);
             Font fnt = new Font(FontFamily.GenericMonospace, 8);
-            gfx.DrawString(label, fnt, brush, rect.X, rect.Y);
+
+            if (Width >= Height)
+            {
+                gfx.DrawString(label, fnt, brush, rect.X, rect.Y);
+            }
+            else
+            {
+                var sf = Tools.Misc.StringFormat(h: AlignHoriz.left, v: AlignVert.bottom);
+                gfx.RotateTransform(90);
+                gfx.DrawString(label, fnt, brush, rect.Y, -rect.X, sf);
+                gfx.ResetTransform();
+            }
+
+
             if (fillToo)
                 Fill(color, alpha / 10);
             if (outlineToo)
