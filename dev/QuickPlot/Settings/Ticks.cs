@@ -20,24 +20,41 @@ namespace QuickPlot.Settings
         public int Count { get { return tickList.Count; } }
 
         double low, high;
+        double span { get { return high - low; } }
         int pixelSpan;
 
-        public Ticks(double low, double high, int pixelSpan)
+        public Ticks(double low, double high, int pixelSpan, double pixelsPerTick = 50)
         {
             this.low = low;
             this.high = high;
             this.pixelSpan = pixelSpan;
 
             tickList = new List<Tick>();
-            Generate();
+
+            double idealStep = DetermineGoodStep(pixelsPerTick);
+            Generate(idealStep);
         }
 
-        public void Generate()
+        public double DetermineGoodStep(double pixlesPerTick)
+        {
+            double idealTickCount = (double)pixelSpan / pixlesPerTick;
+            double step = Math.Pow(10, (int)Math.Log(span));
+            double[] divisions = { 2, 2, 2.5};
+            double idealStep = span / idealTickCount;
+            for (int i = 0; i < 100; i++)
+            {
+                if (step > idealStep)
+                    step /= divisions[i % divisions.Length];
+                else
+                    break;
+            }
+            return step;
+        }
+
+        public void Generate(double step)
         {
             tickList.Clear();
-            double step = 2;
             double firstTick = low + Math.Abs(low % step);
-            double stepRatio = step / (high - low);
 
             double pixelsPerUnit = pixelSpan / (high - low);
 
@@ -52,6 +69,8 @@ namespace QuickPlot.Settings
                     pixelsFromEdge = (int)(pixelsPerUnit * unitsFromEdge)
                 };
                 tickList.Add(tk);
+                if (tickList.Count > 100)
+                    break;
             }
         }
     }
