@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace QuickPlot
 {
     /// <summary>
-    /// Rection.rect is the sub-region of an Image (Region.bmp) we are expected to work in.
+    /// Rection.rect is the sub-region of an Image we are expected to work within.
     /// This object should be GDI-Free.
     /// </summary>
     public class Region
