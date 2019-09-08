@@ -9,6 +9,7 @@ namespace QuickPlot.Settings
     public class Axes
     {
         public AxisLabel labelTitle, labelX, labelY, labelY2;
+        public Axis axisX, axisY, axisY2;
 
         // controls whether scales are plotted
         public bool enableX = true;
@@ -21,6 +22,10 @@ namespace QuickPlot.Settings
             labelX = new AxisLabel(fontSize: 10);
             labelY = new AxisLabel(fontSize: 10);
             labelY2 = new AxisLabel(fontSize: 10);
+
+            axisX = new Axis(Axis.Edge.bottom);
+            axisY = new Axis(Axis.Edge.left);
+            axisY2 = new Axis(Axis.Edge.right);
         }
     }
 }

@@ -9,38 +9,14 @@ namespace QuickPlot.Settings
 {
     public class AxisLabel
     {
+        public FontSettings fs;
         public string text;
-        public float fontSize;
-        public string fontFamily;
-        public bool bold;
-        public Color color;
-
         public bool IsValid { get { return (text != null); } }
-
-        public Font Font
-        {
-            get
-            {
-                FontStyle fs = (bold) ? FontStyle.Bold : FontStyle.Regular;
-                return new Font(fontFamily, fontSize, fs);
-            }
-        }
-
-        public Brush Brush
-        {
-            get
-            {
-                return new SolidBrush(Color.Black);
-            }
-        }
 
         public AxisLabel(string text = "label text", float fontSize = 12, string fontFamily = "Segoe UI", bool bold = false, Color? color = null)
         {
             this.text = text;
-            this.fontSize = fontSize;
-            this.fontFamily = fontFamily;
-            this.bold = bold;
-            this.color = (color == null) ? Color.Black : (Color)color;
+            fs = new FontSettings(fontSize, fontFamily, bold, color);
         }
     }
 }

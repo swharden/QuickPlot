@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace QuickPlot
 {
-
+    /// <summary>
+    /// The Figure class holds several subplots. 
+    /// Activate and arrange subplots with Figure.Subplot().
+    /// Plot stuff by interacting with Figure.Plot.
+    /// </summary>
     public class Figure
     {
-        public List<Plot> plots = new List<Plot>();
+        public List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
-        private enum GraphicsFramework { GDI, Skia };
-        private GraphicsFramework renderMethod = GraphicsFramework.GDI;
-
         /// <summary>
-        /// Create a Figure (which contains one or more plots)
+        /// Create a Figure (with one subplot)
         /// </summary>
         public Figure()
         {
@@ -25,14 +26,14 @@ namespace QuickPlot
         }
 
         /// <summary>
-        /// Activate a subplot (and tweak its position in the Figure)
+        /// Activate a subplot (and set its position)
         /// </summary>
-        public void Subplot(int plotNumber, int? row = null, int? column = null, int? rowSpan = null, int? colSpan = null)
+        public void Subplot(int subPlotNumber, int? row = null, int? column = null, int? rowSpan = null, int? colSpan = null)
         {
-            while (plots.Count < plotNumber)
-                plots.Add(new Plot());
+            while (subplots.Count < subPlotNumber)
+                subplots.Add(new Plot());
 
-            plot = plots[plotNumber - 1];
+            plot = subplots[subPlotNumber - 1];
 
             if (row != null)
                 plot.subplotSettings.rowIndex = (int)row - 1;
@@ -49,30 +50,14 @@ namespace QuickPlot
         /// </summary>
         public Bitmap Render(Bitmap bmp)
         {
-            // determine the layout of Plots in the Figure (requires bmp dimensions)
-            List<Rectangle> subplotRects = Settings.FigureLayout.GetSubplotlotRectangles(bmp.Size, plots);
-
-            // render each plot inside its layout rectangle
-            switch (renderMethod)
+            // to render with another framework (e.g., Skia) override this method.
+            List<Rectangle> subplotRects = Settings.FigureLayout.GetSubplotlotRectangles(bmp.Size, subplots);
+            using (var gfx = Graphics.FromImage(bmp))
             {
-                case GraphicsFramework.GDI:
-                    using (var gfx = Graphics.FromImage(bmp))
-                    {
-                        gfx.Clear(Color.White);
-                        for (int i = 0; i < plots.Count; i++)
-                            Renderer.GDI.Render(bmp, gfx, subplotRects[i], plots[i]);
-                    }
-                    break;
-
-                case GraphicsFramework.Skia:
-                    for (int i = 0; i < plots.Count; i++)
-                        Renderer.Skia.Render(bmp, subplotRects[i], plots[i]);
-                    break;
-
-                default:
-                    throw new NotImplementedException();
+                gfx.Clear(Color.White);
+                for (int i = 0; i < subplots.Count; i++)
+                    Renderer.GDI.Render(bmp, gfx, subplotRects[i], subplots[i]);
             }
-
             return bmp;
         }
 
@@ -81,7 +66,6 @@ namespace QuickPlot
         /// </summary>
         public Bitmap Render(int width, int height)
         {
-            // create a bitmap of a certain size and render onto it
             Bitmap bmp = new Bitmap(width, height);
             return Render(bmp);
         }

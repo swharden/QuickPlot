@@ -15,6 +15,7 @@ namespace QuickPlot.Renderer
             if (plt.advancedSettings.showLayout)
                 OutlineLayoutRegions(gfx, layout);
             RenderLabels(layout, gfx, plt);
+            RenderScales(layout, gfx, plt);
             return bmp;
         }
 
@@ -79,7 +80,7 @@ namespace QuickPlot.Renderer
 
         public static SizeF MeasureString(Graphics gfx, Settings.AxisLabel label)
         {
-            return gfx.MeasureString(label.text, label.Font);
+            return gfx.MeasureString(label.text, label.fs.Font);
         }
 
         private static Settings.PlotLayout LayOut(Graphics gfx, Rectangle rect, Plot plt)
@@ -200,20 +201,38 @@ namespace QuickPlot.Renderer
 
         public enum AlignHoriz { left, center, right };
         public enum AlignVert { top, center, bottom };
-        
+
         private static void RenderLabels(Settings.PlotLayout layout, Graphics gfx, Plot plt)
         {
             StringFormat sfCentCent = StringFormat(AlignHoriz.center, AlignVert.center);
-            gfx.DrawString(plt.axes.labelTitle.text, plt.axes.labelTitle.Font, plt.axes.labelTitle.Brush, layout.title.Center, sfCentCent);
-            gfx.DrawString(plt.axes.labelX.text, plt.axes.labelX.Font, plt.axes.labelX.Brush, layout.labelX.Center, sfCentCent);
+            gfx.DrawString(plt.axes.labelTitle.text, plt.axes.labelTitle.fs.Font, plt.axes.labelTitle.fs.Brush, layout.title.Center, sfCentCent);
+            gfx.DrawString(plt.axes.labelX.text, plt.axes.labelX.fs.Font, plt.axes.labelX.fs.Brush, layout.labelX.Center, sfCentCent);
 
             gfx.RotateTransform(-90);
-            gfx.DrawString(plt.axes.labelY.text, plt.axes.labelY.Font, plt.axes.labelY.Brush, layout.labelY.CenterRotNeg90, sfCentCent);
+            gfx.DrawString(plt.axes.labelY.text, plt.axes.labelY.fs.Font, plt.axes.labelY.fs.Brush, layout.labelY.CenterRotNeg90, sfCentCent);
             gfx.ResetTransform();
 
             gfx.RotateTransform(90);
-            gfx.DrawString(plt.axes.labelY2.text, plt.axes.labelY2.Font, plt.axes.labelY2.Brush, layout.labelY2.CenterRotPos90, sfCentCent);
+            gfx.DrawString(plt.axes.labelY2.text, plt.axes.labelY2.fs.Font, plt.axes.labelY2.fs.Brush, layout.labelY2.CenterRotPos90, sfCentCent);
             gfx.ResetTransform();
+        }
+
+        private static void RenderScales(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        {
+            if (layout.scaleX.IsValid)
+            {
+                gfx.DrawLine(plt.axes.axisX.fs.Pen, layout.scaleX.TopLeft, layout.scaleX.TopRight);
+            }
+
+            if (layout.scaleY.IsValid)
+            {
+                gfx.DrawLine(plt.axes.axisY.fs.Pen, layout.scaleY.TopRight, layout.scaleY.BottomRight);
+            }
+
+            if (layout.scaleY2.IsValid)
+            {
+                gfx.DrawLine(plt.axes.axisY2.fs.Pen, layout.scaleY2.TopLeft, layout.scaleY2.BottomLeft);
+            }
         }
     }
 

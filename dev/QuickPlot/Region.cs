@@ -28,6 +28,10 @@ namespace QuickPlot
         public int Width { get { return rect.Width; } set { { rect.Width = value; } } }
         public int Height { get { return rect.Height; } set { { rect.Height = value; } } }
         public bool IsValid { get { return ((Width > 0) && (Height > 0) && (enabled)); } }
+        public Point TopLeft { get { return new Point(rect.Left, rect.Top); } }
+        public Point TopRight { get { return new Point(rect.Right - 1, rect.Top); } }
+        public Point BottomLeft { get { return new Point(rect.Left, rect.Bottom); } }
+        public Point BottomRight { get { return new Point(rect.Right - 1, rect.Bottom); } }
 
         public override string ToString()
         {
