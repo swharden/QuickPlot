@@ -11,10 +11,19 @@ namespace QuickPlot.Renderer
     {
         public static Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect, Plot plt)
         {
+            // determine the layout (position of title, scales, ticks, etc)
             Settings.PlotLayout layout = LayOut(gfx, rect, plt);
+
+            // generate the ticks now that the layout is known
+            plt.axes.axisX.GenerateTicks(layout.data.rect.Width);
+            plt.axes.axisY.GenerateTicks(layout.data.rect.Height);
+            plt.axes.axisY2.GenerateTicks(layout.data.rect.Height);
+
+            // render everything in one pass
             if (plt.advancedSettings.showLayout)
                 OutlineLayoutRegions(gfx, layout);
             RenderLabels(layout, gfx, plt);
+            RenderFrame(layout, gfx, plt);
             RenderScales(layout, gfx, plt);
             return bmp;
         }
@@ -217,21 +226,69 @@ namespace QuickPlot.Renderer
             gfx.ResetTransform();
         }
 
+        private static void RenderFrame(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        {
+            gfx.DrawRectangle(Pens.LightGray, layout.data.rect);
+        }
+
         private static void RenderScales(Settings.PlotLayout layout, Graphics gfx, Plot plt)
         {
+            int majorTickLength = 2;
+
             if (layout.scaleX.IsValid)
             {
+                Font fnt = plt.axes.axisX.fs.Font;
+                Brush brsh = plt.axes.axisX.fs.Brush;
+                Pen pen = plt.axes.axisX.fs.Pen;
+                StringFormat sf = StringFormat(AlignHoriz.center, AlignVert.top);
+
                 gfx.DrawLine(plt.axes.axisX.fs.Pen, layout.scaleX.TopLeft, layout.scaleX.TopRight);
+                foreach (Settings.Tick tick in plt.axes.axisX.ticks.tickList)
+                {
+                    int x = layout.scaleX.rect.Left + tick.pixelsFromEdge;
+                    Point pt1 = new Point(x, layout.scaleX.rect.Top);
+                    Point pt2 = new Point(x, layout.scaleX.rect.Top + majorTickLength);
+                    gfx.DrawLine(pen, pt1, pt2);
+                    gfx.DrawString(tick.label, fnt, brsh, pt1, sf);
+                }
             }
 
             if (layout.scaleY.IsValid)
             {
+                Font fnt = plt.axes.axisY.fs.Font;
+                Brush brsh = plt.axes.axisY.fs.Brush;
+                Pen pen = plt.axes.axisY.fs.Pen;
+                StringFormat sf = StringFormat(AlignHoriz.right, AlignVert.center);
+
                 gfx.DrawLine(plt.axes.axisY.fs.Pen, layout.scaleY.TopRight, layout.scaleY.BottomRight);
+
+                foreach (Settings.Tick tick in plt.axes.axisY.ticks.tickList)
+                {
+                    int y = layout.scaleY.rect.Bottom - tick.pixelsFromEdge;
+                    Point pt1 = new Point(layout.scaleY.rect.Right, y);
+                    Point pt2 = new Point(layout.scaleY.rect.Right - majorTickLength, y);
+                    gfx.DrawLine(pen, pt1, pt2);
+                    gfx.DrawString(tick.label, fnt, brsh, pt2, sf);
+                }
             }
 
             if (layout.scaleY2.IsValid)
             {
+                Font fnt = plt.axes.axisY2.fs.Font;
+                Brush brsh = plt.axes.axisY2.fs.Brush;
+                Pen pen = plt.axes.axisY2.fs.Pen;
+                StringFormat sf = StringFormat(AlignHoriz.left, AlignVert.center);
+
                 gfx.DrawLine(plt.axes.axisY2.fs.Pen, layout.scaleY2.TopLeft, layout.scaleY2.BottomLeft);
+
+                foreach (Settings.Tick tick in plt.axes.axisY.ticks.tickList)
+                {
+                    int y = layout.scaleY2.rect.Bottom - tick.pixelsFromEdge;
+                    Point pt1 = new Point(layout.scaleY2.rect.Left, y);
+                    Point pt2 = new Point(layout.scaleY2.rect.Left + majorTickLength, y);
+                    gfx.DrawLine(pen, pt1, pt2);
+                    gfx.DrawString(tick.label, fnt, brsh, pt2, sf);
+                }
             }
         }
     }
