@@ -44,7 +44,8 @@
   <ItemGroup>
     <Compile Include="Figure.cs" />
     <Compile Include="Settings\Advanced.cs" />
-    <Compile Include="SubplotLayout.cs" />
+    <Compile Include="Settings\FigureLayout.cs" />
+    <Compile Include="Settings\Subplot.cs" />
     <Compile Include="Region.cs" />
     <Compile Include="Renderer\GDI.cs" />
     <Compile Include="Renderer\Skia.cs" />

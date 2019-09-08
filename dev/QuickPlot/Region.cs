@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace QuickPlot
 {
     /// <summary>
-    /// Rection.rect is the area of the Image (Region.bmp) we are expected to work in.
+    /// Rection.rect is the sub-region of an Image (Region.bmp) we are expected to work in.
     /// This object should be GDI-Free.
     /// </summary>
     public class Region
@@ -31,7 +31,6 @@ namespace QuickPlot
 
         public override string ToString()
         {
-            //return $"Region of bmp [{bmp.Width}, {bmp.Height}]: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
             return $"Region: x1={X}, x2={X2}, y1={Y}, y2={Y2}";
         }
 

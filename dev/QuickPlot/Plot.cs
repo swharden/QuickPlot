@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace QuickPlot
 {
-
     public class Plot
     {
         public Settings.Axes axes;
         public Settings.Advanced advancedSettings;
+        public Settings.Subplot subplotSettings;
 
         /// <summary>
         /// A Plot contains a data area, scales, and labels.
@@ -21,6 +21,12 @@ namespace QuickPlot
         {
             axes = new Settings.Axes();
             advancedSettings = new Settings.Advanced();
+            subplotSettings = new Settings.Subplot(1, 1);
+        }
+
+        public void Subplot(int row, int col, int width = 1, int height = 1)
+        {
+            subplotSettings = new Settings.Subplot(row, col, width, height);
         }
     }
 }

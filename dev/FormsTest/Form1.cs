@@ -49,9 +49,9 @@ namespace FormsTest
                 var fig = new QuickPlot.Figure();
 
                 // create several plots
-                for (int i=0; i<4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    fig.Subplot(i);
+                    fig.Subplot(i + 1);
                     fig.plot.axes.labelTitle.text = (cbTitle.Checked) ? "title" : null;
                     fig.plot.axes.labelY.text = (cbYLabel.Checked) ? "vertical units" : null;
                     fig.plot.axes.labelY2.text = (cbY2Label.Checked) ? "more vertical units" : null;
@@ -61,6 +61,12 @@ namespace FormsTest
                     fig.plot.axes.enableY2 = cbY2Scale.Checked;
                     fig.plot.advancedSettings.showLayout = cbShowLayout.Checked;
                 }
+
+                // tweak subplot positions
+                fig.Subplot(1, 1, 1);
+                fig.Subplot(2, 1, 2);
+                fig.Subplot(3, 1, 3);
+                fig.Subplot(4, 2, 1, 3, 1); // extra-wide
 
                 pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);
                 lblStatus.Text = bench.GetMessage();

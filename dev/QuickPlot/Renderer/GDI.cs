@@ -65,16 +65,16 @@ namespace QuickPlot.Renderer
 
             OutlineAndLabel(gfx, layout.plotArea, "", Color.LightGray, transparency);
 
-            OutlineAndLabel(gfx, layout.title, "title", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelX, "labelX", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelY, "labelY", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelY2, "labelY2", Color.Gray, transparency);
+            OutlineAndLabel(gfx, layout.title, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, layout.labelX, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, layout.labelY, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, layout.labelY2, "", Color.Gray, transparency);
 
-            OutlineAndLabel(gfx, layout.scaleX, "scaleX", Color.Green, transparency);
-            OutlineAndLabel(gfx, layout.scaleY, "scaleY", Color.Green, transparency);
-            OutlineAndLabel(gfx, layout.scaleY2, "scaleY2", Color.Green, transparency);
+            OutlineAndLabel(gfx, layout.scaleX, "", Color.Green, transparency);
+            OutlineAndLabel(gfx, layout.scaleY, "", Color.Green, transparency);
+            OutlineAndLabel(gfx, layout.scaleY2, "", Color.Green, transparency);
 
-            OutlineAndLabel(gfx, layout.data, "data", Color.Magenta, transparency);
+            OutlineAndLabel(gfx, layout.data, "", Color.Magenta, transparency);
         }
 
         public static SizeF MeasureString(Graphics gfx, Settings.AxisLabel label)
@@ -121,25 +121,25 @@ namespace QuickPlot.Renderer
 
             if (plt.axes.enableX)
             {
-                Size scaleSize = new Size(200, 20);
+                int scaleFontHeight = 20;
                 layout.scaleX.Match(layout.plotArea);
-                layout.scaleX.ShrinkTo(bottom: scaleSize.Height);
+                layout.scaleX.ShrinkTo(bottom: scaleFontHeight);
                 layout.scaleX.Shift(up: layout.labelX.Height);
             }
 
             if (plt.axes.enableY)
             {
-                Size scaleSize = new Size(200, 20);
+                int widestScaleTick = 35;
                 layout.scaleY.Match(layout.plotArea);
-                layout.scaleY.ShrinkTo(left: scaleSize.Height);
+                layout.scaleY.ShrinkTo(left: widestScaleTick);
                 layout.scaleY.Shift(right: layout.labelY.Width);
             }
 
             if (plt.axes.enableY2)
             {
-                int scaleSizeR = 50;
+                int widestScaleTick = 35;
                 layout.scaleY2.Match(layout.plotArea);
-                layout.scaleY2.ShrinkTo(right: scaleSizeR);
+                layout.scaleY2.ShrinkTo(right: widestScaleTick);
                 layout.scaleY2.Shift(left: layout.labelY2.Width);
             }
 
