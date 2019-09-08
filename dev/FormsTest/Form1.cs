@@ -43,6 +43,7 @@ namespace FormsTest
                 pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
 
             double timeMsec;
+            int randomSeed = 0;
 
             using (var bench = new QuickPlot.Tools.Benchmark())
             {
@@ -60,6 +61,16 @@ namespace FormsTest
                     fig.plot.axes.enableY = cbYScale.Checked;
                     fig.plot.axes.enableY2 = cbY2Scale.Checked;
                     fig.plot.advancedSettings.showLayout = cbShowLayout.Checked;
+
+                    // add some data
+                    fig.plot.Scatter(
+                            xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5),
+                            ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5)
+                        );
+                    fig.plot.Scatter(
+                            xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5),
+                            ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5)
+                        );
                 }
 
                 // tweak subplot positions
@@ -84,7 +95,7 @@ namespace FormsTest
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            double[] times = new double[1_000];
+            double[] times = new double[100];
 
             toolStripProgressBar1.Visible = true;
             lblStatus.Visible = false;

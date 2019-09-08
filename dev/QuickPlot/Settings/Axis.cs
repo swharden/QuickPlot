@@ -16,6 +16,7 @@ namespace QuickPlot.Settings
         public enum Edge { top, bottom, left, right };
 
         public double low, high;
+        public double span { get { return high - low; } }
         public Edge edge;
         public FontSettings fs;
         public Ticks ticks;
@@ -37,6 +38,12 @@ namespace QuickPlot.Settings
         public void GenerateTicks(int pixelSpan)
         {
             ticks = new Ticks(low, high, pixelSpan);
+        }
+
+        public float GetPixel(double value, int pixelSpan)
+        {
+            double pixelsPerUnit = pixelSpan / span;
+            return (float)((value - low) * pixelsPerUnit);
         }
     }
 }
