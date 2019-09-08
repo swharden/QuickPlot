@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,6 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FormsPlot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\FormsPlot.Designer.cs">
+      <DependentUpon>FormsPlot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MouseTracker.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="Plottables\Plottable.cs" />
     <Compile Include="Plottables\Scatter.cs" />
@@ -63,6 +71,11 @@
     <Compile Include="Settings\Ticks.cs" />
     <Compile Include="Tools\Benchmark.cs" />
     <Compile Include="Tools\DataGen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\FormsPlot.resx">
+      <DependentUpon>FormsPlot.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

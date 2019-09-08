@@ -17,20 +17,20 @@ namespace QuickPlot.Renderer
         public static Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect, Plot plt)
         {
             // determine the layout (position of title, scales, ticks, etc)
-            Settings.PlotLayout layout = LayOut(gfx, rect, plt);
+            plt.layout = LayOut(gfx, rect, plt);
 
             // generate the ticks now that the layout is known
-            plt.axes.axisX.GenerateTicks(layout.data.rect.Width);
-            plt.axes.axisY.GenerateTicks(layout.data.rect.Height);
-            plt.axes.axisY2.GenerateTicks(layout.data.rect.Height);
+            plt.axes.axisX.GenerateTicks(plt.layout.data.rect.Width);
+            plt.axes.axisY.GenerateTicks(plt.layout.data.rect.Height);
+            plt.axes.axisY2.GenerateTicks(plt.layout.data.rect.Height);
 
             // render everything in one pass
             if (plt.advancedSettings.showLayout)
-                OutlineLayoutRegions(gfx, layout);
-            RenderFrame(layout, gfx, plt);
-            RenderLabels(layout, gfx, plt);
-            RenderScales(layout, gfx, plt);
-            RenderPlottables(layout, gfx, plt);
+                OutlineLayoutRegions(gfx, plt);
+            RenderFrame(gfx, plt);
+            RenderLabels(gfx, plt);
+            RenderScales(gfx, plt);
+            RenderPlottables(gfx, plt);
             return bmp;
         }
 
@@ -131,22 +131,22 @@ namespace QuickPlot.Renderer
 
         #endregion
 
-        public static void OutlineLayoutRegions(Graphics gfx, Settings.PlotLayout layout)
+        public static void OutlineLayoutRegions(Graphics gfx, Plot plt)
         {
             int transparency = 200;
 
-            OutlineAndLabel(gfx, layout.plotArea, "", Color.LightGray, transparency);
+            OutlineAndLabel(gfx, plt.layout.plotArea, "", Color.LightGray, transparency);
 
-            OutlineAndLabel(gfx, layout.title, "", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelX, "", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelY, "", Color.Gray, transparency);
-            OutlineAndLabel(gfx, layout.labelY2, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, plt.layout.title, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, plt.layout.labelX, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, plt.layout.labelY, "", Color.Gray, transparency);
+            OutlineAndLabel(gfx, plt.layout.labelY2, "", Color.Gray, transparency);
 
-            OutlineAndLabel(gfx, layout.scaleX, "", Color.Green, transparency);
-            OutlineAndLabel(gfx, layout.scaleY, "", Color.Green, transparency);
-            OutlineAndLabel(gfx, layout.scaleY2, "", Color.Green, transparency);
+            OutlineAndLabel(gfx, plt.layout.scaleX, "", Color.Green, transparency);
+            OutlineAndLabel(gfx, plt.layout.scaleY, "", Color.Green, transparency);
+            OutlineAndLabel(gfx, plt.layout.scaleY2, "", Color.Green, transparency);
 
-            OutlineAndLabel(gfx, layout.data, "", Color.Magenta, transparency);
+            OutlineAndLabel(gfx, plt.layout.data, "", Color.Magenta, transparency);
         }
 
         private static Settings.PlotLayout LayOut(Graphics gfx, Rectangle rect, Plot plt)
@@ -223,90 +223,96 @@ namespace QuickPlot.Renderer
             return layout;
         }
 
-        private static void RenderLabels(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        private static void RenderLabels(Graphics gfx, Plot plt)
         {
             StringFormat sfCentCent = StringFormat(AlignHoriz.center, AlignVert.center);
-            gfx.DrawString(plt.axes.labelTitle.text, plt.axes.labelTitle.fs.Font, plt.axes.labelTitle.fs.Brush, layout.title.Center, sfCentCent);
-            gfx.DrawString(plt.axes.labelX.text, plt.axes.labelX.fs.Font, plt.axes.labelX.fs.Brush, layout.labelX.Center, sfCentCent);
+            gfx.DrawString(plt.axes.labelTitle.text, plt.axes.labelTitle.fs.Font, plt.axes.labelTitle.fs.Brush, plt.layout.title.Center, sfCentCent);
+            gfx.DrawString(plt.axes.labelX.text, plt.axes.labelX.fs.Font, plt.axes.labelX.fs.Brush, plt.layout.labelX.Center, sfCentCent);
 
             gfx.RotateTransform(-90);
-            gfx.DrawString(plt.axes.labelY.text, plt.axes.labelY.fs.Font, plt.axes.labelY.fs.Brush, layout.labelY.CenterRotNeg90, sfCentCent);
+            gfx.DrawString(plt.axes.labelY.text, plt.axes.labelY.fs.Font, plt.axes.labelY.fs.Brush, plt.layout.labelY.CenterRotNeg90, sfCentCent);
             gfx.ResetTransform();
 
             gfx.RotateTransform(90);
-            gfx.DrawString(plt.axes.labelY2.text, plt.axes.labelY2.fs.Font, plt.axes.labelY2.fs.Brush, layout.labelY2.CenterRotPos90, sfCentCent);
+            gfx.DrawString(plt.axes.labelY2.text, plt.axes.labelY2.fs.Font, plt.axes.labelY2.fs.Brush, plt.layout.labelY2.CenterRotPos90, sfCentCent);
             gfx.ResetTransform();
         }
 
-        private static void RenderFrame(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        private static void RenderFrame(Graphics gfx, Plot plt)
         {
-            gfx.DrawRectangle(Pens.LightGray, layout.data.rect.Left, layout.data.rect.Top - 1, layout.data.rect.Width, layout.data.rect.Height + 1);
+            gfx.DrawRectangle(
+                    Pens.LightGray,
+                    plt.layout.data.rect.Left,
+                    plt.layout.data.rect.Top - 1,
+                    plt.layout.data.rect.Width,
+                    plt.layout.data.rect.Height + 1
+                );
         }
 
-        private static void RenderScales(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        private static void RenderScales(Graphics gfx, Plot plt)
         {
             int majorTickLength = 2;
 
-            if (layout.scaleX.IsValid)
+            if (plt.layout.scaleX.IsValid)
             {
                 Font fnt = plt.axes.axisX.fs.Font;
                 Brush brsh = plt.axes.axisX.fs.Brush;
                 Pen pen = plt.axes.axisX.fs.Pen;
                 StringFormat sf = StringFormat(AlignHoriz.center, AlignVert.top);
 
-                gfx.DrawLine(plt.axes.axisX.fs.Pen, layout.scaleX.TopLeft, layout.scaleX.TopRight);
+                gfx.DrawLine(plt.axes.axisX.fs.Pen, plt.layout.scaleX.TopLeft, plt.layout.scaleX.TopRight);
                 foreach (Settings.Tick tick in plt.axes.axisX.ticks.tickList)
                 {
-                    int x = layout.scaleX.rect.Left + tick.pixelsFromEdge;
-                    Point pt1 = new Point(x, layout.scaleX.rect.Top);
-                    Point pt2 = new Point(x, layout.scaleX.rect.Top + majorTickLength);
+                    int x = plt.layout.scaleX.rect.Left + tick.pixelsFromEdge;
+                    Point pt1 = new Point(x, plt.layout.scaleX.rect.Top);
+                    Point pt2 = new Point(x, plt.layout.scaleX.rect.Top + majorTickLength);
                     gfx.DrawLine(pen, pt1, pt2);
                     gfx.DrawString(tick.label, fnt, brsh, pt1, sf);
                 }
             }
 
-            if (layout.scaleY.IsValid)
+            if (plt.layout.scaleY.IsValid)
             {
                 Font fnt = plt.axes.axisY.fs.Font;
                 Brush brsh = plt.axes.axisY.fs.Brush;
                 Pen pen = plt.axes.axisY.fs.Pen;
                 StringFormat sf = StringFormat(AlignHoriz.right, AlignVert.center);
 
-                gfx.DrawLine(plt.axes.axisY.fs.Pen, layout.scaleY.TopRight, layout.scaleY.BottomRight);
+                gfx.DrawLine(plt.axes.axisY.fs.Pen, plt.layout.scaleY.TopRight, plt.layout.scaleY.BottomRight);
 
                 foreach (Settings.Tick tick in plt.axes.axisY.ticks.tickList)
                 {
-                    int y = layout.scaleY.rect.Bottom - tick.pixelsFromEdge;
-                    Point pt1 = new Point(layout.scaleY.rect.Right, y);
-                    Point pt2 = new Point(layout.scaleY.rect.Right - majorTickLength, y);
+                    int y = plt.layout.scaleY.rect.Bottom - tick.pixelsFromEdge;
+                    Point pt1 = new Point(plt.layout.scaleY.rect.Right, y);
+                    Point pt2 = new Point(plt.layout.scaleY.rect.Right - majorTickLength, y);
                     gfx.DrawLine(pen, pt1, pt2);
                     gfx.DrawString(tick.label, fnt, brsh, pt2, sf);
                 }
             }
 
-            if (layout.scaleY2.IsValid)
+            if (plt.layout.scaleY2.IsValid)
             {
                 Font fnt = plt.axes.axisY2.fs.Font;
                 Brush brsh = plt.axes.axisY2.fs.Brush;
                 Pen pen = plt.axes.axisY2.fs.Pen;
                 StringFormat sf = StringFormat(AlignHoriz.left, AlignVert.center);
 
-                gfx.DrawLine(plt.axes.axisY2.fs.Pen, layout.scaleY2.TopLeft, layout.scaleY2.BottomLeft);
+                gfx.DrawLine(plt.axes.axisY2.fs.Pen, plt.layout.scaleY2.TopLeft, plt.layout.scaleY2.BottomLeft);
 
                 foreach (Settings.Tick tick in plt.axes.axisY.ticks.tickList)
                 {
-                    int y = layout.scaleY2.rect.Bottom - tick.pixelsFromEdge;
-                    Point pt1 = new Point(layout.scaleY2.rect.Left, y);
-                    Point pt2 = new Point(layout.scaleY2.rect.Left + majorTickLength, y);
+                    int y = plt.layout.scaleY2.rect.Bottom - tick.pixelsFromEdge;
+                    Point pt1 = new Point(plt.layout.scaleY2.rect.Left, y);
+                    Point pt2 = new Point(plt.layout.scaleY2.rect.Left + majorTickLength, y);
                     gfx.DrawLine(pen, pt1, pt2);
                     gfx.DrawString(tick.label, fnt, brsh, pt2, sf);
                 }
             }
         }
 
-        private static void RenderPlottables(Settings.PlotLayout layout, Graphics gfx, Plot plt)
+        private static void RenderPlottables(Graphics gfx, Plot plt)
         {
-            if (layout.data.Width < 1 || layout.data.Height < 1)
+            if (plt.layout.data.Width < 1 || plt.layout.data.Height < 1)
                 return;
 
             // Create a new bitmap just for the data area. 
@@ -314,8 +320,9 @@ namespace QuickPlot.Renderer
             // At the end this bitmap is copied onto the figure bitmap.
             // This method is a little slower, but it's much simpler code.
 
-            Bitmap bmpData = new Bitmap(layout.data.Width, layout.data.Height);
+            Bitmap bmpData = new Bitmap(plt.layout.data.Width, plt.layout.data.Height);
             Graphics gfxData = Graphics.FromImage(bmpData);
+            gfxData.Clear(Color.White);
 
             foreach (Plottables.Plottable plottable in plt.plottables)
             {
@@ -329,7 +336,7 @@ namespace QuickPlot.Renderer
                         gfxData.FillEllipse(
                             scatter.ms.brush,
                             point.X - scatter.ms.size / 2,
-                            point.Y - scatter.ms.size / 2, 
+                            point.Y - scatter.ms.size / 2,
                             scatter.ms.size,
                             scatter.ms.size
                         );
@@ -341,7 +348,7 @@ namespace QuickPlot.Renderer
             }
 
             gfxData.Dispose();
-            gfx.DrawImage(bmpData, layout.data.Point);
+            gfx.DrawImage(bmpData, plt.layout.data.Point);
             return;
         }
     }

@@ -48,13 +48,14 @@ namespace QuickPlot
         /// <summary>
         /// Render the figure onto an existing Bitmap
         /// </summary>
-        public Bitmap Render(Bitmap bmp)
+        public Bitmap Render(Bitmap bmp, Color? bg = null)
         {
             // to render with another framework (e.g., Skia) override this method.
             List<Rectangle> subplotRects = Settings.FigureLayout.GetSubplotlotRectangles(bmp.Size, subplots);
             using (var gfx = Graphics.FromImage(bmp))
             {
-                gfx.Clear(Color.White);
+                Color bgColor = bg ?? Color.White;
+                gfx.Clear(bgColor);
                 for (int i = 0; i < subplots.Count; i++)
                     Renderer.GDI.Render(bmp, gfx, subplotRects[i], subplots[i]);
             }
@@ -64,10 +65,18 @@ namespace QuickPlot
         /// <summary>
         /// Render the figure onto a new Bitmap
         /// </summary>
-        public Bitmap Render(int width, int height)
+        public Bitmap Render(int width, int height, Color? bg = null)
         {
             Bitmap bmp = new Bitmap(width, height);
-            return Render(bmp);
+            return Render(bmp, bg);
+        }
+
+        /// <summary>
+        /// Delete all subplots (start over with a fresh figure)
+        /// </summary>
+        public void Clear()
+        {
+            subplots.Clear();
         }
     }
 }

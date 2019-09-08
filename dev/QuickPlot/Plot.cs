@@ -16,6 +16,7 @@ namespace QuickPlot
         public Settings.Advanced advancedSettings;
         public Settings.Subplot subplotSettings;
         public List<Plottables.Plottable> plottables;
+        public Settings.PlotLayout layout;
 
         /// <summary>
         /// A Plot contains a data area, scales, and labels.

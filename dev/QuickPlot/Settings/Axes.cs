@@ -27,5 +27,13 @@ namespace QuickPlot.Settings
             axisY = new Axis(Axis.Edge.left);
             axisY2 = new Axis(Axis.Edge.right);
         }
+
+        public void Set(double x1, double x2, double y1, double y2)
+        {
+            axisX.low = x1;
+            axisX.high = x2;
+            axisY.low = y1;
+            axisY.high = y2;
+        }
     }
 }

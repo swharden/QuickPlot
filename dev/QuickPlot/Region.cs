@@ -33,6 +33,19 @@ namespace QuickPlot
         public Point BottomLeft { get { return new Point(rect.Left, rect.Bottom); } }
         public Point BottomRight { get { return new Point(rect.Right, rect.Bottom); } }
 
+        public bool ContainsPoint(Point pt)
+        {
+            if (pt.X < X)
+                return false;
+            if (pt.X > X2)
+                return false;
+            if (pt.Y < Y)
+                return false;
+            if (pt.Y > Y2)
+                return false;
+            return true;
+        }
+
         public override string ToString()
         {
             return $"Region: x1={X}, x2={X2}, y1={Y}, y2={Y2}";

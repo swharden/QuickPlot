@@ -15,21 +15,22 @@ namespace FormsTest
         public Form1()
         {
             InitializeComponent();
+            PlotRandomData();
         }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -37,60 +38,41 @@ namespace FormsTest
             timer1.Enabled = cbRun.Checked;
         }
 
-        private double GeneratePlot()
+        private void PlotRandomData()
         {
-            if (pictureBox1.Image == null)
-                pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            // create a complex figure with several subplots containing random data
 
-            double timeMsec;
+            formsPlot1.fig.Clear();
+
             int randomSeed = 0;
-
-            using (var bench = new QuickPlot.Tools.Benchmark())
+            for (int i = 0; i < 4; i++)
             {
-                var fig = new QuickPlot.Figure();
+                formsPlot1.fig.Subplot(i + 1);
+                formsPlot1.fig.plot.axes.labelTitle.text = (cbTitle.Checked) ? "title" : null;
+                formsPlot1.fig.plot.axes.labelY.text = (cbYLabel.Checked) ? "vertical units" : null;
+                formsPlot1.fig.plot.axes.labelY2.text = (cbY2Label.Checked) ? "more vertical units" : null;
+                formsPlot1.fig.plot.axes.labelX.text = (cbXLabel.Checked) ? "horizontal units" : null;
+                formsPlot1.fig.plot.axes.enableX = cbXScale.Checked;
+                formsPlot1.fig.plot.axes.enableY = cbYScale.Checked;
+                formsPlot1.fig.plot.axes.enableY2 = cbY2Scale.Checked;
+                formsPlot1.fig.plot.advancedSettings.showLayout = cbShowLayout.Checked;
 
-                // create several plots
-                for (int i = 0; i < 4; i++)
-                {
-                    fig.Subplot(i + 1);
-                    fig.plot.axes.labelTitle.text = (cbTitle.Checked) ? "title" : null;
-                    fig.plot.axes.labelY.text = (cbYLabel.Checked) ? "vertical units" : null;
-                    fig.plot.axes.labelY2.text = (cbY2Label.Checked) ? "more vertical units" : null;
-                    fig.plot.axes.labelX.text = (cbXLabel.Checked) ? "horizontal units" : null;
-                    fig.plot.axes.enableX = cbXScale.Checked;
-                    fig.plot.axes.enableY = cbYScale.Checked;
-                    fig.plot.axes.enableY2 = cbY2Scale.Checked;
-                    fig.plot.advancedSettings.showLayout = cbShowLayout.Checked;
-
-                    // add some data
-                    fig.plot.Scatter(
-                            xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5),
-                            ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5)
-                        );
-                    fig.plot.Scatter(
-                            xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5),
-                            ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5)
-                        );
-                }
-
-                // tweak subplot positions
-                fig.Subplot(1, 1, 1);
-                fig.Subplot(2, 1, 2);
-                fig.Subplot(3, 1, 3);
-                fig.Subplot(4, 2, 1, 3, 1); // extra-wide
-
-                pictureBox1.Image = fig.Render((Bitmap)pictureBox1.Image);
-                lblStatus.Text = bench.GetMessage();
-                timeMsec = bench.elapsedMilliseconds;
+                formsPlot1.fig.plot.Scatter(
+                        xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5),
+                        ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 10, -5)
+                    );
+                formsPlot1.fig.plot.Scatter(
+                        xs: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5),
+                        ys: QuickPlot.Tools.DataGen.RandomDoubles(50, randomSeed++, 5, -5)
+                    );
             }
 
-            return timeMsec;
-        }
+            formsPlot1.fig.Subplot(1, 1, 1);
+            formsPlot1.fig.Subplot(2, 1, 2);
+            formsPlot1.fig.Subplot(3, 1, 3);
+            formsPlot1.fig.Subplot(4, 2, 1, 3, 1); // extra-wide
 
-        private void PictureBox1_SizeChanged(object sender, EventArgs e)
-        {
-            pictureBox1.Image = null; // force creation of a new bitmap later
-            GeneratePlot();
+            formsPlot1.Render();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -101,9 +83,13 @@ namespace FormsTest
             lblStatus.Visible = false;
             toolStripProgressBar1.Value = 0;
             Application.DoEvents();
+            var b = new QuickPlot.Tools.Benchmark();
             for (int i = 0; i < times.Length; i++)
             {
-                times[i] = GeneratePlot();
+                b.Restart();
+                formsPlot1.Render();
+                b.Stop();
+                times[i] = b.hz;
                 toolStripProgressBar1.Value = i * toolStripProgressBar1.Maximum / times.Length;
             }
             toolStripProgressBar1.Visible = false;
@@ -117,42 +103,42 @@ namespace FormsTest
 
         private void CbTitle_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbXLabel_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbYLabel_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbY2Label_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbYScale_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbXScale_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbY2Scale_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
 
         private void CbShowLayout_CheckedChanged(object sender, EventArgs e)
         {
-            GeneratePlot();
+            PlotRandomData();
         }
     }
 }

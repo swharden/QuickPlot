@@ -45,5 +45,11 @@ namespace QuickPlot.Settings
             double pixelsPerUnit = pixelSpan / span;
             return (float)((value - low) * pixelsPerUnit);
         }
+
+        public double GetLocation(float pixel, int pixelSpan)
+        {
+            double unitsPerPixel = span / pixelSpan;
+            return low + unitsPerPixel * pixel;
+        }
     }
 }
