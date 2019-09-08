@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace QuickPlot.Renderer
 {
+    /* This class tries does all teh GDI drawing.
+     * If you want to make a non-GDI version, use this as a guide.
+     * 
+     * You don't have to impliment these functions exactly.
+     * Make your own Render() sequence ideally suited for your rendering enegine.
+     * 
+     */
+
     public static class GDI
     {
         public static Bitmap Render(Bitmap bmp, Graphics gfx, Rectangle rect, Plot plt)
