@@ -1,3 +1,10 @@
+2019-09-10: I started over from scratch
+* Build target notes
+  * Only `QuickPlot` has Skia, yet it can be built for `any cpu`
+  * The programs which use QuickPlot must build for a single CPU target
+
+---
+
 QuickPlot GDI source code:
 * https://github.com/swharden/QuickPlot/tree/master/dev/QuickPlot
 
