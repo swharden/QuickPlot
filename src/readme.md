@@ -10,6 +10,3 @@ https://github.com/swharden/ScottPlot/blob/631d6794973bc635c05ed01ff9431d4ac108e
 StendProg's Skia backend implimentation:
 https://github.com/swharden/ScottPlot/blob/631d6794973bc635c05ed01ff9431d4ac108eac5/dev/ScottPlotSkia/ScottPlotSkia/SkiaBackend.cs
 https://github.com/swharden/ScottPlot/blob/631d6794973bc635c05ed01ff9431d4ac108eac5/dev/ScottPlotSkia/ScottPlotSkia/SkaiExtensions.cs
-
-# Distro Notes
-* This WILL crash if installed with NuGet and compiled for 32-bit
