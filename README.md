@@ -3,7 +3,9 @@
 ---
 
 # QuickPlot
-**QuickPlot is a simple and fast plotting library for .NET applications.** QuickPlot makes it easy to interactively display high density data (tens of millions of points). QuickPlot draws images with Skia and benefits from OpenGL hardware acceleration, so it is extremely fast even at high resolutions. QuickPlot can be used in WinForms, WPF, or Console applications.
+**QuickPlot is a simple and fast plotting library for .NET applications.** QuickPlot makes it easy to interactively display high density data (tens of millions of points). 
+
+QuickPlot draws images with [Skia](https://skia.org/) (not GDI+) and can use hardware acceleration (OpenGL) on systems that support it. QuickPlot can be run from Console Applications to plot data and save images, or it can display plots interactively using a WinForms or WPF user control.
 
 ![](dev/quickplot-screenshot.png)
 
