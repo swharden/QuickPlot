@@ -1,3 +1,5 @@
+## Developer Notes
+
 ### 2019-09-11: I started over from scratch again
 * QuickPlot 
   * a class library (.NET standard 1.3)
