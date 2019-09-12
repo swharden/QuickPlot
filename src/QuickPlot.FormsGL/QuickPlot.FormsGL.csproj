@@ -4,19 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{25598826-A169-46E8-8D50-90800967ACFB}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>QuickPlot.Demos</RootNamespace>
-    <AssemblyName>QuickPlot.Demos</AssemblyName>
+    <ProjectGuid>{8D24E07E-A643-4B61-A564-80E596C91D45}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>QuickPlot.FormsGL</RootNamespace>
+    <AssemblyName>QuickPlot.FormsGL</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +24,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,9 +34,27 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
+    </Reference>
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\SkiaSharp.1.68.0\lib\net45\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Desktop, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.Views.1.68.0\lib\net45\SkiaSharp.Views.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.Gtk, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.Views.1.68.0\lib\net45\SkiaSharp.Views.Gtk.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.Views.WPF, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\SkiaSharp.Views.1.68.0\lib\net45\SkiaSharp.Views.WPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,34 +69,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Benchmarks\OneThousandLines.cs">
-      <SubType>Form</SubType>
+    <Compile Include="InteractivePlot.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Benchmarks\OneThousandLines.Designer.cs">
-      <DependentUpon>OneThousandLines.cs</DependentUpon>
+    <Compile Include="InteractivePlot.Designer.cs">
+      <DependentUpon>InteractivePlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="Benchmarks\OneThousandLinesGL.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Benchmarks\OneThousandLinesGL.Designer.cs">
-      <DependentUpon>OneThousandLinesGL.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Benchmarks\OneThousandLines.resx">
-      <DependentUpon>OneThousandLines.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Benchmarks\OneThousandLinesGL.resx">
-      <DependentUpon>OneThousandLinesGL.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormMain.resx">
-      <DependentUpon>FormMain.cs</DependentUpon>
+    <EmbeddedResource Include="InteractivePlot.resx">
+      <DependentUpon>InteractivePlot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -91,6 +89,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -106,14 +105,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuickPlot.FormsGL\QuickPlot.FormsGL.csproj">
-      <Project>{8d24e07e-a643-4b61-a564-80e596c91d45}</Project>
-      <Name>QuickPlot.FormsGL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QuickPlot.Forms\QuickPlot.Forms.csproj">
-      <Project>{c786a156-11b7-4235-931a-8a483dacf4b4}</Project>
-      <Name>QuickPlot.Forms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\QuickPlot\QuickPlot.csproj">
       <Project>{f1fac906-f186-4943-8b7a-28c408fad627}</Project>
       <Name>QuickPlot</Name>
