@@ -15,5 +15,28 @@ namespace QuickPlot
             };
             return SKColor.Parse(plottableColors10[index % plottableColors10.Length]);
         }
+
+        public static void DrawRandomLines(SKSurface surface, SKRect rectangle, int lineCount)
+        {
+            Random rand = new Random();
+            using (var paint = new SKPaint())
+            {
+                paint.IsAntialias = true;
+                paint.Color = SKColor.Parse("#55FFFFFF");
+                for (int i=0; i<lineCount; i++)
+                {
+                    float dX1 = (float)(rectangle.Width * rand.NextDouble()) + rectangle.Left;
+                    float dX2 = (float)(rectangle.Width * rand.NextDouble()) + rectangle.Left;
+
+                    float dY1 = (float)(rectangle.Height * rand.NextDouble()) + rectangle.Top;
+                    float dY2 = (float)(rectangle.Height * rand.NextDouble()) + rectangle.Top;
+
+                    SKPoint pt1 = new SKPoint(dX1, dY1);
+                    SKPoint pt2 = new SKPoint(dX2, dY2);
+
+                    surface.Canvas.DrawLine(pt1, pt2, paint);
+                }
+            }
+        }
     }
 }
