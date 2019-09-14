@@ -16,7 +16,7 @@ namespace QuickPlot
             return SKColor.Parse(plottableColors10[index % plottableColors10.Length]);
         }
 
-        public static void DrawRandomLines(SKSurface surface, SKRect rectangle, int lineCount)
+        public static void DrawRandomLines(SKCanvas canvas, SKRect rectangle, int lineCount)
         {
             Random rand = new Random();
             using (var paint = new SKPaint())
@@ -34,7 +34,7 @@ namespace QuickPlot
                     SKPoint pt1 = new SKPoint(dX1, dY1);
                     SKPoint pt2 = new SKPoint(dX2, dY2);
 
-                    surface.Canvas.DrawLine(pt1, pt2, paint);
+                    canvas.DrawLine(pt1, pt2, paint);
                 }
             }
         }

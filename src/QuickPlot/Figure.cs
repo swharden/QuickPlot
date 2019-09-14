@@ -29,13 +29,13 @@ namespace QuickPlot
             plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
         }
 
-        public void Render(SKSurface surface)
+        public void Render(SKCanvas canvas)
         {
-            surface.Canvas.Clear(SKColors.Blue);
+            canvas.Clear(SKColors.Blue);
             foreach (Plot plt in subplots)
             {
-                SKRect rect = FigureSettings.Layout.GetRectangle(surface, plt.subplotPosition, padding);
-                plt.Render(surface, rect);
+                SKRect rect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
+                plt.Render(canvas, rect);
             }
         }
 
@@ -46,7 +46,7 @@ namespace QuickPlot
             var info = new SKImageInfo(width, height);
             using (SKSurface surface = SKSurface.Create(info))
             {
-                Render(surface);
+                Render(surface.Canvas);
                 using (System.IO.Stream fileStream = System.IO.File.OpenWrite(filePath))
                 {
                     // TODO: support BMP, PNG, TIF, GIF, and JPG

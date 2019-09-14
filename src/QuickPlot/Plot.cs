@@ -16,14 +16,14 @@ namespace QuickPlot
 
         }
 
-        public void Render(SKSurface surface, SKRect rect)
+        public void Render(SKCanvas canvas, SKRect rect)
         {
             // add background color to the data rectangle
             using (var paint = new SKPaint())
             {
                 paint.Color = Tools.IndexedColor10(subplotPosition.subPlotNumber);
-                surface.Canvas.DrawRect(rect, paint);
-                Tools.DrawRandomLines(surface, rect, 1000);
+                canvas.DrawRect(rect, paint);
+                Tools.DrawRandomLines(canvas, rect, 1000);
             }
         }
 

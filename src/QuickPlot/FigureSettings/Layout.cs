@@ -10,11 +10,11 @@ namespace QuickPlot.FigureSettings
         /// <summary>
         /// Return the region of the figure the subplot should render inside of
         /// </summary>
-        public static SKRect GetRectangle(SKSurface surface, PlotSettings.SubplotPosition subplotPosition, Padding padding)
+        public static SKRect GetRectangle(SKCanvas canvas, PlotSettings.SubplotPosition subplotPosition, Padding padding)
         {
             // calculate the rectangle of the subplot in the figure
-            float figureWidth = surface.Canvas.LocalClipBounds.Width;
-            float figureHeight = surface.Canvas.LocalClipBounds.Height;
+            float figureWidth = canvas.LocalClipBounds.Width;
+            float figureHeight = canvas.LocalClipBounds.Height;
 
             float spWidth = figureWidth / subplotPosition.nCols;
             float spHeight = figureHeight / subplotPosition.nRows;

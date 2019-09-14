@@ -94,7 +94,7 @@ namespace QuickPlot.Forms
 
         private void SkControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
         {
-            fig.Render(e.Surface);
+            fig.Render(e.Surface.Canvas);
         }
 
         private void GlControl1_Paint(object sender, PaintEventArgs e)
@@ -120,7 +120,7 @@ namespace QuickPlot.Forms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            fig.Render(surface);
+            fig.Render(surface.Canvas);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
