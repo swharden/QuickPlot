@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.Demos", "QuickPlo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot", "QuickPlot\QuickPlot.csproj", "{F1FAC906-F186-4943-8B7A-28C408FAD627}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.FormsGL", "QuickPlot.FormsGL\QuickPlot.FormsGL.csproj", "{8D24E07E-A643-4B61-A564-80E596C91D45}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,10 +38,6 @@ Global
 		{F1FAC906-F186-4943-8B7A-28C408FAD627}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1FAC906-F186-4943-8B7A-28C408FAD627}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1FAC906-F186-4943-8B7A-28C408FAD627}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D24E07E-A643-4B61-A564-80E596C91D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D24E07E-A643-4B61-A564-80E596C91D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D24E07E-A643-4B61-A564-80E596C91D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D24E07E-A643-4B61-A564-80E596C91D45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

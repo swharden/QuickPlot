@@ -58,12 +58,6 @@
     <Compile Include="Benchmarks\OneThousandLines.Designer.cs">
       <DependentUpon>OneThousandLines.cs</DependentUpon>
     </Compile>
-    <Compile Include="Benchmarks\OneThousandLinesGL.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Benchmarks\OneThousandLinesGL.Designer.cs">
-      <DependentUpon>OneThousandLinesGL.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,9 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Benchmarks\OneThousandLines.resx">
       <DependentUpon>OneThousandLines.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Benchmarks\OneThousandLinesGL.resx">
-      <DependentUpon>OneThousandLinesGL.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
@@ -106,10 +97,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuickPlot.FormsGL\QuickPlot.FormsGL.csproj">
-      <Project>{8d24e07e-a643-4b61-a564-80e596c91d45}</Project>
-      <Name>QuickPlot.FormsGL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\QuickPlot.Forms\QuickPlot.Forms.csproj">
       <Project>{c786a156-11b7-4235-931a-8a483dacf4b4}</Project>
       <Name>QuickPlot.Forms</Name>

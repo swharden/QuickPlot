@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.lblMessage = new System.Windows.Forms.Label();
-            this.skControl1 = new SkiaSharp.Views.Desktop.SKControl();
             this.SuspendLayout();
             // 
             // lblMessage
@@ -44,24 +43,12 @@
             this.lblMessage.TabIndex = 1;
             this.lblMessage.Text = "debug message";
             // 
-            // skControl1
-            // 
-            this.skControl1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.skControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skControl1.Location = new System.Drawing.Point(0, 0);
-            this.skControl1.Name = "skControl1";
-            this.skControl1.Size = new System.Drawing.Size(300, 200);
-            this.skControl1.TabIndex = 3;
-            this.skControl1.Text = "skControl1";
-            this.skControl1.PaintSurface += new System.EventHandler<SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs>(this.SkControl1_PaintSurface);
-            // 
             // InteractivePlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.Controls.Add(this.lblMessage);
-            this.Controls.Add(this.skControl1);
             this.Name = "InteractivePlot";
             this.Size = new System.Drawing.Size(300, 200);
             this.ResumeLayout(false);
@@ -71,6 +58,5 @@
 
         #endregion
         private System.Windows.Forms.Label lblMessage;
-        private SkiaSharp.Views.Desktop.SKControl skControl1;
     }
 }

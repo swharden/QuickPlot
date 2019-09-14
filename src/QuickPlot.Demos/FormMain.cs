@@ -19,14 +19,10 @@ namespace QuickPlot.Demos
 
         private void BtnBenchOneKLines_Click(object sender, EventArgs e)
         {
-            var frm = new Benchmarks.OneThousandLines();
-            frm.ShowDialog();
-        }
-
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            var frm = new Benchmarks.OneThousandLinesGL();
-            frm.ShowDialog();
+            using (var frm = new Benchmarks.OneThousandLines())
+            {
+                frm.ShowDialog();
+            }
         }
     }
 }
