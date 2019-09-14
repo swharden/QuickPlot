@@ -16,10 +16,18 @@ namespace QuickPlot.Demos.Benchmarks
         public OneThousandLines()
         {
             InitializeComponent();
+
+            lblUsingGL.Text = interactivePlot1.IsUsingOpenGL ? "Using OpenGL: YES" : "Using OpenGL: NO";
+
             interactivePlot1.fig.Subplot(2, 3, 1);
             interactivePlot1.fig.Subplot(2, 3, 2);
             interactivePlot1.fig.Subplot(2, 3, 3);
             interactivePlot1.fig.Subplot(2, 3, 4, 1, 3);
+        }
+
+        private void OneThousandLines_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void BtnRender_Click(object sender, EventArgs e)
