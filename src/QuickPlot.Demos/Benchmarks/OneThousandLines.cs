@@ -19,10 +19,20 @@ namespace QuickPlot.Demos.Benchmarks
 
             lblUsingGL.Text = interactivePlot1.IsUsingOpenGL ? "Using OpenGL: YES" : "Using OpenGL: NO";
 
+            int pointCount = 100;
+            double[] xs = Generate.Consecutative(pointCount, 1.0 / pointCount);
+
             interactivePlot1.fig.Subplot(2, 3, 1);
+            interactivePlot1.fig.plot.Scatter(xs, Generate.Sin(pointCount));
+
             interactivePlot1.fig.Subplot(2, 3, 2);
+            interactivePlot1.fig.plot.Scatter(xs, Generate.Cos(pointCount));
+
             interactivePlot1.fig.Subplot(2, 3, 3);
+            interactivePlot1.fig.plot.Scatter(xs, Generate.Random(pointCount, seed: 0));
+
             interactivePlot1.fig.Subplot(2, 3, 4, 1, 3);
+            interactivePlot1.fig.plot.Scatter(Generate.Random(pointCount, seed: 0), Generate.Random(pointCount, seed: 1));
         }
 
         private void OneThousandLines_Load(object sender, EventArgs e)

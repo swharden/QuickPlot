@@ -10,6 +10,7 @@ namespace QuickPlot
         public PlotSettings.SubplotPosition subplotPosition;
 
         private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
+        private PlotSettings.Axes axes = new PlotSettings.Axes();
 
         public Plot()
         {
@@ -18,12 +19,21 @@ namespace QuickPlot
 
         public void Render(SKCanvas canvas, SKRect rect)
         {
-            // add background color to the data rectangle
+            // render this plot inside the rectangle of the canvas
+
+            axes.SetRect(rect);
+
             using (var paint = new SKPaint())
             {
-                paint.Color = Tools.IndexedColor10(subplotPosition.subPlotNumber);
+                // draw a rectangle around the plot area
+                paint.Color = SKColors.Black;
+                paint.Style = SKPaintStyle.Stroke;
                 canvas.DrawRect(rect, paint);
-                Tools.DrawRandomLines(canvas, rect, 1000);
+            }
+            
+            for (int i=0; i<plottables.Count; i++)
+            {
+                plottables[i].Render(canvas, axes);
             }
         }
 

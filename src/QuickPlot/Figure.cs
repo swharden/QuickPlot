@@ -31,15 +31,15 @@ namespace QuickPlot
 
         public void Render(SKCanvas canvas)
         {
-            canvas.Clear(SKColors.Blue);
+            canvas.Clear(SKColors.White);
             foreach (Plot plt in subplots)
             {
-                SKRect rect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
-                plt.Render(canvas, rect);
+                SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
+                plt.Render(canvas, subplotRect);
             }
         }
 
-        public void Save(string filePath, int width = 640, int height = 480, int quality = 80)
+        public void Save(string filePath, int width = 640, int height = 480, int quality = 95)
         {
             filePath = System.IO.Path.GetFullPath(filePath);
 
@@ -51,7 +51,8 @@ namespace QuickPlot
                 {
                     // TODO: support BMP, PNG, TIF, GIF, and JPG
                     SKImage snap = surface.Snapshot();
-                    SKData encoded = snap.Encode(SKEncodedImageFormat.Jpeg, quality);
+                    //SKData encoded = snap.Encode(SKEncodedImageFormat.Jpeg, quality);
+                    SKData encoded = snap.Encode(SKEncodedImageFormat.Png, quality);
                     encoded.SaveTo(fileStream);
                     Debug.WriteLine($"Wrote: {filePath}");
                 }

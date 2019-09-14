@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SkiaSharp;
 
 namespace QuickPlot.Plottables
 {
@@ -21,6 +22,36 @@ namespace QuickPlot.Plottables
 
             if (xs.Length != ys.Length)
                 throw new ArgumentException("xs and ys must have the same length");
+        }
+
+        public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
+        {
+
+            using (var paint = new SKPaint())
+            {
+                paint.Color = SKColors.Magenta;
+                paint.IsAntialias = true;
+
+                // todo: create a SKPoint array to reduce lookups
+
+                // draw lines
+                // todo: should SKPath be used instead of drawing individual lines?
+                for (int i = 1; i < xs.Length; i++)
+                {
+                    SKPoint pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
+                    SKPoint pt2 = axes.GetPixel(xs[i], ys[i]);
+                    canvas.DrawLine(pt1, pt2, paint);
+                }
+
+                // draw markers
+                for (int i = 0; i < xs.Length; i++)
+                {
+                    SKPoint pt = axes.GetPixel(xs[i], ys[i]);
+                    canvas.DrawCircle(pt, 3, paint);
+                }
+            }
+
+            //canvas.DrawPath()
         }
     }
 }

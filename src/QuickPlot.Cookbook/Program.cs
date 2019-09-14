@@ -11,19 +11,22 @@ namespace QuickPlot.Cookbook
 
         static void OneThousandLines()
         {
-            // generate some data
-            double[] xs = Generate.Random(1000);
-            double[] ys = Generate.Random(1000);
-
             var fig = new QuickPlot.Figure();
 
             fig.Subplot(2, 3, 1);
-            fig.Subplot(2, 3, 2);
-            fig.Subplot(2, 3, 3);
-            fig.Subplot(2, 3, 4, 1, 3);
+            double[] xs = Generate.Consecutative(20, 1.0 / 20);
+            fig.plot.Scatter(xs, Generate.Sin(xs.Length));
 
-            fig.plot.Scatter(xs, ys);
-            fig.Save("test.jpg");
+            fig.Subplot(2, 3, 2);
+            fig.plot.Scatter(xs, Generate.Cos(xs.Length));
+
+            fig.Subplot(2, 3, 3);
+            fig.plot.Scatter(xs, Generate.Random(xs.Length));
+
+            fig.Subplot(2, 3, 4, 1, 3);
+            fig.plot.Scatter(Generate.Random(xs.Length), Generate.Random(xs.Length));
+
+            fig.Save("test.png");
         }
     }
 }
