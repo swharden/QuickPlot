@@ -166,7 +166,6 @@ namespace QuickPlot.Forms
         {
             if (e.Button == MouseButtons.Left)
             {
-                Console.WriteLine($"PANNING: {plotInteractingWithMouse.mouse.leftDownDelta}");
                 plotInteractingWithMouse.axes.PanPixels(plotInteractingWithMouse.mouse.leftDownDelta);
                 plotInteractingWithMouse.mouse.LeftUp();
             }
