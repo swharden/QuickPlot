@@ -218,18 +218,20 @@ namespace QuickPlot.Forms
         public void OnMouseClick(object sender, MouseEventArgs e)
         {
             SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
-            plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
 
-            if (plotBeingClicked != null)
+            if (e.Button == MouseButtons.Middle)
             {
-                plotBeingClicked.mouse.LeftUp();
-                plotBeingClicked.mouse.RightUp();
-                if (e.Button == MouseButtons.Middle)
-                    plotBeingClicked.AutoAxis();
+                plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
+                if (plotBeingClicked != null)
+                {
+                    plotBeingClicked.mouse.LeftUp();
+                    plotBeingClicked.mouse.RightUp();
+                    if (e.Button == MouseButtons.Middle)
+                        plotBeingClicked.AutoAxis();
+                }
+                plotBeingClicked = null;
+                control.Refresh();
             }
-
-            plotBeingClicked = null;
-            control.Refresh();
         }
 
         #endregion
