@@ -8,6 +8,7 @@ namespace QuickPlot.PlotSettings
     {
         public double low, high;
         public double span { get { return high - low; } }
+        public double center { get { return (high + low) / 2.0; } }
 
         public Axis(double low = -1, double high = 1)
         {
@@ -24,6 +25,16 @@ namespace QuickPlot.PlotSettings
         {
             low += delta;
             high += delta;
+        }
+
+        public void Zoom(double frac = 1, double? zoomTo = null)
+        {
+            zoomTo = zoomTo ?? center;
+            double spanLeft = (double)zoomTo - low;
+            double spanRight = high - (double)zoomTo;
+            low = (double)zoomTo - spanLeft / frac;
+            high = (double)zoomTo + spanRight / frac;
+            Console.WriteLine($"AFTER ZOOM: {frac} {low} {high}");
         }
     }
 }

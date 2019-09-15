@@ -26,7 +26,6 @@ namespace QuickPlot.Plottables
 
         public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
         {
-
             using (var paint = new SKPaint())
             {
                 paint.Color = SKColors.Magenta;

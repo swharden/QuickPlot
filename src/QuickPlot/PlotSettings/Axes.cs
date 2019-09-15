@@ -40,15 +40,38 @@ namespace QuickPlot.PlotSettings
             y.high = yHigh ?? y.high;
         }
 
-        public void PanPixels(float dX, float dY)
+        public void Pan(double dX = 0, double dY = 0)
         {
-            x.Pan(- dX * unitsPerPixelX);
-            y.Pan(dY * unitsPerPixelY);
+            x.Pan(dX);
+            y.Pan(dY);
         }
 
         public void PanPixels(SKPoint delta)
         {
-            PanPixels(delta.X, delta.Y);
+            if (delta.X == 0 && delta.Y == 0)
+                return;
+
+            double dX = -delta.X * unitsPerPixelX;
+            double dY = delta.Y * unitsPerPixelY;
+            Pan(dX, dY);
+        }
+
+        public void Zoom(double fracX = 1, double fracY = 1)
+        {
+            x.Zoom(fracX);
+            y.Zoom(fracY);
+        }
+
+        public void ZoomPixels(SKPoint delta)
+        {
+            if (delta.X == 0 && delta.Y == 0)
+                return;
+
+            double dX = delta.X / pixelsPerUnitX;
+            double dY = -delta.Y / pixelsPerUnitY;
+            double dXFrac = dX / (Math.Abs(dX) + x.span);
+            double dYFrac = dY / (Math.Abs(dY) + y.span);
+            Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
         public void SetRect(SKRect rect)
@@ -64,10 +87,10 @@ namespace QuickPlot.PlotSettings
             unitsPerPixelY = y.span / rect.Height;
         }
 
-        public SKPoint GetPixel(double x, double y)
+        public SKPoint GetPixel(double unitX, double unitY)
         {
-            double pixelX = (x - this.x.low) * pixelsPerUnitX + rect.Left;
-            double pixelY = rect.Bottom - (y - this.y.low) * pixelsPerUnitY;
+            double pixelX = (unitX - x.low) * pixelsPerUnitX + rect.Left;
+            double pixelY = rect.Bottom - (unitY - y.low) * pixelsPerUnitY;
             return new SKPoint((float)pixelX, (float)pixelY);
         }
     }

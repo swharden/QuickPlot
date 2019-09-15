@@ -103,6 +103,7 @@ namespace QuickPlot.Forms
             control.MouseMove += new MouseEventHandler(OnMouseMove);
             control.MouseDown += new MouseEventHandler(OnMouseDown);
             control.MouseUp += new MouseEventHandler(OnMouseUp);
+            control.MouseWheel += new MouseEventHandler(OnMouseWheel);
         }
 
         private void SkControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
@@ -140,38 +141,79 @@ namespace QuickPlot.Forms
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
         }
-        
-        Plot plotInteractingWithMouse = null;
 
-        private void OnMouseMove(object sender, MouseEventArgs e)
-        {
-            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
-            if (plotInteractingWithMouse != null)
-            {
-                plotInteractingWithMouse.mouse.LeftLocation(mouseLocation);
-                control.Refresh();
-            }
-        }
+        #region click-drag mouse panning and zooming
+
+        Plot plotBeingClicked = null;
 
         public void OnMouseDown(object sender, MouseEventArgs e)
         {
             SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
-            plotInteractingWithMouse = fig.GetPlotUnderCursor(canvas, mouseLocation);
+            plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
 
-            if (e.Button == MouseButtons.Left)
-                plotInteractingWithMouse.mouse.LeftDown(mouseLocation);
+            if (plotBeingClicked != null)
+            {
+                if (e.Button == MouseButtons.Left)
+                    plotBeingClicked.mouse.LeftDown(mouseLocation);
+                else if (e.Button == MouseButtons.Right)
+                    plotBeingClicked.mouse.RightDown(mouseLocation);
+            }
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
+
+            if (plotBeingClicked != null)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    plotBeingClicked.mouse.LeftLocation(mouseLocation);
+
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    plotBeingClicked.mouse.RightLocation(mouseLocation);
+                }
+                control.Refresh();
+            }
         }
 
         public void OnMouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (plotBeingClicked != null)
             {
-                plotInteractingWithMouse.axes.PanPixels(plotInteractingWithMouse.mouse.leftDownDelta);
-                plotInteractingWithMouse.mouse.LeftUp();
+                if (e.Button == MouseButtons.Left)
+                {
+                    plotBeingClicked.axes.PanPixels(plotBeingClicked.mouse.leftDownDelta);
+                    plotBeingClicked.mouse.LeftUp();
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    plotBeingClicked.axes.ZoomPixels(plotBeingClicked.mouse.rightDownDelta);
+                    plotBeingClicked.mouse.RightUp();
+                }
+                plotBeingClicked = null;
             }
 
-            plotInteractingWithMouse = null;
             control.Refresh();
         }
+
+        public void OnMouseWheel(object sender, MouseEventArgs e)
+        {
+            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
+
+            plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
+            if (plotBeingClicked != null)
+            {
+                double zoomFrac = (e.Delta > 0) ? 1.15 : .85;
+                plotBeingClicked.axes.Zoom(zoomFrac, zoomFrac);
+            }
+
+            plotBeingClicked = null;
+            control.Refresh();
+        }
+
+        #endregion
     }
 }

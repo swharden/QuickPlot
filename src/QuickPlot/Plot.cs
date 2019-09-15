@@ -21,12 +21,6 @@ namespace QuickPlot
         public void Render(SKCanvas canvas, SKRect rect)
         {
             // render this plot inside the rectangle of the canvas
-
-            axes.SetRect(rect);
-
-            PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
-            axesAfterMouse.PanPixels(mouse.leftDownDelta);
-
             using (var paint = new SKPaint())
             {
                 // draw a rectangle around the plot area
@@ -35,6 +29,18 @@ namespace QuickPlot
                 canvas.DrawRect(rect, paint);
             }
 
+            // modify the scale based on what the mouse is doing
+            axes.SetRect(rect);
+
+            // apply mouse adjustments to the scale
+            PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
+            axesAfterMouse.PanPixels(mouse.leftDownDelta);
+            axesAfterMouse.ZoomPixels(mouse.rightDownDelta);
+
+            // modify the scale based on what the mouse adjustments did
+            axesAfterMouse.SetRect(rect);
+
+            // draw inside a clipping rectangle
             canvas.Save();
             canvas.ClipRect(rect);
             for (int i=0; i<plottables.Count; i++)
