@@ -57,5 +57,15 @@ namespace QuickPlot
             var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
         }
+
+        public void AutoAxis()
+        {
+            if (plottables.Count > 0)
+            {
+                axes.Set(plottables[0].GetDataArea());
+                for (int i = 1; i < plottables.Count; i++)
+                    axes.Expand(plottables[i].GetDataArea());
+            }
+        }
     }
 }

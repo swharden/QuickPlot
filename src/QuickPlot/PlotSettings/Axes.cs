@@ -40,6 +40,22 @@ namespace QuickPlot.PlotSettings
             y.high = yHigh ?? y.high;
         }
 
+        public void Set(AxisLimits limits)
+        {
+            x.low = limits.xLow;
+            x.high = limits.xHigh;
+            y.low = limits.yLow;
+            y.high = limits.yHigh;
+        }
+
+        public void Expand(AxisLimits limits)
+        {
+            x.low = Math.Min(x.low, limits.xLow);
+            x.high = Math.Max(x.high, limits.xHigh);
+            y.low = Math.Min(y.low, limits.yLow);
+            y.high = Math.Max(y.high, limits.yHigh);
+        }
+
         public void Pan(double dX = 0, double dY = 0)
         {
             x.Pan(dX);

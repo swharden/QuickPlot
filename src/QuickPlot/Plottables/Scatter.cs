@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using QuickPlot.PlotSettings;
 using SkiaSharp;
 
 namespace QuickPlot.Plottables
@@ -23,6 +24,14 @@ namespace QuickPlot.Plottables
 
             if (xs.Length != ys.Length)
                 throw new ArgumentException("xs and ys must have the same length");
+        }
+
+        public override AxisLimits GetDataArea()
+        {
+            AxisLimits lim = new AxisLimits(xs[0], ys[0]);
+            for (int i=1; i<xs.Length; i++)
+                lim.Expand(xs[i], ys[i]);
+            return lim;
         }
 
         public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
@@ -51,8 +60,6 @@ namespace QuickPlot.Plottables
                     canvas.DrawCircle(pt, style.markerSize, paint);
                 }
             }
-
-            //canvas.DrawPath()
         }
     }
 }

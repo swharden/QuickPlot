@@ -104,6 +104,7 @@ namespace QuickPlot.Forms
             control.MouseDown += new MouseEventHandler(OnMouseDown);
             control.MouseUp += new MouseEventHandler(OnMouseUp);
             control.MouseWheel += new MouseEventHandler(OnMouseWheel);
+            control.MouseClick += new MouseEventHandler(OnMouseClick);
         }
 
         private void SkControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
@@ -202,12 +203,29 @@ namespace QuickPlot.Forms
         public void OnMouseWheel(object sender, MouseEventArgs e)
         {
             SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
-
             plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
+
             if (plotBeingClicked != null)
             {
                 double zoomFrac = (e.Delta > 0) ? 1.15 : .85;
                 plotBeingClicked.axes.Zoom(zoomFrac, zoomFrac);
+            }
+
+            plotBeingClicked = null;
+            control.Refresh();
+        }
+
+        public void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
+            plotBeingClicked = fig.GetPlotUnderCursor(canvas, mouseLocation);
+
+            if (plotBeingClicked != null)
+            {
+                plotBeingClicked.mouse.LeftUp();
+                plotBeingClicked.mouse.RightUp();
+                if (e.Button == MouseButtons.Middle)
+                    plotBeingClicked.AutoAxis();
             }
 
             plotBeingClicked = null;

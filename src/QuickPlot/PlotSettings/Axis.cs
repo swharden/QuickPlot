@@ -34,7 +34,6 @@ namespace QuickPlot.PlotSettings
             double spanRight = high - (double)zoomTo;
             low = (double)zoomTo - spanLeft / frac;
             high = (double)zoomTo + spanRight / frac;
-            Console.WriteLine($"AFTER ZOOM: {frac} {low} {high}");
         }
     }
 }

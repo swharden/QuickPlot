@@ -9,5 +9,6 @@ namespace QuickPlot.Plottables
     {
         public Style style;
         public abstract void Render(SKCanvas canvas, PlotSettings.Axes axes);
+        public abstract PlotSettings.AxisLimits GetDataArea();
     }
 }
