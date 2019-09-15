@@ -34,11 +34,14 @@ namespace QuickPlot
                 paint.Style = SKPaintStyle.Stroke;
                 canvas.DrawRect(rect, paint);
             }
-            
+
+            canvas.Save();
+            canvas.ClipRect(rect);
             for (int i=0; i<plottables.Count; i++)
             {
                 plottables[i].Render(canvas, axesAfterMouse);
             }
+            canvas.Restore();
         }
 
         public void Scatter(double[] xs, double[] ys)
