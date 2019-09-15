@@ -7,7 +7,7 @@ namespace QuickPlot
 {
     public class Figure
     {
-        private List<Plot> subplots = new List<Plot>();
+        public List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
         public FigureSettings.Padding padding = new FigureSettings.Padding();
@@ -57,6 +57,20 @@ namespace QuickPlot
                     Debug.WriteLine($"Wrote: {filePath}");
                 }
             }
+        }
+
+        public Plot GetPlotUnderCursor(SKCanvas canvas, SKPoint mouseLocation)
+        {
+            if (canvas == null)
+                return null;
+
+            foreach (Plot plt in subplots)
+            {
+                SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
+                if (subplotRect.Contains(mouseLocation))
+                    return plt;
+            }
+            return null;
         }
     }
 }

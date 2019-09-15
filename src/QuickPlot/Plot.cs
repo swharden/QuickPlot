@@ -9,8 +9,9 @@ namespace QuickPlot
     {
         public PlotSettings.SubplotPosition subplotPosition;
 
-        private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
-        private PlotSettings.Axes axes = new PlotSettings.Axes();
+        public List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
+        public PlotSettings.Axes axes = new PlotSettings.Axes();
+        public PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
         public Plot()
         {
@@ -23,6 +24,9 @@ namespace QuickPlot
 
             axes.SetRect(rect);
 
+            PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
+            axesAfterMouse.PanPixels(mouse.leftDownDelta);
+
             using (var paint = new SKPaint())
             {
                 // draw a rectangle around the plot area
@@ -33,7 +37,7 @@ namespace QuickPlot
             
             for (int i=0; i<plottables.Count; i++)
             {
-                plottables[i].Render(canvas, axes);
+                plottables[i].Render(canvas, axesAfterMouse);
             }
         }
 

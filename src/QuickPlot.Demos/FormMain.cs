@@ -15,6 +15,7 @@ namespace QuickPlot.Demos
         public FormMain()
         {
             InitializeComponent();
+            BtnBenchOneKLines_Click(null, null);
         }
 
         private void BtnBenchOneKLines_Click(object sender, EventArgs e)

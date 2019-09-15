@@ -19,5 +19,11 @@ namespace QuickPlot.PlotSettings
             this.low = low ?? this.low;
             this.high = high ?? this.high;
         }
+
+        public void Pan(double delta)
+        {
+            low += delta;
+            high += delta;
+        }
     }
 }

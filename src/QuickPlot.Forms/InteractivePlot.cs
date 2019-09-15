@@ -16,6 +16,10 @@ namespace QuickPlot.Forms
     public partial class InteractivePlot : UserControl
     {
         public Figure fig = new Figure();
+
+        SKCanvas canvas;
+        Control control;
+
         public readonly bool IsUsingOpenGL;
 
         SkiaSharp.Views.Desktop.SKControl skControl1;
@@ -37,7 +41,7 @@ namespace QuickPlot.Forms
             }
             else
             {
-                lblMessage.Visible = false;
+
                 try
                 {
                     CreateControl(true);
@@ -48,6 +52,10 @@ namespace QuickPlot.Forms
                     CreateControl(false);
                     IsUsingOpenGL = false;
                 }
+
+                lblMessage.Visible = true;
+                lblMessage.BringToFront();
+                lblMessage.Text = $"";
             }
         }
 
@@ -74,9 +82,8 @@ namespace QuickPlot.Forms
                     Dock = DockStyle.Fill
                 };
                 glControl1.Paint += new PaintEventHandler(GlControl1_Paint);
-                Controls.Add(glControl1);
-                glControl1.BringToFront();
-                glControl1.Update();
+                control = glControl1;
+
             }
             else
             {
@@ -86,15 +93,22 @@ namespace QuickPlot.Forms
                     Dock = DockStyle.Fill
                 };
                 skControl1.PaintSurface += new EventHandler<SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs>(SkControl1_PaintSurface);
-                Controls.Add(skControl1);
-                skControl1.BringToFront();
-                glControl1.Update();
+                control = skControl1;
             }
+
+            Controls.Add(control);
+            control.BringToFront();
+            control.Update();
+
+            control.MouseMove += new MouseEventHandler(OnMouseMove);
+            control.MouseDown += new MouseEventHandler(OnMouseDown);
+            control.MouseUp += new MouseEventHandler(OnMouseUp);
         }
 
         private void SkControl1_PaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
         {
-            fig.Render(e.Surface.Canvas);
+            canvas = e.Surface.Canvas;
+            fig.Render(canvas);
         }
 
         private void GlControl1_Paint(object sender, PaintEventArgs e)
@@ -120,10 +134,45 @@ namespace QuickPlot.Forms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            fig.Render(surface.Canvas);
+            canvas = surface.Canvas;
+            fig.Render(canvas);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
+        }
+        
+        Plot plotInteractingWithMouse = null;
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
+            if (plotInteractingWithMouse != null)
+            {
+                plotInteractingWithMouse.mouse.LeftLocation(mouseLocation);
+                control.Refresh();
+            }
+        }
+
+        public void OnMouseDown(object sender, MouseEventArgs e)
+        {
+            SKPoint mouseLocation = new SKPoint(e.Location.X, e.Location.Y);
+            plotInteractingWithMouse = fig.GetPlotUnderCursor(canvas, mouseLocation);
+
+            if (e.Button == MouseButtons.Left)
+                plotInteractingWithMouse.mouse.LeftDown(mouseLocation);
+        }
+
+        public void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Console.WriteLine($"PANNING: {plotInteractingWithMouse.mouse.leftDownDelta}");
+                plotInteractingWithMouse.axes.PanPixels(plotInteractingWithMouse.mouse.leftDownDelta);
+                plotInteractingWithMouse.mouse.LeftUp();
+            }
+
+            plotInteractingWithMouse = null;
+            control.Refresh();
         }
     }
 }
