@@ -16,6 +16,7 @@ namespace QuickPlot.Cookbook
             fig.Subplot(2, 3, 1);
             double[] xs = Generate.Consecutative(20, 1.0 / 20);
             fig.plot.Scatter(xs, Generate.Sin(xs.Length));
+            fig.plot.Scatter(xs, Generate.Cos(xs.Length));
 
             fig.Subplot(2, 3, 2);
             fig.plot.Scatter(xs, Generate.Cos(xs.Length));
