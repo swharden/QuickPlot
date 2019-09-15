@@ -9,10 +9,11 @@ namespace QuickPlot.Plottables
     {
         double[] xs, ys;
 
-        public Scatter(double[] xs, double[] ys)
+        public Scatter(double[] xs, double[] ys, Style style)
         {
             this.xs = xs;
             this.ys = ys;
+            this.style = style;
 
             if (xs == null || ys == null)
                 throw new ArgumentException("xs and ys cannot be null");
@@ -28,13 +29,13 @@ namespace QuickPlot.Plottables
         {
             using (var paint = new SKPaint())
             {
-                paint.Color = SKColors.Magenta;
                 paint.IsAntialias = true;
 
                 // todo: create a SKPoint array to reduce lookups
 
                 // draw lines
                 // todo: should SKPath be used instead of drawing individual lines?
+                paint.Color = style.lineColor;
                 for (int i = 1; i < xs.Length; i++)
                 {
                     SKPoint pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
@@ -43,10 +44,11 @@ namespace QuickPlot.Plottables
                 }
 
                 // draw markers
+                paint.Color = style.markerColor;
                 for (int i = 0; i < xs.Length; i++)
                 {
                     SKPoint pt = axes.GetPixel(xs[i], ys[i]);
-                    canvas.DrawCircle(pt, 3, paint);
+                    canvas.DrawCircle(pt, style.markerSize, paint);
                 }
             }
 

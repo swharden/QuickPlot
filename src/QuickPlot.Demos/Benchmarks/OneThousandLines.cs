@@ -24,15 +24,18 @@ namespace QuickPlot.Demos.Benchmarks
 
             interactivePlot1.fig.Subplot(2, 3, 1);
             interactivePlot1.fig.plot.Scatter(xs, Generate.Sin(pointCount));
-
-            interactivePlot1.fig.Subplot(2, 3, 2);
             interactivePlot1.fig.plot.Scatter(xs, Generate.Cos(pointCount));
 
-            interactivePlot1.fig.Subplot(2, 3, 3);
+            interactivePlot1.fig.Subplot(2, 3, 2);
             interactivePlot1.fig.plot.Scatter(xs, Generate.Random(pointCount, seed: 0));
+
+            interactivePlot1.fig.Subplot(2, 3, 3);
+            interactivePlot1.fig.plot.Scatter(xs, Generate.Random(pointCount, seed: 1));
 
             interactivePlot1.fig.Subplot(2, 3, 4, 1, 3);
             interactivePlot1.fig.plot.Scatter(Generate.Random(pointCount, seed: 0), Generate.Random(pointCount, seed: 1));
+            interactivePlot1.fig.plot.Scatter(Generate.Random(pointCount, seed: 2), Generate.Random(pointCount, seed: 3));
+            interactivePlot1.fig.plot.Scatter(Generate.Random(pointCount, seed: 4), Generate.Random(pointCount, seed: 5));
         }
 
         private void OneThousandLines_Load(object sender, EventArgs e)

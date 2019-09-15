@@ -50,9 +50,11 @@ namespace QuickPlot
             canvas.Restore();
         }
 
-        public void Scatter(double[] xs, double[] ys)
+        public void Scatter(double[] xs, double[] ys, Style style = null)
         {
-            var scatterPlot = new Plottables.Scatter(xs, ys);
+            if (style == null)
+                style = new Style(plottables.Count);
+            var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
         }
     }
