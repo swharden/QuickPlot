@@ -12,6 +12,7 @@ namespace QuickPlot
         public List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
         public PlotSettings.Axes axes;
         public PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
+        PlotSettings.Layout layout = new PlotSettings.Layout();
 
         public Plot()
         {
@@ -20,20 +21,16 @@ namespace QuickPlot
 
         public void Render(SKCanvas canvas, SKRect rect)
         {
-            // render this plot inside the rectangle of the canvas
-            using (var paint = new SKPaint())
-            {
-                // draw a rectangle around the plot area
-                paint.Color = SKColors.Black;
-                paint.Style = SKPaintStyle.Stroke;
-                canvas.DrawRect(rect, paint);
-            }
 
             if (axes == null)
                 AutoAxis();
 
+            // draw the layout for debugging
+            layout.Tighten(rect);
+            layout.Render(canvas);
+
             // modify the scale based on what the mouse is doing
-            axes.SetRect(rect);
+            axes.SetRect(layout.data);
 
             // apply mouse adjustments to the scale
             PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
@@ -41,11 +38,11 @@ namespace QuickPlot
             axesAfterMouse.ZoomPixels(mouse.rightDownDelta);
 
             // modify the scale based on what the mouse adjustments did
-            axesAfterMouse.SetRect(rect);
+            axesAfterMouse.SetRect(layout.data);
 
             // draw inside a clipping rectangle
             canvas.Save();
-            canvas.ClipRect(rect);
+            canvas.ClipRect(layout.data);
             for (int i = 0; i < plottables.Count; i++)
             {
                 plottables[i].Render(canvas, axesAfterMouse);
