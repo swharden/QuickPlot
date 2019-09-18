@@ -43,7 +43,7 @@
             this.interactivePlot1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.interactivePlot1.Location = new System.Drawing.Point(12, 41);
             this.interactivePlot1.Name = "interactivePlot1";
-            this.interactivePlot1.Size = new System.Drawing.Size(625, 288);
+            this.interactivePlot1.Size = new System.Drawing.Size(962, 625);
             this.interactivePlot1.TabIndex = 0;
             // 
             // btnRender
@@ -89,7 +89,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 341);
+            this.ClientSize = new System.Drawing.Size(986, 678);
             this.Controls.Add(this.lblUsingGL);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnBenchmark);
