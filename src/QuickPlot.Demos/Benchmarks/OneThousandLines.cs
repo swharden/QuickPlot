@@ -28,6 +28,10 @@ namespace QuickPlot.Demos.Benchmarks
 
             interactivePlot1.fig.Subplot(2, 3, 2);
             interactivePlot1.fig.plot.Scatter(xs, Generate.Random(pointCount, seed: 0));
+            interactivePlot1.fig.plot.XLabel("horizontal units");
+            interactivePlot1.fig.plot.YLabel("vertical units");
+            interactivePlot1.fig.plot.Y2Label("vertical too");
+            interactivePlot1.fig.plot.Title("Awesome Data");
 
             interactivePlot1.fig.Subplot(2, 3, 3);
             interactivePlot1.fig.plot.Scatter(xs, Generate.Random(pointCount, seed: 1));

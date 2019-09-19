@@ -14,14 +14,14 @@ namespace QuickPlot.PlotSettings
     {
         public SKRect frame, scales, data;
 
-        SKRect labelLeft, labelRight, labelBottom, labelTop;
-        SKRect scaleLeft, scaleRight, scaleBottom, scaleTop;
+        public SKRect labelLeft, labelRight, labelBottom, labelTop;
+        public SKRect scaleLeft, scaleRight, scaleBottom, scaleTop;
 
         // TODO: consider a "padding" object (containing 4 floats) rather than so many individual numbers.
-        Padding labelPadding = new Padding() { left = 30, right = 30, bottom = 30, top = 30 };
-        Padding scalePadding = new Padding() { left = 30, right = 30, bottom = 30, top = 30 };
+        public Padding labelPadding = new Padding() { left = 20, right = 20, bottom = 20, top = 20 };
+        public Padding scalePadding = new Padding() { left = 20, right = 20, bottom = 20, top = 20 };
 
-        private struct Padding
+        public struct Padding
         {
             public float left, right, bottom, top;
         }
@@ -104,7 +104,7 @@ namespace QuickPlot.PlotSettings
             return rect;
         }
 
-        public void Render(SKCanvas canvas)
+        public void RenderDebuggingGuides(SKCanvas canvas)
         {
             SKPaint paint = new SKPaint();
 

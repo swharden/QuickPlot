@@ -14,6 +14,9 @@ namespace QuickPlot
         public PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
         PlotSettings.Layout layout = new PlotSettings.Layout();
 
+        private PlotSettings.AxisLabels axisLabels = new PlotSettings.AxisLabels();
+        private PlotSettings.AxisScales axisScales = new PlotSettings.AxisScales();
+
         public Plot()
         {
 
@@ -25,19 +28,15 @@ namespace QuickPlot
             if (axes == null)
                 AutoAxis();
 
-            // draw the layout for debugging
             layout.Tighten(rect);
-            layout.Render(canvas);
-
-            // modify the scale based on what the mouse is doing
             axes.SetRect(layout.data);
 
-            // apply mouse adjustments to the scale
+            //layout.RenderDebuggingGuides(canvas);
+
+            // update the scale, apply mouse adjustments, then update the scale again
             PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
             axesAfterMouse.PanPixels(mouse.leftDownDelta);
             axesAfterMouse.ZoomPixels(mouse.rightDownDelta);
-
-            // modify the scale based on what the mouse adjustments did
             axesAfterMouse.SetRect(layout.data);
 
             // draw inside a clipping rectangle
@@ -48,6 +47,9 @@ namespace QuickPlot
                 plottables[i].Render(canvas, axesAfterMouse);
             }
             canvas.Restore();
+
+            axisLabels.Render(layout, canvas);
+            axisScales.Render(layout, axesAfterMouse, canvas);
         }
 
         public void Scatter(double[] xs, double[] ys, Style style = null)
@@ -70,6 +72,26 @@ namespace QuickPlot
             }
 
             axes.Zoom(1 - marginX, 1 - marginY);
+        }
+
+        public void XLabel(string text)
+        {
+            axisLabels.bottom.text = text;
+        }
+
+        public void YLabel(string text)
+        {
+            axisLabels.left.text = text;
+        }
+
+        public void Y2Label(string text)
+        {
+            axisLabels.right.text = text;
+        }
+
+        public void Title(string text)
+        {
+            axisLabels.top.text = text;
         }
     }
 }
