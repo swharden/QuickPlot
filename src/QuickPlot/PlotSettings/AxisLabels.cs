@@ -15,6 +15,7 @@ namespace QuickPlot.PlotSettings
         public AxisLabels()
         {
             top.bold = true;
+            left.paint.TextAlign = SKTextAlign.Right;
         }
 
         public void Render(Layout layout, SKCanvas canvas)

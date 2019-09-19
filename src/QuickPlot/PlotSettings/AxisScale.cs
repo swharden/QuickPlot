@@ -15,7 +15,8 @@ namespace QuickPlot.PlotSettings
             {
                 SKPaint paint = new SKPaint
                 {
-                    Color = color
+                    Color = color,
+                    IsAntialias = true
                 };
                 return paint;
             }
@@ -24,20 +25,33 @@ namespace QuickPlot.PlotSettings
         public double[] tickPositions;
         public string[] tickLabels;
 
-        public void GenerateTicks(double low, double high)
+        public void GenerateTicks(double low, double high, double pixelSpan, double pixelsPerTick)
         {
-            // TODO: this tick drawing code is just a placeholder.
-
-            double span = high - low;
-            double spacing = span / 10;
-
             List<double> ticks = new List<double>();
             List<string> labels = new List<string>();
-            for (double tickPosition = low; tickPosition <= high; tickPosition += spacing)
+
+            double span = high - low;
+            double idealTickCount = (double)pixelSpan / pixelsPerTick;
+            double step = Math.Pow(10, (int)Math.Log(span));
+            double[] divisions = { 2, 2, 2.5 };
+            double idealStep = span / idealTickCount;
+            for (int i = 0; i < 100; i++)
             {
-                ticks.Add(tickPosition);
-                labels.Add(tickPosition.ToString());
+                if (step > idealStep)
+                    step /= divisions[i % divisions.Length];
+                else
+                    break;
             }
+
+            double firstTick = low + Math.Abs(low % step);
+            for (double i = firstTick; i < high; i += step)
+            {
+                ticks.Add(i);
+                labels.Add(Math.Round(i, 5).ToString());
+                if (ticks.Count > 100)
+                    break;
+            }
+
             tickPositions = ticks.ToArray();
             tickLabels = labels.ToArray();
         }
