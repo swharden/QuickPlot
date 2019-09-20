@@ -34,15 +34,27 @@ namespace QuickPlot.PlotSettings
 
             double span = high - low;
             double idealTickCount = pixelSpan / pixelsPerTick;
-            double step = Math.Pow(10, (int)Math.Log(span));
+
+            double step;
+            if (span > 1)
+            {
+                step = Math.Pow(10, (int)Math.Log(span));
+            }
+            else
+            {
+                step = 1;
+                while (step > span)
+                    step /= 10;
+            }
+
             double[] divisions = { 2, 2, 2.5 };
             double idealStep = span / idealTickCount;
             for (int i = 0; i < 100; i++)
             {
-                if (step > idealStep)
-                    step /= divisions[i % divisions.Length];
-                else
+                if (step <= idealStep)
                     break;
+                else
+                    step /= divisions[i % divisions.Length];
             }
 
             double firstTick;
