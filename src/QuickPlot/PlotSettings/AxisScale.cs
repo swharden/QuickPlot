@@ -27,11 +27,13 @@ namespace QuickPlot.PlotSettings
 
         public void GenerateTicks(double low, double high, double pixelSpan, double pixelsPerTick)
         {
+            // Determine the ideal tick density and create ticks (positions and labels)
+
             List<double> ticks = new List<double>();
             List<string> labels = new List<string>();
 
             double span = high - low;
-            double idealTickCount = (double)pixelSpan / pixelsPerTick;
+            double idealTickCount = pixelSpan / pixelsPerTick;
             double step = Math.Pow(10, (int)Math.Log(span));
             double[] divisions = { 2, 2, 2.5 };
             double idealStep = span / idealTickCount;
@@ -43,7 +45,12 @@ namespace QuickPlot.PlotSettings
                     break;
             }
 
-            double firstTick = low + Math.Abs(low % step);
+            double firstTick;
+            if (low < 0)
+                firstTick = low + Math.Abs(low % step);
+            else
+                firstTick = low - Math.Abs(low % step) + step;
+
             for (double i = firstTick; i < high; i += step)
             {
                 ticks.Add(i);
