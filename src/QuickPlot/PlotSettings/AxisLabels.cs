@@ -22,20 +22,21 @@ namespace QuickPlot.PlotSettings
         {
             using (SKPath path = new SKPath())
             {
-                path.MoveTo(layout.labelLeft.Right, layout.labelLeft.Top + 200);
-                path.LineTo(layout.labelLeft.Right, layout.labelLeft.Bottom - 200);
+                path.MoveTo(layout.labelLeft.Right, layout.labelLeft.Bottom);
+                path.LineTo(layout.labelLeft.Right, layout.labelLeft.Top);
                 canvas.DrawTextOnPath(left.text, path, 0, 0, left.paint);
             }
 
             using (SKPath path = new SKPath())
             {
-                path.MoveTo(layout.labelRight.Left, layout.labelRight.Bottom - 200);
-                path.LineTo(layout.labelRight.Left, layout.labelRight.Top + 200);
+                path.MoveTo(layout.labelRight.Left, layout.labelRight.Top);
+                path.LineTo(layout.labelRight.Left, layout.labelRight.Bottom);
                 canvas.DrawTextOnPath(right.text, path, 0, 0, right.paint);
             }
 
             canvas.DrawText(bottom.text, layout.labelBottom.MidX, layout.labelBottom.Top + bottom.fontSize, bottom.paint);
-            canvas.DrawText(top.text, layout.labelTop.MidX, layout.labelTop.Bottom, top.paint);
+
+            canvas.DrawText(top.text, layout.labelTop.MidX, layout.labelTop.Top + top.fontSize, top.paint);
         }
     }
 }

@@ -17,9 +17,10 @@ namespace QuickPlot.PlotSettings
         public SKRect labelLeft, labelRight, labelBottom, labelTop;
         public SKRect scaleLeft, scaleRight, scaleBottom, scaleTop;
 
-        // TODO: consider a "padding" object (containing 4 floats) rather than so many individual numbers.
         public Padding labelPadding = new Padding() { left = 20, right = 20, bottom = 20, top = 20 };
         public Padding scalePadding = new Padding() { left = 30, right = 30, bottom = 15, top = 15 };
+
+        public bool display = false;
 
         public struct Padding
         {

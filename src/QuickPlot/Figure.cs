@@ -21,11 +21,7 @@ namespace QuickPlot
         {
             while (subplots.Count < subPlotNumber)
                 subplots.Add(new Plot());
-
-            // activate this plot
             plot = subplots[subPlotNumber - 1];
-
-            // update its position
             plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
         }
 
@@ -51,7 +47,6 @@ namespace QuickPlot
                 {
                     // TODO: support BMP, PNG, TIF, GIF, and JPG
                     SKImage snap = surface.Snapshot();
-                    //SKData encoded = snap.Encode(SKEncodedImageFormat.Jpeg, quality);
                     SKData encoded = snap.Encode(SKEncodedImageFormat.Png, quality);
                     encoded.SaveTo(fileStream);
                     Debug.WriteLine($"Wrote: {filePath}");
@@ -61,16 +56,28 @@ namespace QuickPlot
 
         public Plot GetPlotUnderCursor(SKCanvas canvas, SKPoint mouseLocation)
         {
-            if (canvas == null)
-                return null;
-
-            foreach (Plot plt in subplots)
+            if (canvas != null)
             {
-                SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
-                if (subplotRect.Contains(mouseLocation))
-                    return plt;
+                foreach (Plot plt in subplots)
+                {
+                    SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
+                    if (subplotRect.Contains(mouseLocation))
+                        return plt;
+                }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Various configuration settings mostly for debugging and developer use
+        /// </summary>
+        public void Configure(bool? displayLayout = null)
+        {
+            foreach (Plot plt in subplots)
+            {
+                if (displayLayout != null)
+                    plt.layout.display = (bool)displayLayout;
+            }
         }
     }
 }

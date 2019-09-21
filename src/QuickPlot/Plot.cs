@@ -12,7 +12,7 @@ namespace QuickPlot
         public List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
         public PlotSettings.Axes axes;
         public PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
-        PlotSettings.Layout layout = new PlotSettings.Layout();
+        public PlotSettings.Layout layout = new PlotSettings.Layout();
 
         private PlotSettings.AxisLabels axisLabels = new PlotSettings.AxisLabels();
         private PlotSettings.AxisScales axisScales = new PlotSettings.AxisScales();
@@ -31,7 +31,8 @@ namespace QuickPlot
             layout.Tighten(rect);
             axes.SetRect(layout.data);
 
-            //layout.RenderDebuggingGuides(canvas);
+            if (layout.display)
+                layout.RenderDebuggingGuides(canvas);
 
             // update the scale, apply mouse adjustments, then update the scale again
             PlotSettings.Axes axesAfterMouse = new PlotSettings.Axes(axes);
