@@ -1,5 +1,7 @@
 > **WARNING:** QuickPlot is early in development and not yet intended to be used. **[ScottPlot](https://github.com/swharden/ScottPlot)** is a mature .NET library which can serve many plotting needs while QuickPlot is being developed.
 
+> **UPDATE:** QuickPlot uses the SkiaSharp library which is not trivially to get up and running ([issue #1](https://github.com/swharden/QuickPlot/issues/1)). This is especially true when using OpenGL. A core design goal of QuickPlot is minimal complexity, and the dependencies it requires make this not possible. If SkiaSharp (and it's OpenGL control) matures into something easily usable across multiple platforms, this project may be revisited. Until then, I'm stopping work on it. --Scott, October 2019
+
 ---
 
 # QuickPlot
