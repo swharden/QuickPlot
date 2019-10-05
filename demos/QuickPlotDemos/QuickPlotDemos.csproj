@@ -84,6 +84,10 @@
       <Project>{12ee18c8-516e-4ac6-be1b-9c550f390f40}</Project>
       <Name>QuickPlot.WinForms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\QuickPlot\QuickPlot.csproj">
+      <Project>{995d0294-be9f-4290-9b68-1617ce446314}</Project>
+      <Name>QuickPlot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

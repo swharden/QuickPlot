@@ -14,7 +14,7 @@ namespace QuickPlot
 
         public Figure()
         {
-            Subplot(1, 1, 1);
+            Clear();
         }
 
         public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
@@ -28,6 +28,12 @@ namespace QuickPlot
 
             // note the position of this subplot in the bigger figure (pixel-independent)
             plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
+        }
+
+        public void Clear()
+        {
+            subplots.Clear();
+            Subplot(1, 1, 1);
         }
 
         private void Render(Bitmap bmp)

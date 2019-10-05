@@ -30,7 +30,7 @@ namespace QuickPlot.WinForms
             Render();
         }
 
-        private void Render()
+        public void Render()
         {
             pictureBox1.Image = figure.GetBitmap(pictureBox1.Width, pictureBox1.Height);
         }

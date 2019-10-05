@@ -8,6 +8,8 @@
 
 **QuickPlot is a simple plotting library for .NET** that makes it easy to interactively display high density data (tens of millions of points). QuickPlot is written in .NET Standard so it can be used in both .NET Framework and .NET Core projects.
 
+![](demos/QuickPlotDemos/screenshot.png)
+
 ### Supported Platforms
 
 QuickPlot can be used to save plots as images from Console Applications (including ASP .NET), or interactively display plots using the InteractivePlot user control available for WinForms, WPF, and UWP.
