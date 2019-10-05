@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,9 +7,9 @@ namespace QuickPlot.PlotSettings
 {
     public class SubplotPosition
     {
-        public readonly int subPlotNumber;
-        public readonly int nRows, nCols;
-        public readonly int rowSpan, colSpan;
+        public int subPlotNumber;
+        public int nRows, nCols;
+        public int rowSpan, colSpan;
 
         public SubplotPosition(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {

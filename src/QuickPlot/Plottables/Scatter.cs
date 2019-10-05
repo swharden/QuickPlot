@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
-using QuickPlot.PlotSettings;
-using SkiaSharp;
 
 namespace QuickPlot.Plottables
 {
@@ -26,40 +25,39 @@ namespace QuickPlot.Plottables
                 throw new ArgumentException("xs and ys must have the same length");
         }
 
-        public override AxisLimits GetDataArea()
+        public override PlotSettings.AxisLimits GetDataArea()
         {
-            AxisLimits lim = new AxisLimits(xs[0], ys[0]);
-            for (int i=1; i<xs.Length; i++)
+            PlotSettings.AxisLimits lim = new PlotSettings.AxisLimits(xs[0], ys[0]);
+            for (int i = 1; i < xs.Length; i++)
                 lim.Expand(xs[i], ys[i]);
             return lim;
         }
 
-        public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
+        public override void Render(Bitmap bmp, PlotSettings.Axes axes)
         {
-            using (var paint = new SKPaint())
+            Graphics gfx = Graphics.FromImage(bmp);
+            gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            Pen pen = new Pen(style.lineColor);
+            Brush brush = new SolidBrush(style.markerColor);
+
+            // draw lines
+            for (int i = 1; i < xs.Length; i++)
             {
-                paint.IsAntialias = true;
-
-                // todo: create a SKPoint array to reduce lookups
-
-                // draw lines
-                // todo: should SKPath be used instead of drawing individual lines?
-                paint.Color = style.lineColor;
-                for (int i = 1; i < xs.Length; i++)
-                {
-                    SKPoint pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
-                    SKPoint pt2 = axes.GetPixel(xs[i], ys[i]);
-                    canvas.DrawLine(pt1, pt2, paint);
-                }
-
-                // draw markers
-                paint.Color = style.markerColor;
-                for (int i = 0; i < xs.Length; i++)
-                {
-                    SKPoint pt = axes.GetPixel(xs[i], ys[i]);
-                    canvas.DrawCircle(pt, style.markerSize, paint);
-                }
+                PointF pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
+                PointF pt2 = axes.GetPixel(xs[i], ys[i]);
+                gfx.DrawLine(pen, pt1, pt2);
             }
+
+            // draw markers
+            for (int i = 0; i < xs.Length; i++)
+            {
+                PointF pt = axes.GetPixel(xs[i], ys[i]);
+                gfx.FillEllipse(brush, pt.X - style.markerSize, pt.Y - style.markerSize, style.markerSize * 2, style.markerSize * 2);
+            }
+
+            gfx.Dispose();
         }
     }
 }

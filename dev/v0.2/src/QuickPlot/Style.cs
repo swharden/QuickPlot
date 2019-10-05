@@ -1,16 +1,16 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace QuickPlot
 {
     public class Style
     {
-        public Color lineColor;
+        public SKColor lineColor;
         public float lineWidth;
 
-        public Color markerColor;
+        public SKColor markerColor;
         public float markerSize;
 
         public Style()
@@ -27,8 +27,8 @@ namespace QuickPlot
 
         private void SetDefaults()
         {
-            lineColor = Color.Black;
-            markerColor = Color.Black;
+            lineColor = SKColors.Black;
+            markerColor = SKColors.Black;
             lineWidth = 1;
             markerSize = 3;
         }

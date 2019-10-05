@@ -1,16 +1,16 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace QuickPlot
 {
     public class Figure
     {
-        public List<Plot> subplots = new List<Plot>();
+        public readonly List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
-        public FigureSettings.Padding padding = new FigureSettings.Padding();
+        private FigureSettings.Padding padding = new FigureSettings.Padding();
 
         public Figure()
         {
@@ -19,65 +19,69 @@ namespace QuickPlot
 
         public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
+            // ensure we have enough plots to get to this subplots
             while (subplots.Count < subPlotNumber)
                 subplots.Add(new Plot());
+
+            // activate this subplot
             plot = subplots[subPlotNumber - 1];
+
+            // note the position of this subplot in the bigger figure (pixel-independent)
             plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
         }
 
-        public void Render(SKCanvas canvas)
+        private void Render(Bitmap bmp)
         {
-            canvas.Clear(SKColors.White);
-            foreach (Plot plt in subplots)
+            // render onto the given bitmap
+            if (bmp == null)
+                throw new ArgumentException("bmp must not be null");
+
+            // clear the plot
+            using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
-                plt.Render(canvas, subplotRect);
+                gfx.Clear(Color.White);
             }
-        }
 
-        public void Save(string filePath, int width = 640, int height = 480, int quality = 95)
-        {
-            filePath = System.IO.Path.GetFullPath(filePath);
-
-            var info = new SKImageInfo(width, height);
-            using (SKSurface surface = SKSurface.Create(info))
+            // draw each plottable
+            foreach (Plot subplot in subplots)
             {
-                Render(surface.Canvas);
-                using (System.IO.Stream fileStream = System.IO.File.OpenWrite(filePath))
+                // use figure-level settings to determine the plot area for each subplot
+                RectangleF subplotRect = FigureSettings.Layout.GetRectangle(bmp, subplot.subplotPosition, padding);
+                subplot.Render(bmp, subplotRect);
+
+                // outline the plottable
+                using (Graphics gfx = Graphics.FromImage(bmp))
                 {
-                    // TODO: support BMP, PNG, TIF, GIF, and JPG
-                    SKImage snap = surface.Snapshot();
-                    SKData encoded = snap.Encode(SKEncodedImageFormat.Png, quality);
-                    encoded.SaveTo(fileStream);
-                    Debug.WriteLine($"Wrote: {filePath}");
+                    gfx.DrawRectangle(Pens.Black, subplotRect.X, subplotRect.Y, subplotRect.Width, subplotRect.Height);
                 }
             }
         }
 
-        public Plot GetPlotUnderCursor(SKCanvas canvas, SKPoint mouseLocation)
+        public Bitmap GetBitmap(int width, int height)
         {
-            if (canvas != null)
-            {
-                foreach (Plot plt in subplots)
-                {
-                    SKRect subplotRect = FigureSettings.Layout.GetRectangle(canvas, plt.subplotPosition, padding);
-                    if (subplotRect.Contains(mouseLocation))
-                        return plt;
-                }
-            }
-            return null;
+            Bitmap bmp = new Bitmap(width, height);
+            Render(bmp);
+            return bmp;
         }
 
-        /// <summary>
-        /// Various configuration settings mostly for debugging and developer use
-        /// </summary>
-        public void Configure(bool? displayLayout = null)
+        public Bitmap GetBitmap(Bitmap existingBitmap)
         {
-            foreach (Plot plt in subplots)
-            {
-                if (displayLayout != null)
-                    plt.layout.display = (bool)displayLayout;
-            }
+            if (existingBitmap == null)
+                throw new ArgumentException("existingBitmap must not be null");
+
+            Render(existingBitmap);
+            return existingBitmap;
+        }
+
+        public void Save(string filePath, int width, int height)
+        {
+            if (width < 1 || height < 1)
+                throw new ArgumentException("width and height must be >0");
+
+            Bitmap bmp = GetBitmap(width, height);
+            bmp.Save(filePath);
+
+            Debug.WriteLine($"Saved {System.IO.Path.GetFullPath(filePath)}");
         }
     }
 }

@@ -1,41 +1,34 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace QuickPlot
 {
     public static class Tools
     {
-        public static SKColor IndexedColor10(int index)
+        public static Color IndexedColor10(int index)
         {
             string[] plottableColors10 = new string[] {
                 "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
                 "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
             };
-            return SKColor.Parse(plottableColors10[index % plottableColors10.Length]);
+            return ColorTranslator.FromHtml(plottableColors10[index % plottableColors10.Length]);
         }
 
-        public static void DrawRandomLines(SKCanvas canvas, SKRect rectangle, int lineCount)
+        public static void TestImageLines(Bitmap bmp, int count = 1_000, bool antiAlias = true, int seed = 0)
         {
-            Random rand = new Random();
-            using (var paint = new SKPaint())
+            Random rand = new Random(seed);
+
+            Graphics gfx = Graphics.FromImage(bmp);
+            gfx.SmoothingMode = (antiAlias) ? System.Drawing.Drawing2D.SmoothingMode.AntiAlias : System.Drawing.Drawing2D.SmoothingMode.None;
+            gfx.Clear(Color.DarkBlue);
+
+            for (int i = 0; i < count; i++)
             {
-                paint.IsAntialias = true;
-                paint.Color = SKColor.Parse("#55FFFFFF");
-                for (int i=0; i<lineCount; i++)
-                {
-                    float dX1 = (float)(rectangle.Width * rand.NextDouble()) + rectangle.Left;
-                    float dX2 = (float)(rectangle.Width * rand.NextDouble()) + rectangle.Left;
-
-                    float dY1 = (float)(rectangle.Height * rand.NextDouble()) + rectangle.Top;
-                    float dY2 = (float)(rectangle.Height * rand.NextDouble()) + rectangle.Top;
-
-                    SKPoint pt1 = new SKPoint(dX1, dY1);
-                    SKPoint pt2 = new SKPoint(dX2, dY2);
-
-                    canvas.DrawLine(pt1, pt2, paint);
-                }
+                Point pt1 = new Point(rand.Next(bmp.Width), rand.Next(bmp.Height));
+                Point pt2 = new Point(rand.Next(bmp.Width), rand.Next(bmp.Height));
+                gfx.DrawLine(Pens.LightSteelBlue, pt1, pt2);
             }
         }
     }

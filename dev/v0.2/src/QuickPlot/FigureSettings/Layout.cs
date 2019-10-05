@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace QuickPlot.FigureSettings
@@ -10,11 +10,11 @@ namespace QuickPlot.FigureSettings
         /// <summary>
         /// Return the region of the figure the subplot should render inside of
         /// </summary>
-        public static RectangleF GetRectangle(Bitmap bmp, PlotSettings.SubplotPosition subplotPosition, Padding padding)
+        public static SKRect GetRectangle(SKCanvas canvas, PlotSettings.SubplotPosition subplotPosition, Padding padding)
         {
             // calculate the rectangle of the subplot in the figure
-            float figureWidth = bmp.Width;
-            float figureHeight = bmp.Height;
+            float figureWidth = canvas.LocalClipBounds.Width;
+            float figureHeight = canvas.LocalClipBounds.Height;
 
             float spWidth = figureWidth / subplotPosition.nCols;
             float spHeight = figureHeight / subplotPosition.nRows;
@@ -27,39 +27,29 @@ namespace QuickPlot.FigureSettings
             float width = spWidth * subplotPosition.colSpan;
             float height = spHeight * subplotPosition.rowSpan;
 
-            RectangleF rect = new RectangleF(left, top, width, height);
+            SKRect rect = new SKRect(left, top, left + width, top + height);
 
             // add between-plot padding to every frame
-            rect.X += padding.horizontal;
-            rect.Width -= padding.horizontal * 2;
-            rect.Y += padding.vertical;
-            rect.Height -= padding.vertical * 2;
+            rect.Left += padding.horizontal;
+            rect.Right -= padding.horizontal;
+            rect.Top += padding.vertical;
+            rect.Bottom -= padding.vertical;
 
             // add edge padding to the top
             if (row == 0)
-            {
-                rect.Y += padding.edges;
-                rect.Height -= padding.edges;
-            }
+                rect.Top += padding.edges;
+
+            // add edge padding to the right
+            if ((row + subplotPosition.rowSpan) == subplotPosition.nRows)
+                rect.Bottom -= padding.edges;
 
             // add edge padding to the left
             if (col == 0)
-            {
-                rect.X += padding.edges;
-                rect.Width -= padding.edges;
-            }
-
-            // add edge padding to the bottom
-            if ((row + subplotPosition.rowSpan) == subplotPosition.nRows)
-            {
-                rect.Height -= padding.edges;
-            }
+                rect.Left += padding.edges;
 
             // add edge padding to the right
             if ((col + subplotPosition.colSpan) == subplotPosition.nCols)
-            {
-                rect.Width -= padding.edges;
-            }
+                rect.Right -= padding.edges;
 
             return rect;
         }

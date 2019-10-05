@@ -1,15 +1,14 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Text;
 
 namespace QuickPlot.PlotSettings
 {
-
     public class Axes
     {
         public Axis x, y;
-        private RectangleF rect;
+        private SKRect rect;
         private double pixelsPerUnitX, pixelsPerUnitY;
         private double unitsPerPixelX, unitsPerPixelY;
 
@@ -17,7 +16,7 @@ namespace QuickPlot.PlotSettings
         {
             x = new Axis();
             y = new Axis();
-            SetRect(new RectangleF(0, 0, 0, 0));
+            SetRect(new SKRect(0, 0, 0, 0));
         }
 
         public Axes(Axes sourceAxes)
@@ -63,7 +62,7 @@ namespace QuickPlot.PlotSettings
             y.Pan(dY);
         }
 
-        public void PanPixels(PointF delta)
+        public void PanPixels(SKPoint delta)
         {
             if (delta.X == 0 && delta.Y == 0)
                 return;
@@ -79,7 +78,7 @@ namespace QuickPlot.PlotSettings
             y.Zoom(fracY);
         }
 
-        public void ZoomPixels(PointF delta)
+        public void ZoomPixels(SKPoint delta)
         {
             if (delta.X == 0 && delta.Y == 0)
                 return;
@@ -91,7 +90,7 @@ namespace QuickPlot.PlotSettings
             Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
-        public void SetRect(RectangleF rect)
+        public void SetRect(SKRect rect)
         {
             this.rect = rect;
 
@@ -104,11 +103,12 @@ namespace QuickPlot.PlotSettings
             unitsPerPixelY = y.span / rect.Height;
         }
 
-        public PointF GetPixel(double unitX, double unitY)
+        public SKPoint GetPixel(double unitX, double unitY)
         {
             double pixelX = (unitX - x.low) * pixelsPerUnitX + rect.Left;
             double pixelY = rect.Bottom - (unitY - y.low) * pixelsPerUnitY;
-            return new PointF((float)pixelX, (float)pixelY);
+            return new SKPoint((float)pixelX, (float)pixelY);
         }
     }
+
 }
