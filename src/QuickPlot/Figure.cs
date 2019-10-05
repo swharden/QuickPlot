@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 
 namespace QuickPlot
 {
@@ -19,14 +20,20 @@ namespace QuickPlot
 
         public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
-            // ensure we have enough plots to get to this subplots
-            while (subplots.Count < subPlotNumber)
-                subplots.Add(new Plot());
+            // activate the plot with this configuration
+            foreach (Plot subplot in subplots)
+            {
+                // TODO: activate the subplot and return
+            }
 
-            // activate this subplot
-            plot = subplots[subPlotNumber - 1];
+            // clear the default plot if it exists
+            if (subplots.Count() > 0)
+                if (subplots.First().subplotPosition.widthFrac == 1 && subplots.First().subplotPosition.widthFrac == 1)
+                    subplots.Clear();
 
-            // note the position of this subplot in the bigger figure (pixel-independent)
+            // if no plot with this configuration exists, create it, activate it, and size it
+            subplots.Add(new Plot());
+            plot = subplots.Last();
             plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
         }
 
@@ -45,21 +52,16 @@ namespace QuickPlot
             // clear the plot
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.Clear(Color.White);
+                gfx.Clear(SystemColors.Control);
             }
 
             // draw each plottable
             foreach (Plot subplot in subplots)
             {
                 // use figure-level settings to determine the plot area for each subplot
-                RectangleF subplotRect = FigureSettings.Layout.GetRectangle(bmp, subplot.subplotPosition, padding);
-                subplot.Render(bmp, subplotRect);
+                //RectangleF subplotRect = FigureSettings.Layout.GetRectangle(bmp, subplot.subplotPosition, padding);
 
-                // outline the plottable
-                using (Graphics gfx = Graphics.FromImage(bmp))
-                {
-                    gfx.DrawRectangle(Pens.Black, subplotRect.X, subplotRect.Y, subplotRect.Width, subplotRect.Height);
-                }
+                subplot.Render(bmp);
             }
         }
 

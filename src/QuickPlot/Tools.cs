@@ -31,5 +31,20 @@ namespace QuickPlot
                 gfx.DrawLine(Pens.LightSteelBlue, pt1, pt2);
             }
         }
+
+        public static RectangleF RectangleShrinkBy(RectangleF rect, float left = 0, float right = 0, float bottom = 0, float top = 0)
+        {
+            rect.X += left;
+            rect.Width -= left;
+
+            rect.Width -= right;
+
+            rect.Height -= bottom;
+
+            rect.Y += top;
+            rect.Height -= top;
+
+            return rect;
+        }
     }
 }

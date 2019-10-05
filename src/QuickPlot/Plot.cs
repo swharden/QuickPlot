@@ -11,7 +11,6 @@ namespace QuickPlot
         public PlotSettings.SubplotPosition subplotPosition;
         public PlotSettings.Axes axes;
         public List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
-        //public PlotSettings.Layout layout = new PlotSettings.Layout();
 
         public Plot()
         {
@@ -42,16 +41,29 @@ namespace QuickPlot
             Debug.WriteLine($"AutoAxis left us with: {axes}");
         }
 
-        public void Render(Bitmap bmp, RectangleF rect)
+        public void Render(Bitmap bmp)
         {
             if (axes == null)
                 AutoAxis();
 
-            axes.SetRect(rect);
+            RectangleF renderArea = subplotPosition.GetRectangle(bmp.Width, bmp.Height);
+            renderArea = Tools.RectangleShrinkBy(renderArea, 5, 5, 5, 5);
+
+            axes.SetRect(renderArea);
+
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            {
+                gfx.FillRectangle(Brushes.White, Rectangle.Round(renderArea));
+            }
 
             for (int i = 0; i < plottables.Count; i++)
             {
                 plottables[i].Render(bmp, axes);
+            }
+
+            using (Graphics gfx = Graphics.FromImage(bmp))
+            {
+                gfx.DrawRectangle(Pens.Black, Rectangle.Round(renderArea));
             }
         }
     }
