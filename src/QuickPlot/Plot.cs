@@ -18,6 +18,9 @@ namespace QuickPlot
         // configuration objects are okay to be public
         public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
         public PlotSettings.Colors colors = new PlotSettings.Colors();
+        public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
+
+        public PlotSettings.Label title, yLabel, xLabel, y2Label;
 
         // axes can be public, and null means it hasnt been set up
         public PlotSettings.Axes axes;
@@ -27,6 +30,10 @@ namespace QuickPlot
 
         public Plot()
         {
+            title = new PlotSettings.Label { text = "Title", fontSize = 16, bold = true };
+            yLabel = new PlotSettings.Label { text = "Vertical Label" };
+            xLabel = new PlotSettings.Label { text = "Horzontal Label" };
+            y2Label = new PlotSettings.Label { text = "Vertical Too" };
         }
 
         public void Scatter(double[] xs, double[] ys, Style style = null)
@@ -50,7 +57,6 @@ namespace QuickPlot
             }
 
             axes.Zoom(1 - marginX, 1 - marginY);
-            Debug.WriteLine($"AutoAxis left us with: {axes}");
         }
 
         private PlotSettings.Axes AxesAfterMouse(RectangleF? renderArea = null)
@@ -71,28 +77,83 @@ namespace QuickPlot
 
         public void Render(Bitmap bmp, RectangleF renderArea, bool applyMouseAxes = false)
         {
+            // updating the layout will calculate sizes for all the render components
+            layout.Update(renderArea);
+
+            // make axes aware of new data area dimensions
             if (axes == null)
                 AutoAxis();
+            axes.SetRect(layout.dataRect);
 
-            // make axes aware of image dimensions
-            axes.SetRect(renderArea);
-
-            // clear the render area
+            // fill the data area
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.FillRectangle(new SolidBrush(colors.background), Rectangle.Round(renderArea));
+                gfx.FillRectangle(new SolidBrush(colors.background), Rectangle.Round(layout.dataRect));
             }
 
-            // draw all the graphs
+            // draw all the plottable objects
             for (int i = 0; i < plottables.Count; i++)
             {
-                plottables[i].Render(bmp, AxesAfterMouse(renderArea));
+                plottables[i].Render(bmp, AxesAfterMouse(layout.dataRect));
             }
 
-            // draw a frame around the figure
+            // draw frames around layout components (for debugging)
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.DrawRectangle(Pens.Black, Rectangle.Round(renderArea));
+                bool drawDebugRectangles = false;
+
+                if (drawDebugRectangles)
+                {
+                    Color titleColor = ColorTranslator.FromHtml("#55000000");
+                    Color labelColor = ColorTranslator.FromHtml("#550000FF");
+                    Color scaleColor = ColorTranslator.FromHtml("#5500FF00");
+                    Color dataColor = ColorTranslator.FromHtml("#55FF0000");
+                    gfx.DrawRectangle(new Pen(dataColor), Rectangle.Round(layout.plotRect));
+                    gfx.FillRectangle(new SolidBrush(titleColor), Rectangle.Round(layout.titleRect));
+                    gfx.FillRectangle(new SolidBrush(labelColor), Rectangle.Round(layout.yLabelRect));
+                    gfx.FillRectangle(new SolidBrush(scaleColor), Rectangle.Round(layout.yScaleRect));
+                    gfx.FillRectangle(new SolidBrush(labelColor), Rectangle.Round(layout.y2LabelRect));
+                    gfx.FillRectangle(new SolidBrush(scaleColor), Rectangle.Round(layout.y2ScaleRect));
+                    gfx.FillRectangle(new SolidBrush(labelColor), Rectangle.Round(layout.xLabelRect));
+                    gfx.FillRectangle(new SolidBrush(scaleColor), Rectangle.Round(layout.xScaleRect));
+                    gfx.DrawRectangle(new Pen(dataColor), Rectangle.Round(layout.dataRect));
+                }
+
+                // Title
+                gfx.DrawString(
+                        title.text, title.font, title.brush,
+                        Tools.RectangleCenter(layout.titleRect),
+                        Tools.StringFormat(Tools.AlignHoriz.center, Tools.AlignVert.center)
+                    );
+
+                // Y1 Label
+                gfx.RotateTransform(-90);
+                gfx.DrawString(
+                        yLabel.text, yLabel.font, yLabel.brush,
+                        Tools.PointRotatedLeft(Tools.RectangleCenter(layout.yLabelRect)),
+                        Tools.StringFormat(Tools.AlignHoriz.center, Tools.AlignVert.center)
+                    );
+                gfx.ResetTransform();
+
+                // Y2 Label
+                gfx.RotateTransform(90);
+                gfx.DrawString(
+                        y2Label.text, y2Label.font, y2Label.brush,
+                        Tools.PointRotatedRight(Tools.RectangleCenter(layout.y2LabelRect)),
+                        Tools.StringFormat(Tools.AlignHoriz.center, Tools.AlignVert.center)
+                    );
+                gfx.ResetTransform();
+
+                // X Label
+                gfx.DrawString(
+                        xLabel.text, xLabel.font, xLabel.brush,
+                        Tools.RectangleCenter(layout.xLabelRect),
+                        Tools.StringFormat(Tools.AlignHoriz.center, Tools.AlignVert.center)
+                    );
+
+                // Outline the data area
+                gfx.DrawRectangle(Pens.Black, Rectangle.Round(layout.dataRect));
+
             }
         }
 

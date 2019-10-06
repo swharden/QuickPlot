@@ -52,6 +52,25 @@ namespace QuickPlot
             return RectangleShrinkBy(rect, allSides, allSides, allSides, allSides);
         }
 
+        public static RectangleF RectangleShrinkMatchVertical(RectangleF rect, RectangleF reference)
+        {
+            rect.Y = reference.Y;
+            rect.Height = reference.Height;
+            return rect;
+        }
+
+        public static RectangleF RectangleShrinkMatchHorizontal(RectangleF rect, RectangleF reference)
+        {
+            rect.X = reference.X;
+            rect.Width = reference.Width;
+            return rect;
+        }
+
+        public static PointF RectangleCenter(RectangleF rect)
+        {
+            return new PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
+        }
+
         public static string GetVersionString()
         {
             Version ver = typeof(QuickPlot.Figure).Assembly.GetName().Version;
@@ -117,6 +136,62 @@ namespace QuickPlot
             }
 
             return bmp;
+        }
+
+        public enum AlignHoriz { left, center, right };
+        public enum AlignVert { top, center, bottom };
+
+        public static StringFormat StringFormat(AlignHoriz h = AlignHoriz.center, AlignVert v = AlignVert.center)
+        {
+            StringFormat sf = new StringFormat();
+
+            switch (h)
+            {
+                case AlignHoriz.left:
+                    sf.Alignment = StringAlignment.Near;
+                    break;
+                case AlignHoriz.right:
+                    sf.Alignment = StringAlignment.Far;
+                    break;
+                case AlignHoriz.center:
+                    sf.Alignment = StringAlignment.Center;
+                    break;
+            }
+
+            switch (v)
+            {
+                case AlignVert.top:
+                    sf.LineAlignment = StringAlignment.Near;
+                    break;
+                case AlignVert.bottom:
+                    sf.LineAlignment = StringAlignment.Far;
+                    break;
+                case AlignVert.center:
+                    sf.LineAlignment = StringAlignment.Center;
+                    break;
+            }
+
+            return sf;
+        }
+
+        public static PointF PointRotatedLeft(PointF point)
+        {
+            // return the new point is a -90 transformation was applied
+            float oldX = point.X;
+            float oldY = point.Y;
+            float newX = -oldY;
+            float newY = oldX;
+            return new PointF(newX, newY);
+        }
+
+        public static PointF PointRotatedRight(PointF point)
+        {
+            // return the new point is a -90 transformation was applied
+            float oldX = point.X;
+            float oldY = point.Y;
+            float newX = oldY;
+            float newY = -oldX;
+            return new PointF(newX, newY);
         }
     }
 }
