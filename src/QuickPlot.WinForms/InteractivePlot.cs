@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace QuickPlot.WinForms
 {
-    public partial class InteractivePlot: UserControl
+    public partial class InteractivePlot : UserControl
     {
         public readonly QuickPlot.Figure figure = new QuickPlot.Figure();
 
@@ -34,7 +35,12 @@ namespace QuickPlot.WinForms
 
         public void Render()
         {
-            if (pictureBox1.Width > 1 && pictureBox1.Height > 1)
+            if (pictureBox1.Width < 1 || pictureBox1.Height < 1)
+                return;
+
+            if (Process.GetCurrentProcess().ProcessName == "devenv")
+                pictureBox1.Image = QuickPlot.Tools.DesignerModeBitmap(pictureBox1.Size);
+            else
                 pictureBox1.Image = figure.GetBitmap(pictureBox1.Width, pictureBox1.Height);
         }
     }

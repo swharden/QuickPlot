@@ -4,7 +4,7 @@ using System;
 namespace QuickPlotTests
 {
     [TestClass]
-    public class FigureTest
+    public class FigureTests
     {
         [TestMethod]
         public void Instantiate()
