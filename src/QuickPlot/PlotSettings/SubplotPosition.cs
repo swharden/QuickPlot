@@ -8,8 +8,13 @@ namespace QuickPlot.PlotSettings
     public class SubplotPosition
     {
         public readonly double widthFrac, heightFrac;
-        public readonly double topFrac, leftFrac;
+        public readonly double topFrac, leftFrac, botFrac, rightFrac;
 
+        public bool isFullSize { get { return ((widthFrac == 1) && (heightFrac == 1)); } }
+
+        /// <summary>
+        /// Calculates the fractional area of a subplot given its position on an imaginary grid
+        /// </summary>
         public SubplotPosition(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
             if (subPlotNumber < 1)
@@ -23,10 +28,12 @@ namespace QuickPlot.PlotSettings
 
             leftFrac = columnIndex * widthFrac;
             topFrac = rowIndex * heightFrac;
+            rightFrac = leftFrac + widthFrac;
+            botFrac = topFrac + heightFrac;
         }
 
         /// <summary>
-        /// Return the area covered by this subplot
+        /// Return the pixel area covered by this subplot
         /// </summary>
         public RectangleF GetRectangle(double widthPx, double heightPx)
         {

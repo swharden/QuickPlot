@@ -8,11 +8,19 @@ namespace QuickPlot
 {
     public class Figure
     {
-        public readonly List<Plot> subplots = new List<Plot>();
+        // keep the subplot list private. Activate plots individually by calling SubPlot()
+        private readonly List<Plot> subplots = new List<Plot>();
+
+        // the active plot
         public Plot plot;
 
-        private FigureSettings.Padding padding = new FigureSettings.Padding();
+        // configuration objects are okay to be public
+        public FigureSettings.Padding padding = new FigureSettings.Padding();
+        public FigureSettings.Colors colors = new FigureSettings.Colors();
 
+        /// <summary>
+        /// Create a Figure (which contains a Plot)
+        /// </summary>
         public Figure()
         {
             Clear();
@@ -26,15 +34,18 @@ namespace QuickPlot
                 // TODO: activate the subplot and return
             }
 
-            // clear the default plot if it exists
-            if (subplots.Count() > 0)
-                if (subplots.First().subplotPosition.widthFrac == 1 && subplots.First().subplotPosition.widthFrac == 1)
+            // clear the original (default) plot if it exists
+            if (subplots.Count() == 1)
+                if (subplots.First().subplotPosition.isFullSize)
                     subplots.Clear();
 
-            // if no plot with this configuration exists, create it, activate it, and size it
-            subplots.Add(new Plot());
+            // no plot with this configuration exists, so create it, add it to the list, and activate it
+            var newPlot = new Plot
+            {
+                subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan)
+            };
+            subplots.Add(newPlot);
             plot = subplots.Last();
-            plot.subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan);
         }
 
         public void Clear()
@@ -45,33 +56,44 @@ namespace QuickPlot
 
         private void Render(Bitmap bmp)
         {
-            // render onto the given bitmap
             if (bmp == null)
                 throw new ArgumentException("bmp must not be null");
 
-            // clear the plot
             using (Graphics gfx = Graphics.FromImage(bmp))
-            {
-                gfx.Clear(SystemColors.Control);
-            }
+                gfx.Clear(colors.background);
 
-            // draw each plottable
             foreach (Plot subplot in subplots)
             {
-                // use figure-level settings to determine the plot area for each subplot
-                //RectangleF subplotRect = FigureSettings.Layout.GetRectangle(bmp, subplot.subplotPosition, padding);
+                // determine render area based on figure-level padding and subplot spacing settings
+                RectangleF renderArea = subplot.subplotPosition.GetRectangle(bmp.Width, bmp.Height);
+                float padLeft, padRight, padBottom, padTop;
+                padLeft = (subplot.subplotPosition.leftFrac == 0) ? padding.edges : padding.horizontal;
+                padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
+                padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
+                padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
+                renderArea = Tools.RectangleShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
 
-                subplot.Render(bmp);
+                // pass the full bitmap into the subplot and it will render inside the renderArea
+                subplot.Render(bmp, renderArea);
             }
         }
 
+        /// <summary>
+        /// Render the figure onto a new Bitmap of a given size
+        /// </summary>
         public Bitmap GetBitmap(int width, int height)
         {
+            if (width < 1 || height < 1)
+                throw new ArgumentException("width and height must be >1");
+
             Bitmap bmp = new Bitmap(width, height);
             Render(bmp);
             return bmp;
         }
 
+        /// <summary>
+        /// Render the figure onto an existing Bitmap (slightly faster)
+        /// </summary>
         public Bitmap GetBitmap(Bitmap existingBitmap)
         {
             if (existingBitmap == null)
@@ -81,14 +103,13 @@ namespace QuickPlot
             return existingBitmap;
         }
 
+        /// <summary>
+        /// Save the figure as an image file
+        /// </summary>
         public void Save(string filePath, int width, int height)
         {
-            if (width < 1 || height < 1)
-                throw new ArgumentException("width and height must be >0");
-
             Bitmap bmp = GetBitmap(width, height);
             bmp.Save(filePath);
-
             Debug.WriteLine($"Saved {System.IO.Path.GetFullPath(filePath)}");
         }
     }

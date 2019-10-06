@@ -46,5 +46,10 @@ namespace QuickPlot
 
             return rect;
         }
+
+        public static RectangleF RectangleShrinkBy(RectangleF rect, float allSides = 0)
+        {
+            return RectangleShrinkBy(rect, allSides, allSides, allSides, allSides);
+        }
     }
 }

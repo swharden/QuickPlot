@@ -5,32 +5,19 @@ using System.Text;
 
 namespace QuickPlot
 {
+    // this is a DTO which is easier to pass than tons of arguments
     public class Style
     {
-        public Color lineColor;
-        public float lineWidth;
+        public Color lineColor = Color.Black;
+        public float lineWidth = 1;
 
-        public Color markerColor;
-        public float markerSize;
-
-        public Style()
-        {
-            SetDefaults();
-        }
+        public Color markerColor = Color.Black;
+        public float markerSize = 3;
 
         public Style(int index)
         {
-            SetDefaults();
             lineColor = Tools.IndexedColor10(index);
             markerColor = Tools.IndexedColor10(index);
-        }
-
-        private void SetDefaults()
-        {
-            lineColor = Color.Black;
-            markerColor = Color.Black;
-            lineWidth = 1;
-            markerSize = 3;
         }
     }
 }

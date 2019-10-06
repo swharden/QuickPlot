@@ -4,6 +4,9 @@ using System.Text;
 
 namespace QuickPlot
 {
+    /// <summary>
+    /// This class contains methods which generate data (double arrays) for plotting
+    /// </summary>
     public static class Generate
     {
         private static Random SeededRandom(int? seed = null)

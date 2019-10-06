@@ -18,6 +18,8 @@ namespace QuickPlot.WinForms
         {
             InitializeComponent();
 
+            figure.colors.background = SystemColors.Control;
+
             double[] xs = QuickPlot.Generate.Consecutative(20, 1.0 / 20);
             figure.plot.Scatter(xs, QuickPlot.Generate.Sin(xs.Length));
             figure.plot.Scatter(xs, QuickPlot.Generate.Cos(xs.Length));
@@ -32,7 +34,8 @@ namespace QuickPlot.WinForms
 
         public void Render()
         {
-            pictureBox1.Image = figure.GetBitmap(pictureBox1.Width, pictureBox1.Height);
+            if (pictureBox1.Width > 1 && pictureBox1.Height > 1)
+                pictureBox1.Image = figure.GetBitmap(pictureBox1.Width, pictureBox1.Height);
         }
     }
 }

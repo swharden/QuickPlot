@@ -8,13 +8,18 @@ namespace QuickPlot
 {
     public class Plot
     {
-        public PlotSettings.SubplotPosition subplotPosition;
+        // keep the plottable list private.
+        private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
+
+        // configuration objects are okay to be public
+        public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
+        public PlotSettings.Colors colors = new PlotSettings.Colors();
+
+        // axes can be public, and null means it hasnt been set up
         public PlotSettings.Axes axes;
-        public List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
 
         public Plot()
         {
-            subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
         }
 
         public void Scatter(double[] xs, double[] ys, Style style = null)
@@ -41,26 +46,26 @@ namespace QuickPlot
             Debug.WriteLine($"AutoAxis left us with: {axes}");
         }
 
-        public void Render(Bitmap bmp)
+        public void Render(Bitmap bmp, RectangleF renderArea)
         {
             if (axes == null)
                 AutoAxis();
 
-            RectangleF renderArea = subplotPosition.GetRectangle(bmp.Width, bmp.Height);
-            renderArea = Tools.RectangleShrinkBy(renderArea, 5, 5, 5, 5);
-
             axes.SetRect(renderArea);
 
+            // clear the render area
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.FillRectangle(Brushes.White, Rectangle.Round(renderArea));
+                gfx.FillRectangle(new SolidBrush(colors.background), Rectangle.Round(renderArea));
             }
 
+            // draw all the graphs
             for (int i = 0; i < plottables.Count; i++)
             {
                 plottables[i].Render(bmp, axes);
             }
 
+            // draw a frame around the figure
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
                 gfx.DrawRectangle(Pens.Black, Rectangle.Round(renderArea));
