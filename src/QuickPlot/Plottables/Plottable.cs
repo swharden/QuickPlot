@@ -9,7 +9,7 @@ namespace QuickPlot.Plottables
     public abstract class Plottable
     {
         public Style style;
-        public abstract void Render(Bitmap bmp, PlotSettings.Axes axes);
+        public abstract void Render(Graphics gfx, PlotSettings.Axes axes);
         public abstract PlotSettings.AxisLimits GetDataArea();
     }
 }

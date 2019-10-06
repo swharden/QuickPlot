@@ -33,9 +33,8 @@ namespace QuickPlot.Plottables
             return lim;
         }
 
-        public override void Render(Bitmap bmp, PlotSettings.Axes axes)
+        public override void Render(Graphics gfx, PlotSettings.Axes axes)
         {
-            Graphics gfx = Graphics.FromImage(bmp);
             gfx.Clip = new Region(axes.GetRect());
 
             gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -58,8 +57,6 @@ namespace QuickPlot.Plottables
                 PointF pt = axes.GetPixel(xs[i], ys[i]);
                 gfx.FillEllipse(brush, pt.X - style.markerSize, pt.Y - style.markerSize, style.markerSize * 2, style.markerSize * 2);
             }
-
-            gfx.Dispose();
         }
     }
 }
