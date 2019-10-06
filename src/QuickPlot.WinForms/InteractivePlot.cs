@@ -54,81 +54,63 @@ namespace QuickPlot.WinForms
         #region mouse interaction
 
         QuickPlot.Plot plotEngagedWithMouse = null;
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             plotEngagedWithMouse = figure.PlotUnderMouse(pictureBox1.Size, e.Location);
-
-            if (plotEngagedWithMouse is null)
-                return;
-
-            if (e.Button == MouseButtons.Left)
+            if (plotEngagedWithMouse != null)
             {
-                pictureBox1.Cursor = Cursors.SizeAll;
-                plotEngagedWithMouse.MouseDown(e.Location, left: true);
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                pictureBox1.Cursor = Cursors.NoMove2D;
-                plotEngagedWithMouse.MouseDown(e.Location, right: true);
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                pictureBox1.Cursor = Cursors.Cross;
-                plotEngagedWithMouse.MouseDown(e.Location, middle: true);
+                if (e.Button == MouseButtons.Left)
+                {
+                    pictureBox1.Cursor = Cursors.SizeAll;
+                    plotEngagedWithMouse.MouseDown(e.Location, left: true);
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    pictureBox1.Cursor = Cursors.NoMove2D;
+                    plotEngagedWithMouse.MouseDown(e.Location, right: true);
+                }
+                else if (e.Button == MouseButtons.Middle)
+                {
+                    pictureBox1.Cursor = Cursors.Cross;
+                    plotEngagedWithMouse.MouseDown(e.Location, middle: true);
+                }
             }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            pictureBox1.Cursor = Cursors.Arrow;
-
-            if (plotEngagedWithMouse is null)
-                return;
-
-            plotEngagedWithMouse.MouseUp(upLocation: e.Location);
-
-            if (e.Button == MouseButtons.Middle)
+            if (plotEngagedWithMouse != null)
             {
-                plotEngagedWithMouse.AutoAxis();
-                Render();
+                plotEngagedWithMouse.MouseUp(upLocation: e.Location);
+                if (e.Button == MouseButtons.Middle)
+                {
+                    plotEngagedWithMouse.AutoAxis();
+                    Render();
+                }
+                plotEngagedWithMouse = null;
             }
-
-            plotEngagedWithMouse = null;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (plotEngagedWithMouse is null)
+            if (plotEngagedWithMouse != null)
             {
-                if (figure.PlotUnderMouse(pictureBox1.Size, e.Location) == null)
-                    pictureBox1.Cursor = Cursors.Arrow;
-                else
-                    pictureBox1.Cursor = Cursors.Cross;
+                plotEngagedWithMouse.MouseMove(currentLocation: e.Location);
+                Render(interactive: true);
             }
             else
             {
-                plotEngagedWithMouse.MouseMove(currentLocation: e.Location);
-                Render(true);
+                var plotUnderMouse = figure.PlotUnderMouse(pictureBox1.Size, e.Location);
+                pictureBox1.Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Cross;
             }
         }
 
         private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            plotEngagedWithMouse = figure.PlotUnderMouse(pictureBox1.Size, e.Location);
-
-            if (plotEngagedWithMouse is null)
-                return;
-
-            double fractionalZoom = 0.15;
-
-            if (e.Delta > 0)
-                plotEngagedWithMouse.axes.Zoom(1 + fractionalZoom, 1 + fractionalZoom);
-            else
-                plotEngagedWithMouse.axes.Zoom(1 - fractionalZoom, 1 - fractionalZoom);
-
+            double zoom = (e.Delta > 0) ? 1.15 : 0.85;
+            figure.PlotUnderMouse(pictureBox1.Size, e.Location)?.axes.Zoom(zoom, zoom);
             Render();
-
-            plotEngagedWithMouse = null;
         }
 
         #endregion

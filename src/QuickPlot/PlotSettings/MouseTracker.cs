@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
+/* MOUSE TRACKING NOTES
+ * 
+ * Mouse tracking is difficult because it spans so many levels (user control, figure, plot, and axes).
+ * Mouse tracking is handled at the plot level because only a single plot is interacted with at a time with the mouse.
+ * Mouse actions (pan and zoom) can only be applied at render, because that's the only time a plot knows its size in pixels.
+ * 
+ */
+
 namespace QuickPlot.PlotSettings
 {
     public class MouseTracker

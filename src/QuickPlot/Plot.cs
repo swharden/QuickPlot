@@ -6,6 +6,10 @@ using System.Text;
 
 namespace QuickPlot
 {
+    /* The Plot object holds details about a plot (data, axes information, etc.) but never stores plot size.
+     * Plot size is only passed-in when Render() is called.
+     */
+
     public class Plot
     {
         // keep the plottable list private.

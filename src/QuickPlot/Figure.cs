@@ -6,6 +6,20 @@ using System.Linq;
 
 namespace QuickPlot
 {
+    /* The Figure object is the primary interface for QuickPlot users.
+     * Figure.plot is the active plot, and its methods can be called to add data to the plot.
+     * Figure.subplot() can be used to add additional plots, activating Figure.plot to the latest plot created.
+     * Pixel dimensions are never stored in Figures or Plots. They are only passed-in when calling Render().
+     * 
+     * RENDER SEQUENCE:
+     *   Figure.Render(figureSize):
+     *     for each subplot call subplot.Render(figureSize, subplotRectangle):
+     *       - use subplotRectangle to determine axes in pixels
+     *       - apply mouse manipulation using mouse delta in pixels
+     *       - for each plottable call plottable.Render(subplotRectangle)
+     *   
+     */
+
     public class Figure
     {
         // keep the subplot list private. Activate plots individually by calling SubPlot()
