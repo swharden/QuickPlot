@@ -18,6 +18,7 @@ namespace QuickPlot
         public FigureSettings.Padding padding = new FigureSettings.Padding();
         public FigureSettings.Colors colors = new FigureSettings.Colors();
 
+
         /// <summary>
         /// Create a Figure (which contains a Plot)
         /// </summary>
@@ -26,6 +27,9 @@ namespace QuickPlot
             Clear();
         }
 
+        /// <summary>
+        /// Add a subplot to the figure sized according to an imaginary grid of plots
+        /// </summary>
         public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
             // activate the plot with this configuration
@@ -48,12 +52,18 @@ namespace QuickPlot
             plot = subplots.Last();
         }
 
+        /// <summary>
+        /// Delete existing subplots and re-initialize the figure with a single plot
+        /// </summary>
         public void Clear()
         {
             subplots.Clear();
             Subplot(1, 1, 1);
         }
 
+        /// <summary>
+        /// Draw all plots onto the given Bitmap
+        /// </summary>
         private void Render(Bitmap bmp)
         {
             if (bmp == null)
@@ -63,19 +73,22 @@ namespace QuickPlot
                 gfx.Clear(colors.background);
 
             foreach (Plot subplot in subplots)
-            {
-                // determine render area based on figure-level padding and subplot spacing settings
-                RectangleF renderArea = subplot.subplotPosition.GetRectangle(bmp.Width, bmp.Height);
-                float padLeft, padRight, padBottom, padTop;
-                padLeft = (subplot.subplotPosition.leftFrac == 0) ? padding.edges : padding.horizontal;
-                padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
-                padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
-                padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
-                renderArea = Tools.RectangleShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
+                subplot.Render(bmp, SubplotRectangle(bmp.Size, subplot));
+        }
 
-                // pass the full bitmap into the subplot and it will render inside the renderArea
-                subplot.Render(bmp, renderArea);
-            }
+        /// <summary>
+        /// Return the area on the figure where the subplot will be rendered
+        /// </summary>
+        private RectangleF SubplotRectangle(SizeF figureSize, Plot subplot)
+        {
+            RectangleF renderArea = subplot.subplotPosition.GetRectangle(figureSize.Width, figureSize.Height);
+            float padLeft, padRight, padBottom, padTop;
+            padLeft = (subplot.subplotPosition.leftFrac == 0) ? padding.edges : padding.horizontal;
+            padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
+            padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
+            padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
+            renderArea = Tools.RectangleShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
+            return renderArea;
         }
 
         /// <summary>
@@ -111,6 +124,21 @@ namespace QuickPlot
             Bitmap bmp = GetBitmap(width, height);
             bmp.Save(filePath);
             Debug.WriteLine($"Saved {System.IO.Path.GetFullPath(filePath)}");
+        }
+
+        /// <summary>
+        /// Return the plot the mouse is hovering over (or null if it's not over one)
+        /// </summary>
+        public Plot PlotUnderMouse(SizeF figureSize, Point currentLocation)
+        {
+            foreach (Plot subplot in subplots)
+            {
+                RectangleF rect = SubplotRectangle(figureSize, subplot);
+                if (rect.Contains(currentLocation))
+                    return subplot;
+            }
+
+            return null;
         }
     }
 }

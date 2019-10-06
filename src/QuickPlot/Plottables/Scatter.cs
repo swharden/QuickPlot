@@ -36,6 +36,8 @@ namespace QuickPlot.Plottables
         public override void Render(Bitmap bmp, PlotSettings.Axes axes)
         {
             Graphics gfx = Graphics.FromImage(bmp);
+            gfx.Clip = new Region(axes.GetRect());
+
             gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 

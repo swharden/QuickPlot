@@ -104,6 +104,11 @@ namespace QuickPlot.PlotSettings
             unitsPerPixelY = y.span / rect.Height;
         }
 
+        public RectangleF GetRect()
+        {
+            return rect;
+        }
+
         public PointF GetPixel(double unitX, double unitY)
         {
             double pixelX = (unitX - x.low) * pixelsPerUnitX + rect.Left;

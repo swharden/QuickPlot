@@ -18,6 +18,9 @@ namespace QuickPlot
         // axes can be public, and null means it hasnt been set up
         public PlotSettings.Axes axes;
 
+        // keep private?
+        private PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
+
         public Plot()
         {
         }
@@ -46,11 +49,28 @@ namespace QuickPlot
             Debug.WriteLine($"AutoAxis left us with: {axes}");
         }
 
-        public void Render(Bitmap bmp, RectangleF renderArea)
+        private PlotSettings.Axes AxesAfterMouse(RectangleF? renderArea = null)
+        {
+            if (renderArea is null)
+                renderArea = mouse.lastRenderArea;
+            else
+                mouse.lastRenderArea = (RectangleF)renderArea;
+
+            var axesAfterMouse = new PlotSettings.Axes(axes);
+            if (mouse.leftButtonIsDown)
+                axesAfterMouse.PanPixels(mouse.leftDelta);
+            if (mouse.rightButtonIsDown)
+                axesAfterMouse.ZoomPixels(mouse.rightDelta);
+            axesAfterMouse.SetRect((RectangleF)renderArea);
+            return axesAfterMouse;
+        }
+
+        public void Render(Bitmap bmp, RectangleF renderArea, bool applyMouseAxes = false)
         {
             if (axes == null)
                 AutoAxis();
 
+            // make axes aware of image dimensions
             axes.SetRect(renderArea);
 
             // clear the render area
@@ -62,7 +82,7 @@ namespace QuickPlot
             // draw all the graphs
             for (int i = 0; i < plottables.Count; i++)
             {
-                plottables[i].Render(bmp, axes);
+                plottables[i].Render(bmp, AxesAfterMouse(renderArea));
             }
 
             // draw a frame around the figure
@@ -70,6 +90,26 @@ namespace QuickPlot
             {
                 gfx.DrawRectangle(Pens.Black, Rectangle.Round(renderArea));
             }
+        }
+
+        public void MouseDown(Point downLocation, bool left = false, bool right = false, bool middle = false)
+        {
+            mouse.leftDown = (left) ? downLocation : new Point(0, 0);
+            mouse.rightDown = (right) ? downLocation : new Point(0, 0);
+            mouse.middleDown = (middle) ? downLocation : new Point(0, 0);
+        }
+
+        public void MouseUp(Point upLocation)
+        {
+            axes = AxesAfterMouse();
+            mouse.leftDown = new Point(0, 0);
+            mouse.rightDown = new Point(0, 0);
+            mouse.middleDown = new Point(0, 0);
+        }
+
+        public void MouseMove(Point currentLocation)
+        {
+            mouse.now = currentLocation;
         }
     }
 }
