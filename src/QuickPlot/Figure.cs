@@ -19,19 +19,29 @@ namespace QuickPlot
      *       - for each plottable call plottable.Render(subplotRectangle)
      *   
      */
-
+    
+    /// <summary>
+    /// A Figure is a collection of one or more subplots.
+    /// </summary>
     public class Figure
     {
         // keep the subplot list private. Activate plots individually by calling SubPlot()
         private readonly List<Plot> subplots = new List<Plot>();
 
-        // the active plot
+        /// <summary>
+        /// The Plot last activated by SubPlot()
+        /// </summary>
         public Plot plot;
 
-        // configuration objects are okay to be public
+        /// <summary>
+        /// Figure-level padding configuration
+        /// </summary>
         public FigureSettings.Padding padding = new FigureSettings.Padding();
-        public FigureSettings.Colors colors = new FigureSettings.Colors();
 
+        /// <summary>
+        /// Figure-level color configuration
+        /// </summary>
+        public FigureSettings.Colors colors = new FigureSettings.Colors();
 
         /// <summary>
         /// Create a Figure (which contains a Plot)

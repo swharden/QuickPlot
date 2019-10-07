@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuickPlot</name>
+    </assembly>
+    <members>
+        <member name="T:QuickPlot.Figure">
+            <summary>
+            A Figure is a collection of one or more subplots.
+            </summary>
+        </member>
+        <member name="F:QuickPlot.Figure.plot">
+            <summary>
+            The Plot last activated by SubPlot()
+            </summary>
+        </member>
+        <member name="F:QuickPlot.Figure.padding">
+            <summary>
+            Figure-level padding configuration
+            </summary>
+        </member>
+        <member name="F:QuickPlot.Figure.colors">
+            <summary>
+            Figure-level color configuration
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.#ctor">
+            <summary>
+            Create a Figure (which contains a Plot)
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.Subplot(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Add a subplot to the figure sized according to an imaginary grid of plots
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.Clear">
+            <summary>
+            Delete existing subplots and re-initialize the figure with a single plot
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.Render(System.Drawing.Bitmap)">
+            <summary>
+            Draw all plots onto the given Bitmap
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.SubplotRectangle(System.Drawing.SizeF,QuickPlot.Plot)">
+            <summary>
+            Return the area on the figure where the subplot will be rendered
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.GetBitmap(System.Int32,System.Int32)">
+            <summary>
+            Render the figure onto a new Bitmap of a given size
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.GetBitmap(System.Drawing.Bitmap)">
+            <summary>
+            Render the figure onto an existing Bitmap (slightly faster)
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.Save(System.String,System.Int32,System.Int32)">
+            <summary>
+            Save the figure as an image file
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Figure.PlotUnderMouse(System.Drawing.SizeF,System.Drawing.Point)">
+            <summary>
+            Return the plot the mouse is hovering over (or null if it's not over one)
+            </summary>
+        </member>
+        <member name="T:QuickPlot.Generate">
+            <summary>
+            This class contains methods which generate data (double arrays) for plotting
+            </summary>
+        </member>
+        <member name="T:QuickPlot.Plot">
+            <summary>
+            The Plot object holds details about a plot (data, axes, styling, etc.)
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.#ctor">
+            <summary>
+            Create a new Plot
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.Scatter(System.Double[],System.Double[],QuickPlot.Style)">
+            <summary>
+            Create a scatter plot from X and Y arrays of identical length
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.AutoAxis(System.Double,System.Double)">
+            <summary>
+            Automatically set axis limits to fit the data
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.AxesAfterMouse(System.Nullable{System.Drawing.RectangleF})">
+            <summary>
+            Return a new Axes after mouse panning and zooming
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.Render(System.Drawing.Bitmap,System.Drawing.RectangleF)">
+            <summary>
+            Render the plot inside a rectangle on an existing Bitmap
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.MouseDown(System.Drawing.Point,System.Boolean,System.Boolean,System.Boolean)">
+            <summary>
+            Indicate that a user control has started a click-drag
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.MouseUp(System.Drawing.Point)">
+            <summary>
+            Indicate that a user control has ended a click-drag
+            </summary>
+        </member>
+        <member name="M:QuickPlot.Plot.MouseMove(System.Drawing.Point)">
+            <summary>
+            Indicate that a user control is click-dragging
+            </summary>
+        </member>
+        <member name="M:QuickPlot.PlotSettings.Layout.Update(System.Drawing.RectangleF)">
+            <summary>
+            recalculate all layout rectangles based on a new plot rectangle
+            </summary>
+        </member>
+        <member name="M:QuickPlot.PlotSettings.SubplotPosition.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Calculates the fractional area of a subplot given its position on an imaginary grid
+            </summary>
+        </member>
+        <member name="M:QuickPlot.PlotSettings.SubplotPosition.GetRectangle(System.Double,System.Double)">
+            <summary>
+            Return the pixel area covered by this subplot
+            </summary>
+        </member>
+    </members>
+</doc>

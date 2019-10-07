@@ -6,10 +6,13 @@ using System.Text;
 
 namespace QuickPlot
 {
-    /* The Plot object holds details about a plot (data, axes information, etc.) but never stores plot size.
-     * Plot size is only passed-in when Render() is called.
+    /* Plots never store plot size! 
+     * Pixel dimensions are only passed-in when Render() is called.
      */
 
+    /// <summary>
+    /// The Plot object holds details about a plot (data, axes, styling, etc.)
+    /// </summary>
     public class Plot
     {
         // keep the plottable list private.
@@ -30,6 +33,9 @@ namespace QuickPlot
         // keep private?
         private PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
+        /// <summary>
+        /// Create a new Plot
+        /// </summary>
         public Plot()
         {
             title = new PlotSettings.Label { text = "Title", fontSize = 16, bold = true };
@@ -42,6 +48,9 @@ namespace QuickPlot
             y2Ticks = new PlotSettings.TickCollection(PlotSettings.Side.right);
         }
 
+        /// <summary>
+        /// Create a scatter plot from X and Y arrays of identical length
+        /// </summary>
         public void Scatter(double[] xs, double[] ys, Style style = null)
         {
             if (style == null)
@@ -50,6 +59,9 @@ namespace QuickPlot
             plottables.Add(scatterPlot);
         }
 
+        /// <summary>
+        /// Automatically set axis limits to fit the data
+        /// </summary>
         public void AutoAxis(double marginX = .1, double marginY = .1)
         {
             if (axes == null)
@@ -172,6 +184,9 @@ namespace QuickPlot
             gfx.DrawRectangle(Pens.Black, Rectangle.Round(layout.dataRect));
         }
 
+        /// <summary>
+        /// Indicate that a user control has started a click-drag
+        /// </summary>
         public void MouseDown(Point downLocation, bool left = false, bool right = false, bool middle = false)
         {
             mouse.leftDown = (left) ? downLocation : new Point(0, 0);
@@ -179,6 +194,9 @@ namespace QuickPlot
             mouse.middleDown = (middle) ? downLocation : new Point(0, 0);
         }
 
+        /// <summary>
+        /// Indicate that a user control has ended a click-drag
+        /// </summary>
         public void MouseUp(Point upLocation)
         {
             axes = AxesAfterMouse();
@@ -187,6 +205,9 @@ namespace QuickPlot
             mouse.middleDown = new Point(0, 0);
         }
 
+        /// <summary>
+        /// Indicate that a user control is click-dragging
+        /// </summary>
         public void MouseMove(Point currentLocation)
         {
             mouse.now = currentLocation;
