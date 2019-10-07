@@ -20,7 +20,9 @@ namespace QuickPlot
         public PlotSettings.Colors colors = new PlotSettings.Colors();
         public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
 
+        // make label and tick settings public so they can be customized
         public PlotSettings.Label title, yLabel, xLabel, y2Label;
+        public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
 
         // axes can be public, and null means it hasnt been set up
         public PlotSettings.Axes axes;
@@ -34,6 +36,10 @@ namespace QuickPlot
             yLabel = new PlotSettings.Label { text = "Vertical Label" };
             xLabel = new PlotSettings.Label { text = "Horzontal Label" };
             y2Label = new PlotSettings.Label { text = "Vertical Too" };
+
+            yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
+            xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
+            y2Ticks = new PlotSettings.TickCollection(PlotSettings.Side.right);
         }
 
         public void Scatter(double[] xs, double[] ys, Style style = null)
@@ -59,6 +65,9 @@ namespace QuickPlot
             axes.Zoom(1 - marginX, 1 - marginY);
         }
 
+        /// <summary>
+        /// Return a new Axes after mouse panning and zooming
+        /// </summary>
         private PlotSettings.Axes AxesAfterMouse(RectangleF? renderArea = null)
         {
             if (renderArea is null)
@@ -71,29 +80,40 @@ namespace QuickPlot
                 axesAfterMouse.PanPixels(mouse.leftDelta);
             if (mouse.rightButtonIsDown)
                 axesAfterMouse.ZoomPixels(mouse.rightDelta);
-            axesAfterMouse.SetRect((RectangleF)renderArea);
+            axesAfterMouse.SetDataRect((RectangleF)renderArea);
             return axesAfterMouse;
         }
 
-        public void Render(Bitmap bmp, RectangleF renderArea)
+        /// <summary>
+        /// Render the plot inside a rectangle on an existing Bitmap
+        /// </summary>
+        public void Render(Bitmap bmp, RectangleF plotRect)
         {
+            layout.Update(plotRect);
 
-            // updating the layout will calculate sizes for all the render components
-            layout.Update(renderArea);
-
-            // make axes aware of new data area dimensions
-            if (axes == null)
+            // update class-level with the latest plot dimensions
+            if (this.axes == null)
                 AutoAxis();
-            axes.SetRect(layout.dataRect);
-            var axesAfterMouse = AxesAfterMouse(layout.dataRect);
+            this.axes.SetDataRect(layout.dataRect);
 
+            // update axes locally to reflect mouse manipulations
+            var axes = AxesAfterMouse(layout.dataRect);
+
+            // draw the graphics
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.FillRectangle(new SolidBrush(colors.background), Rectangle.Round(layout.dataRect));
-                RenderLabels(gfx, debugColors: false);
-                RenderTicksAndGrid(gfx, axesAfterMouse);
+                gfx.FillRegion(new SolidBrush(colors.dataBackground), new Region(layout.dataRect));
+
+                yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect, gfx);
+                yTicks.Render(gfx, axes);
+
+                xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect, gfx);
+                xTicks.Render(gfx, axes);
+
                 for (int i = 0; i < plottables.Count; i++)
-                    plottables[i].Render(gfx, axesAfterMouse);
+                    plottables[i].Render(gfx, axes);
+
+                RenderLabels(gfx, debugColors: false);
             }
         }
 
@@ -150,43 +170,6 @@ namespace QuickPlot
 
             // Outline the data area
             gfx.DrawRectangle(Pens.Black, Rectangle.Round(layout.dataRect));
-        }
-
-        private void RenderTicksAndGrid(Graphics gfx, PlotSettings.Axes axes)
-        {
-            // determine the ticks
-            //TODO: calculate these better
-            double[] xTickPositions = { 0, 10, 20, 30, 40, 50 };
-            double[] yTickPositions = { -1, -.5, 0, .5, 1 };
-
-            int tickLength = 3;
-            Font tickFont = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular);
-            Brush tickBrush = new SolidBrush(Color.Black);
-            StringFormat xTickSf = Tools.StringFormat(Tools.AlignHoriz.center, Tools.AlignVert.top);
-            StringFormat yTickSf = Tools.StringFormat(Tools.AlignHoriz.right, Tools.AlignVert.center);
-
-            foreach (double xTickPosition in xTickPositions)
-            {
-                if ((xTickPosition >= axes.x.low) && (xTickPosition <= axes.x.high))
-                {
-                    float xPixel = axes.GetPixel(xTickPosition, 0).X;
-                    gfx.DrawLine(Pens.LightGray, xPixel, layout.dataRect.Bottom, xPixel, layout.dataRect.Top);
-                    gfx.DrawLine(Pens.Black, xPixel, layout.dataRect.Bottom, xPixel, layout.dataRect.Bottom + tickLength);
-                    gfx.DrawString(xTickPosition.ToString(), tickFont, tickBrush, new PointF(xPixel, layout.dataRect.Bottom + tickLength), xTickSf);
-                }
-            }
-
-            foreach (double yTickPosition in yTickPositions)
-            {
-                if ((yTickPosition >= axes.y.low) && (yTickPosition <= axes.y.high))
-                {
-                    float yPixel = axes.GetPixel(0, yTickPosition).Y;
-                    gfx.DrawLine(Pens.LightGray, layout.dataRect.Left, yPixel, layout.dataRect.Right, yPixel);
-                    gfx.DrawLine(Pens.Black, layout.dataRect.Left, yPixel, layout.dataRect.Left - tickLength, yPixel);
-                    gfx.DrawString(yTickPosition.ToString(), tickFont, tickBrush, new PointF(layout.dataRect.Left - tickLength, yPixel), yTickSf);
-                }
-            }
-
         }
 
         public void MouseDown(Point downLocation, bool left = false, bool right = false, bool middle = false)

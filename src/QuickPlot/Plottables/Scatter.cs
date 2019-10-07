@@ -35,7 +35,7 @@ namespace QuickPlot.Plottables
 
         public override void Render(Graphics gfx, PlotSettings.Axes axes)
         {
-            gfx.Clip = new Region(axes.GetRect());
+            gfx.Clip = new Region(axes.GetDataRect());
 
             gfx.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             gfx.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
@@ -57,6 +57,8 @@ namespace QuickPlot.Plottables
                 PointF pt = axes.GetPixel(xs[i], ys[i]);
                 gfx.FillEllipse(brush, pt.X - style.markerSize, pt.Y - style.markerSize, style.markerSize * 2, style.markerSize * 2);
             }
+
+            gfx.ResetClip();
         }
     }
 }

@@ -7,6 +7,6 @@ namespace QuickPlot.PlotSettings
 {
     public class Colors
     {
-        public Color background = Color.White;
+        public Color dataBackground = Color.White;
     }
 }

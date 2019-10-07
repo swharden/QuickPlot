@@ -17,7 +17,7 @@ namespace QuickPlot.PlotSettings
         {
             x = new Axis();
             y = new Axis();
-            SetRect(new RectangleF(0, 0, 0, 0));
+            SetDataRect(new RectangleF(0, 0, 0, 0));
         }
 
         public Axes(Axes sourceAxes)
@@ -25,7 +25,7 @@ namespace QuickPlot.PlotSettings
             x = new Axis();
             y = new Axis();
             Set(sourceAxes.x.low, sourceAxes.x.high, sourceAxes.y.low, sourceAxes.y.high);
-            SetRect(sourceAxes.rect);
+            SetDataRect(sourceAxes.rect);
         }
 
         public override string ToString()
@@ -91,7 +91,7 @@ namespace QuickPlot.PlotSettings
             Zoom(Math.Pow(10, dXFrac), Math.Pow(10, dYFrac));
         }
 
-        public void SetRect(RectangleF rect)
+        public void SetDataRect(RectangleF rect)
         {
             this.rect = rect;
 
@@ -104,7 +104,7 @@ namespace QuickPlot.PlotSettings
             unitsPerPixelY = y.span / rect.Height;
         }
 
-        public RectangleF GetRect()
+        public RectangleF GetDataRect()
         {
             return rect;
         }

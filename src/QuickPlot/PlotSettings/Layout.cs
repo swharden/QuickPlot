@@ -9,7 +9,7 @@ namespace QuickPlot.PlotSettings
     {
         // user can reach in and configure these options
         float yLabelWidth = 20;
-        float yScaleWidth = 20;
+        float yScaleWidth = 30;
         float y2LabelWidth = 20;
         float y2ScaleWidth = 20;
         float titleHeight = 20;
@@ -32,10 +32,11 @@ namespace QuickPlot.PlotSettings
         {
         }
 
-        public void Update(RectangleF renderArea)
+        /// <summary>
+        /// recalculate all layout rectangles based on a new plot rectangle
+        /// </summary>
+        public void Update(RectangleF plotRect)
         {
-            plotRect = new RectangleF(renderArea.Location, renderArea.Size);
-
             titleRect = new RectangleF(plotRect.X, plotRect.Y, plotRect.Width, titleHeight);
 
             yLabelRect = new RectangleF(plotRect.X, plotRect.Y, yLabelWidth, plotRect.Height);
@@ -51,7 +52,7 @@ namespace QuickPlot.PlotSettings
             dataRect = plotRect;
             dataRect = Tools.RectangleShrinkBy(dataRect, 
                     left: yLabelRect.Width + yScaleRect.Width,
-                    right: y2LabelRect.Width + yScaleRect.Width,
+                    right: y2LabelRect.Width + y2ScaleRect.Width,
                     bottom: xLabelRect.Height + xScaleRect.Height,
                     top: titleRect.Height
                 );
