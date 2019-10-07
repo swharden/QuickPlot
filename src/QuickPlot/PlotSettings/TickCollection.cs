@@ -104,10 +104,8 @@ namespace QuickPlot.PlotSettings
             int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
             TickSpacing ts = new TickSpacing(low, high, startingTickCount);
 
-            Console.WriteLine();
             while (true)
             {
-                Console.WriteLine("calculating...");
                 Recalculate(ts, low, high, singleDigitSize);
                 if (TicksOverlap(dataRect))
                     ts.DecreaseDensity(low, high);
@@ -115,8 +113,6 @@ namespace QuickPlot.PlotSettings
                     break;
             }
             ts.DecreaseDensity(low, high); // one more time for gentle appearance
-
-            Console.WriteLine($"Found ideal tick spacing: {ts.spacing}");
         }
 
         private void Recalculate(TickSpacing ts, double low, double high, SizeF singleDigitSize)
