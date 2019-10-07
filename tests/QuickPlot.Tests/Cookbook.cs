@@ -8,8 +8,8 @@ namespace QuickPlotTests
     [TestClass]
     public class Cookbook
     {
-        private int imageWidth = 600;
-        private int imageHeight = 400;
+        private int imageWidth = 800;
+        private int imageHeight = 600;
 
         [TestMethod]
         public void GenerateCookbook()
@@ -25,11 +25,11 @@ namespace QuickPlotTests
             fig.plot.Scatter(xs, QuickPlot.Generate.Cos(xs.Length));
 
             fig.Subplot(2, 3, 3);
-            fig.plot.Scatter(xs, QuickPlot.Generate.Random(xs.Length));
+            fig.plot.Scatter(xs, QuickPlot.Generate.Random(xs.Length, seed: 0));
 
             fig.Subplot(2, 3, 4, 1, 3);
-            double[] randomXs = QuickPlot.Generate.Random(100, seed: 0);
-            double[] randomYs = QuickPlot.Generate.Random(100, seed: 1);
+            double[] randomXs = QuickPlot.Generate.Random(100, seed: 1);
+            double[] randomYs = QuickPlot.Generate.Random(100, seed: 2);
             fig.plot.Scatter(randomXs, randomYs);
 
             fig.Save("cookbook_example.png", imageWidth, imageHeight);
