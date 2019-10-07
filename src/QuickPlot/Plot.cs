@@ -41,7 +41,7 @@ namespace QuickPlot
             title = new PlotSettings.Label { text = "Title", fontSize = 16, bold = true };
             yLabel = new PlotSettings.Label { text = "Vertical Label" };
             xLabel = new PlotSettings.Label { text = "Horzontal Label" };
-            y2Label = new PlotSettings.Label { text = "Vertical Too" };
+            y2Label = new PlotSettings.Label { text = "" };
 
             yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
             xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
@@ -117,9 +117,8 @@ namespace QuickPlot
                 gfx.FillRegion(new SolidBrush(colors.dataBackground), new Region(layout.dataRect));
 
                 yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect, gfx);
-                yTicks.Render(gfx, axes);
-
                 xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect, gfx);
+                yTicks.Render(gfx, axes);
                 xTicks.Render(gfx, axes);
 
                 for (int i = 0; i < plottables.Count; i++)

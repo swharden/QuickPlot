@@ -10,8 +10,8 @@ namespace QuickPlot.PlotSettings
         // user can reach in and configure these options
         float yLabelWidth = 20;
         float yScaleWidth = 40;
-        float y2LabelWidth = 20;
-        float y2ScaleWidth = 20;
+        float y2LabelWidth = 0;
+        float y2ScaleWidth = 0;
         float titleHeight = 20;
         float xLabelHeight = 20;
         float xScaleHeight = 20;
