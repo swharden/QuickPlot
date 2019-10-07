@@ -96,6 +96,7 @@ namespace QuickPlot.PlotSettings
             // Estimate how large lable are by measuring the dimensions of a single character.
             // This is slightly faster than running MeasureString() on every label later.
             SizeF singleDigitSize = gfx.MeasureString("0", font);
+            singleDigitSize.Height *= (float)1.2; // add a litle more vertical padding
 
             // Start by using a too-high tick density (tick labels will overlap)
             // then decrease density until tick labels no longer overlap
@@ -104,15 +105,14 @@ namespace QuickPlot.PlotSettings
             int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
             TickSpacing ts = new TickSpacing(low, high, startingTickCount);
 
-            while (true)
+            for (int i = 0; i < 10; i++)
             {
                 Recalculate(ts, low, high, singleDigitSize);
-                if (TicksOverlap(dataRect))
-                    ts.DecreaseDensity(low, high);
-                else
+                if (!TicksOverlap(dataRect))
                     break;
+                else
+                    ts.DecreaseDensity(low, high);
             }
-            ts.DecreaseDensity(low, high); // one more time for gentle appearance
         }
 
         private void Recalculate(TickSpacing ts, double low, double high, SizeF singleDigitSize)
