@@ -81,7 +81,7 @@ namespace QuickPlot.PlotSettings
         public Brush brush = new SolidBrush(Color.Black);
 
         List<Tick> ticks;
-        private SizeF biggestTickLabelSize;
+        public SizeF biggestTickLabelSize;
 
         public readonly Side side;
 
@@ -93,21 +93,16 @@ namespace QuickPlot.PlotSettings
 
         public void FindBestTickDensity(double low, double high, RectangleF dataRect, Graphics gfx)
         {
-            // Estimate how large lable are by measuring the dimensions of a single character.
-            // This is slightly faster than running MeasureString() on every label later.
-            SizeF singleDigitSize = gfx.MeasureString("0", font);
-            singleDigitSize.Height *= (float)1.2; // add a litle more vertical padding
-
             // Start by using a too-high tick density (tick labels will overlap)
             // then decrease density until tick labels no longer overlap
-            int verticalTickCount = (int)(dataRect.Height / singleDigitSize.Height);
-            int horizontalTickCount = (int)(dataRect.Width / (singleDigitSize.Width * 3));
+            int verticalTickCount = (int)(dataRect.Height / 8);
+            int horizontalTickCount = (int)(dataRect.Width / 8*3);
             int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
             TickSpacing ts = new TickSpacing(low, high, startingTickCount);
 
             for (int i = 0; i < 10; i++)
             {
-                Recalculate(ts, low, high, singleDigitSize);
+                Recalculate(ts, low, high, gfx);
                 if (!TicksOverlap(dataRect))
                     break;
                 else
@@ -115,7 +110,7 @@ namespace QuickPlot.PlotSettings
             }
         }
 
-        private void Recalculate(TickSpacing ts, double low, double high, SizeF singleDigitSize)
+        private void Recalculate(TickSpacing ts, double low, double high, Graphics gfx)
         {
             ticks.Clear();
             biggestTickLabelSize = new SizeF(0, 0);
@@ -123,9 +118,14 @@ namespace QuickPlot.PlotSettings
             {
                 string label = Math.Round(value, 10).ToString();
                 ticks.Add(new Tick(value, label));
-                biggestTickLabelSize.Width = Math.Max(biggestTickLabelSize.Width, singleDigitSize.Width * label.Length);
-                biggestTickLabelSize.Height = Math.Max(biggestTickLabelSize.Height, singleDigitSize.Height);
+                SizeF labelSize = gfx.MeasureString(label, font);
+                biggestTickLabelSize.Width = Math.Max(biggestTickLabelSize.Width, labelSize.Width);
+                biggestTickLabelSize.Height = Math.Max(biggestTickLabelSize.Height, labelSize.Height);
             }
+
+            // add extra padding to the label to make spacing more comfortable
+            biggestTickLabelSize.Width += 5;
+            biggestTickLabelSize.Height += 5;
         }
 
         private bool TicksOverlap(RectangleF dataRect)
