@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -48,7 +49,15 @@ namespace QuickPlot.Plottables
             {
                 PointF pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
                 PointF pt2 = axes.GetPixel(xs[i], ys[i]);
-                gfx.DrawLine(pen, pt1, pt2);
+
+                try
+                {
+                    gfx.DrawLine(pen, pt1, pt2);
+                }
+                catch
+                {
+                    Debug.WriteLine($"scatter crashed drawing line {i}");
+                }
             }
 
             // draw markers
