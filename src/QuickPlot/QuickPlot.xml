@@ -99,7 +99,7 @@
             Return a new Axes after mouse panning and zooming
             </summary>
         </member>
-        <member name="M:QuickPlot.Plot.Render(System.Drawing.Bitmap,System.Drawing.RectangleF)">
+        <member name="M:QuickPlot.Plot.Render(System.Drawing.Bitmap,System.Drawing.RectangleF,System.Boolean)">
             <summary>
             Render the plot inside a rectangle on an existing Bitmap
             </summary>

@@ -113,15 +113,18 @@ namespace QuickPlot.PlotSettings
         private void Recalculate(TickSpacing ts, double low, double high, Graphics gfx)
         {
             ticks.Clear();
-            biggestTickLabelSize = new SizeF(0, 0);
+
+            int maxCharCount = 0;
             for (double value = ts.firstTick; value < high; value += ts.spacing)
             {
                 string label = Math.Round(value, 10).ToString();
                 ticks.Add(new Tick(value, label));
-                SizeF labelSize = gfx.MeasureString(label, font);
-                biggestTickLabelSize.Width = Math.Max(biggestTickLabelSize.Width, labelSize.Width);
-                biggestTickLabelSize.Height = Math.Max(biggestTickLabelSize.Height, labelSize.Height);
+                maxCharCount = Math.Max(maxCharCount, label.Length);
             }
+
+            // slight performance enhancement by only measuring the longest string
+            string maxString = new string('8', maxCharCount);
+            biggestTickLabelSize = gfx.MeasureString(maxString, font);
 
             // add extra padding to the label to make spacing more comfortable
             biggestTickLabelSize.Width += 5;

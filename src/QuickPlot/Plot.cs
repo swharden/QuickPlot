@@ -99,40 +99,39 @@ namespace QuickPlot
         /// <summary>
         /// Render the plot inside a rectangle on an existing Bitmap
         /// </summary>
-        public void Render(Bitmap bmp, RectangleF plotRect)
+        public void Render(Bitmap bmp, RectangleF plotRect, bool recalculateTicks = true)
         {
+            // update plot-level layout with the latest plot dimensions
             layout.Update(plotRect);
 
-            // update class-level with the latest plot dimensions
+            // update axes, then create a local copy containing mouse manipulations
             if (this.axes == null)
                 AutoAxis();
             this.axes.SetDataRect(layout.dataRect);
-
-            // update axes locally to reflect mouse manipulations
             var axes = AxesAfterMouse(layout.dataRect);
 
             // draw the graphics
             using (Graphics gfx = Graphics.FromImage(bmp))
             {
-                gfx.FillRegion(new SolidBrush(colors.dataBackground), new Region(layout.dataRect));
-
-                yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect, gfx);
-                xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect, gfx);
-
-                // increase the size of the vertical scale if it contains large labels
-                if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
+                if (recalculateTicks)
                 {
-                    Console.WriteLine("increasing width");
-                    layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
-                    layout.Update(plotRect);
+                    // This block creates great-looking tick spacing and avoids overlaps.
+                    // This block is costly though, accounting for a 20% slow-down in early tests.
+                    yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect, gfx);
+                    xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect, gfx);
+                    if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
+                    {
+                        Debug.WriteLine("increasing Y scale width to prevent overlapping with label Y label");
+                        layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
+                        layout.Update(plotRect);
+                    }
                 }
 
+                gfx.FillRegion(new SolidBrush(colors.dataBackground), new Region(layout.dataRect));
                 yTicks.Render(gfx, axes);
                 xTicks.Render(gfx, axes);
-
                 for (int i = 0; i < plottables.Count; i++)
                     plottables[i].Render(gfx, axes);
-
                 RenderLabels(gfx, debugColors: false);
             }
         }
