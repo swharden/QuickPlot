@@ -8,13 +8,13 @@ namespace QuickPlot.PlotSettings
     public class Layout
     {
         // user can reach in and configure these options
-        float yLabelWidth = 20;
-        float yScaleWidth = 40;
-        float y2LabelWidth = 0;
-        float y2ScaleWidth = 0;
-        float titleHeight = 20;
-        float xLabelHeight = 20;
-        float xScaleHeight = 20;
+        public float yLabelWidth = 20;
+        public float yScaleWidth = 40;
+        public float y2LabelWidth = 0;
+        public float y2ScaleWidth = 0;
+        public float titleHeight = 20;
+        public float xLabelHeight = 20;
+        public float xScaleHeight = 20;
 
         // these are calculated internally
         public RectangleF plotRect { get; private set; }
