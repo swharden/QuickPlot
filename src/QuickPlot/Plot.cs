@@ -118,6 +118,15 @@ namespace QuickPlot
 
                 yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect, gfx);
                 xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect, gfx);
+
+                // increase the size of the vertical scale if it contains large labels
+                if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
+                {
+                    Console.WriteLine("increasing width");
+                    layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
+                    layout.Update(plotRect);
+                }
+
                 yTicks.Render(gfx, axes);
                 xTicks.Render(gfx, axes);
 
