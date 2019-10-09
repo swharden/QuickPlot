@@ -21,7 +21,7 @@ namespace QuickPlotDemos
         private void Form1_Load(object sender, EventArgs e)
         {
             SetupMultiLayout();
-            BenchmarkedRender();
+            btnRender_Click(null, null);
         }
 
         private void SetupMultiLayout()
@@ -47,20 +47,14 @@ namespace QuickPlotDemos
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
         }
 
-        private void BenchmarkedRender()
+        private void btnRender_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             interactivePlot1.Render();
-            Application.DoEvents();
 
             double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
             Text = string.Format("Single render in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
-        }
-
-        private void btnRender_Click(object sender, EventArgs e)
-        {
-            BenchmarkedRender();
         }
 
         private void btnBenchmark_Click(object sender, EventArgs e)
@@ -74,7 +68,6 @@ namespace QuickPlotDemos
             for (int i=0; i< renderCount; i++)
             {
                 interactivePlot1.Render();
-                Application.DoEvents();
             }
 
             double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
