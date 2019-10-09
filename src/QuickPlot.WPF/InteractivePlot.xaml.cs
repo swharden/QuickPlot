@@ -69,8 +69,6 @@ namespace QuickPlot.WPF
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
-            {
                 var position = e.GetPosition(this);
                 System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
 
@@ -95,7 +93,6 @@ namespace QuickPlot.WPF
                 }
 
                 CaptureMouse();
-            }
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
