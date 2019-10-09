@@ -28,6 +28,7 @@ namespace QuickPlot.WPF
 
         private int scaledWidth;
         private int scaledHeight;
+        private System.Drawing.Size scaledSize { get { return new System.Drawing.Size(scaledWidth, scaledHeight); } }
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -38,15 +39,15 @@ namespace QuickPlot.WPF
                 scaledHeight = (int)(canvasPlot.ActualHeight * gfx.DpiY / 96);
             }
 
-            Render(skipIfCurrentlyRendering: false);
+            Render();
         }
 
         private bool IsDesignerMode { get { return (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime); } }
 
         private bool currentlyRendering = false;
-        public void Render(bool skipIfCurrentlyRendering = false, bool lowQuality = false)
+        public void Render(bool interactive = false)
         {
-            if (!(skipIfCurrentlyRendering && currentlyRendering))
+            if (!(interactive && currentlyRendering))
             {
                 currentlyRendering = true;
                 Bitmap bmp = figure.GetBitmap(scaledWidth, scaledHeight);
@@ -61,5 +62,87 @@ namespace QuickPlot.WPF
                 currentlyRendering = false;
             }
         }
+
+        #region mouse interaction
+
+        QuickPlot.Plot plotEngagedWithMouse = null;
+
+        private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left || e.ChangedButton == MouseButton.Right)
+            {
+                var position = e.GetPosition(this);
+                System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+
+                plotEngagedWithMouse = figure.PlotUnderMouse(scaledSize, location);
+                if (plotEngagedWithMouse != null)
+                {
+                    if (e.ChangedButton == MouseButton.Left)
+                    {
+                        Cursor = Cursors.SizeAll;
+                        plotEngagedWithMouse.MouseDown(location, left: true);
+                    }
+                    else if (e.ChangedButton == MouseButton.Right)
+                    {
+                        Cursor = Cursors.SizeAll;
+                        plotEngagedWithMouse.MouseDown(location, right: true);
+                    }
+                    else if (e.ChangedButton == MouseButton.Middle)
+                    {
+                        Cursor = Cursors.Cross;
+                        plotEngagedWithMouse.MouseDown(location, middle: true);
+                    }
+                }
+
+                CaptureMouse();
+            }
+        }
+
+        private void UserControl_MouseMove(object sender, MouseEventArgs e)
+        {
+            var position = e.GetPosition(this);
+            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+
+            if (plotEngagedWithMouse != null)
+            {
+                plotEngagedWithMouse.MouseMove(currentLocation: location);
+                Render(interactive: true);
+            }
+            else
+            {
+                var plotUnderMouse = figure.PlotUnderMouse(scaledSize, location);
+                Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Hand;
+            }
+        }
+
+        private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition(this);
+            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+
+            if (plotEngagedWithMouse != null)
+            {
+                plotEngagedWithMouse.MouseUp(upLocation: location);
+                if (e.ChangedButton == MouseButton.Middle)
+                {
+                    plotEngagedWithMouse.AutoAxis();
+                    Render();
+                }
+                plotEngagedWithMouse = null;
+            }
+            ReleaseMouseCapture();
+        }
+
+        private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var position = e.GetPosition(this);
+            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+
+            double zoom = (e.Delta > 0) ? 1.15 : 0.85;
+            figure.PlotUnderMouse(scaledSize, location)?.axes.Zoom(zoom, zoom);
+            Render();
+        }
+
+        #endregion
     }
 }
