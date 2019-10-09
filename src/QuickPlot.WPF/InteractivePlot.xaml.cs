@@ -28,6 +28,8 @@ namespace QuickPlot.WPF
 
         private int scaledWidth;
         private int scaledHeight;
+        private float scaleFactor;
+
         private System.Drawing.Size scaledSize { get { return new System.Drawing.Size(scaledWidth, scaledHeight); } }
 
         private void CanvasPlot_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -37,6 +39,7 @@ namespace QuickPlot.WPF
             {
                 scaledWidth = (int)(canvasPlot.ActualWidth * gfx.DpiX / 96);
                 scaledHeight = (int)(canvasPlot.ActualHeight * gfx.DpiY / 96);
+                scaleFactor = gfx.DpiX / 96;
             }
 
             Render();
@@ -69,36 +72,36 @@ namespace QuickPlot.WPF
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-                var position = e.GetPosition(this);
-                System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+            var position = e.GetPosition(this);
+            System.Drawing.Point location = new System.Drawing.Point((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
-                plotEngagedWithMouse = figure.PlotUnderMouse(scaledSize, location);
-                if (plotEngagedWithMouse != null)
+            plotEngagedWithMouse = figure.PlotUnderMouse(scaledSize, location);
+            if (plotEngagedWithMouse != null)
+            {
+                if (e.ChangedButton == MouseButton.Left)
                 {
-                    if (e.ChangedButton == MouseButton.Left)
-                    {
-                        Cursor = Cursors.SizeAll;
-                        plotEngagedWithMouse.MouseDown(location, left: true);
-                    }
-                    else if (e.ChangedButton == MouseButton.Right)
-                    {
-                        Cursor = Cursors.SizeAll;
-                        plotEngagedWithMouse.MouseDown(location, right: true);
-                    }
-                    else if (e.ChangedButton == MouseButton.Middle)
-                    {
-                        Cursor = Cursors.Cross;
-                        plotEngagedWithMouse.MouseDown(location, middle: true);
-                    }
+                    Cursor = Cursors.SizeAll;
+                    plotEngagedWithMouse.MouseDown(location, left: true);
                 }
+                else if (e.ChangedButton == MouseButton.Right)
+                {
+                    Cursor = Cursors.SizeAll;
+                    plotEngagedWithMouse.MouseDown(location, right: true);
+                }
+                else if (e.ChangedButton == MouseButton.Middle)
+                {
+                    Cursor = Cursors.Cross;
+                    plotEngagedWithMouse.MouseDown(location, middle: true);
+                }
+            }
 
-                CaptureMouse();
+            CaptureMouse();
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             var position = e.GetPosition(this);
-            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+            System.Drawing.Point location = new System.Drawing.Point((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             if (plotEngagedWithMouse != null)
             {
@@ -115,7 +118,7 @@ namespace QuickPlot.WPF
         private void UserControl_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
-            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+            System.Drawing.Point location = new System.Drawing.Point((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             if (plotEngagedWithMouse != null)
             {
@@ -133,7 +136,7 @@ namespace QuickPlot.WPF
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             var position = e.GetPosition(this);
-            System.Drawing.Point location = new System.Drawing.Point((int)position.X, (int)position.Y);
+            System.Drawing.Point location = new System.Drawing.Point((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
             figure.PlotUnderMouse(scaledSize, location)?.axes.Zoom(zoom, zoom);
