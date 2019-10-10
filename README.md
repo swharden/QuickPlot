@@ -24,9 +24,10 @@ QuickPlot.UWP | UWP 10.0.16299 | _not yet written_
 ## Design Goals
 
 ### Value Performance but Prioritize Simplicity
-QuickPlot is a library born from the struggle between performance and simplicity. The primary goal of QuickPlot is immediate usability on all .NET platforms without any special configuration. The secondary goal is to render high density data (tens of millions of points) fast enough to allow real-time mouse interaction at full-screen resolutions.
+QuickPlot is a library born from the struggle between performance and simplicity. The primary goal of QuickPlot is to provide immediate usability on all .NET platforms without any special configuration. A secondary goal is to be able to render high density data (tens of millions of points) fast enough to allow real-time mouse interaction.
 
-QuickPlot exclusively uses System.Drawing to create charts as bitmaps. While this method is traditionally regarded as inefficient, Microsoft's modern implementation ([System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common/)) demonstrates surprisingly good performance when used with .NET Core and WPF applications. While more advanced hardware-accelerated graphics libraries exist, they are often difficult to configure and offer limited platform support. QuickPlot's use of the standard library ensures it will compile effortlessly on any .NET system without requiring any special configuration.
+### Rendering Framework
+QuickPlot exclusively uses System.Drawing to create figures as bitmaps. This  method is traditionally regarded as inefficient compared to modern hardware-accelerated rendering frameworks. However, more advanced rendering frameworks are often difficult to configure, offer limited cross-platform support, and/or are not officially or regularly maintained. Microsoft's [System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common/) is a modern cross-platform implementation of System.Drawing which demonstrates moderate performance but has the great advantage of being simple to use on any .NET platform without requiring any special configuration.
 
 ### No Documentation Required
 QuickPlot's API strives to be so simple that it does not require documentation. Anyone can learn to use all the primary features of QuickPlot by reviewing the QuickPlot Cookbook.
