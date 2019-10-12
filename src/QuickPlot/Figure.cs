@@ -1,39 +1,84 @@
 ﻿using SkiaSharp;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace QuickPlot
 {
     public class Figure
     {
         Random rand = new Random();
-        Stopwatch stopwatchRender = Stopwatch.StartNew();
+
+        public FigureSettings.Padding padding = new FigureSettings.Padding();
 
         public Figure()
         {
-
+            Clear();
         }
 
-        public void Render(SKCanvas canvas, int width, int height)
+        #region subplot management
+
+        private readonly List<Plot> subplots = new List<Plot>();
+        public Plot plot;
+
+        public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
+        {
+            // activate the plot with this configuration
+            foreach (Plot subplot in subplots)
+            {
+                // TODO: activate the subplot and return
+            }
+
+            // clear the original (default) plot if it exists
+            if (subplots.Count == 1)
+                if (subplots.First().subplotPosition.isFullSize)
+                    subplots.Clear();
+
+            // no plot with this configuration exists, so create it, add it to the list, and activate it
+            var newPlot = new Plot
+            {
+                subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan)
+            };
+            subplots.Add(newPlot);
+            plot = subplots.Last();
+        }
+
+        public void Clear()
+        {
+            subplots.Clear();
+            Subplot(1, 1, 1);
+        }
+
+        #endregion
+
+        #region rendering
+
+        private Stopwatch stopwatchRender = Stopwatch.StartNew();
+        public void Render(SKCanvas canvas, SKSize figureSize)
         {
             stopwatchRender.Restart();
 
-            var paint = new SKPaint
-            {
-                Color = new SKColor(255, 255, 255, 100),
-                IsAntialias = true
-            };
-
-            int lineCount = 1000;
-            canvas.Clear(SKColor.Parse("#003366"));
-            for (int i = 0; i < lineCount; i++)
-            {
-                SKPoint pt1 = Tools.randomPoint(width, height, rand);
-                SKPoint pt2 = Tools.randomPoint(width, height, rand);
-                canvas.DrawLine(pt1, pt2, paint);
-            }
+            Console.WriteLine();
+            canvas.Clear(SKColor.Parse("#DDDDDD"));
+            foreach (Plot subplot in subplots)
+                subplot.Render(canvas, SubplotRect(figureSize, subplot));
 
             stopwatchRender.Stop();
+        }
+
+        private SKRect SubplotRect(SKSize figureSize, Plot subplot)
+        {
+            SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
+
+            float padLeft, padRight, padBottom, padTop;
+            padLeft = (subplot.subplotPosition.leftFrac == 0) ? padding.edges : padding.horizontal;
+            padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
+            padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
+            padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
+            renderArea = Tools.RectShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
+
+            return renderArea;
         }
 
         public string RenderBenchmarkMessage
@@ -46,6 +91,10 @@ namespace QuickPlot
             }
         }
 
+        #endregion
+
+        #region misc
+
         public void Save(int width, int height, string fileName, int quality = 100)
         {
             string filePath = System.IO.Path.GetFullPath(fileName);
@@ -55,7 +104,7 @@ namespace QuickPlot
             SKSurface surface = SKSurface.Create(imageInfo);
 
             // render onto the canvas
-            Render(surface.Canvas, width, height);
+            Render(surface.Canvas, new SKSize(width, height));
 
             // save a snapshot
             using (System.IO.Stream fileStream = System.IO.File.OpenWrite(filePath))
@@ -66,5 +115,7 @@ namespace QuickPlot
                 Debug.WriteLine($"saved {filePath}");
             }
         }
+
+        #endregion
     }
 }

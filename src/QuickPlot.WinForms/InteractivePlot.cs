@@ -31,7 +31,7 @@ namespace QuickPlot.WinForms
             lblVersion.Text = $"QuickPlot {typeof(Figure).Assembly.GetName().Version}";
             lblVersionForms.Text = $"QuickPlot.WinForms {typeof(InteractivePlot).Assembly.GetName().Version}";
 
-            if (Process.GetCurrentProcess().ProcessName == "devenv")
+            if (Process.GetCurrentProcess().ProcessName == "devenv" || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
                 // we are in designer mode
             }
@@ -85,7 +85,7 @@ namespace QuickPlot.WinForms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            figure.Render(surface.Canvas, senderControl.Width, senderControl.Height);
+            figure.Render(surface.Canvas, new SKSize(senderControl.Width, senderControl.Height));
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();

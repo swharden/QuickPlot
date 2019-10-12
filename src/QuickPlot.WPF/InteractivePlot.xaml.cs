@@ -39,7 +39,8 @@ namespace QuickPlot.WPF
         private void OnPaintSurface(object sender, SkiaSharp.Views.Desktop.SKPaintSurfaceEventArgs e)
         {
             var scale = (float)PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
-            figure.Render(e.Surface.Canvas, (int)(e.Info.Width / scale), (int)(e.Info.Height / scale));
+            SKSize figureSIze = new SKSize(e.Info.Width / scale, e.Info.Height / scale);
+            figure.Render(e.Surface.Canvas, figureSIze);
         }
     }
 }

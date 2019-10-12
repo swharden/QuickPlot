@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "..\demos\WinFor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{93BB24FD-32CF-4627-BE59-C05EC892AE7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemos", "..\demos\ConsoleDemos\ConsoleDemos.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "..\demos\ConsoleDemos\Console.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{690FA5EF-58A5-4354-8710-4743FD3B853F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{690FA5EF-58A5-4354-8710-4743FD3B853F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
