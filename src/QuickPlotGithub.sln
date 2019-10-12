@@ -3,11 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotDemos", "QuickPlotDemos\QuickPlotDemos.csproj", "{8023CCF9-8465-44A8-B4F8-9A1919C90812}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.WinForms", "QuickPlot.WinForms\QuickPlot.WinForms.csproj", "{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot", "QuickPlot\QuickPlot.csproj", "{5B9E6988-0564-48B9-A3E7-608E89232310}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot", "QuickPlot\QuickPlot.csproj", "{5B9E6988-0564-48B9-A3E7-608E89232310}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.WPF", "QuickPlot.WPF\QuickPlot.WPF.csproj", "{93706D4A-98BE-4D31-95C1-91F2233C24F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "..\demos\WinFormsDemos\WinForms.csproj", "{CDF302B7-D973-4F3F-A647-324C673CCED2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{93BB24FD-32CF-4627-BE59-C05EC892AE7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemos", "..\demos\ConsoleDemos\ConsoleDemos.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{690FA5EF-58A5-4354-8710-4743FD3B853F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8023CCF9-8465-44A8-B4F8-9A1919C90812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8023CCF9-8465-44A8-B4F8-9A1919C90812}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8023CCF9-8465-44A8-B4F8-9A1919C90812}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8023CCF9-8465-44A8-B4F8-9A1919C90812}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,9 +31,30 @@ Global
 		{5B9E6988-0564-48B9-A3E7-608E89232310}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B9E6988-0564-48B9-A3E7-608E89232310}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B9E6988-0564-48B9-A3E7-608E89232310}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93706D4A-98BE-4D31-95C1-91F2233C24F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93706D4A-98BE-4D31-95C1-91F2233C24F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93706D4A-98BE-4D31-95C1-91F2233C24F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93706D4A-98BE-4D31-95C1-91F2233C24F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDF302B7-D973-4F3F-A647-324C673CCED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDF302B7-D973-4F3F-A647-324C673CCED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDF302B7-D973-4F3F-A647-324C673CCED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDF302B7-D973-4F3F-A647-324C673CCED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86CF1C13-30D7-4060-A1A6-256738F072B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CF1C13-30D7-4060-A1A6-256738F072B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CF1C13-30D7-4060-A1A6-256738F072B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CF1C13-30D7-4060-A1A6-256738F072B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690FA5EF-58A5-4354-8710-4743FD3B853F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690FA5EF-58A5-4354-8710-4743FD3B853F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690FA5EF-58A5-4354-8710-4743FD3B853F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690FA5EF-58A5-4354-8710-4743FD3B853F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CDF302B7-D973-4F3F-A647-324C673CCED2} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
+		{86CF1C13-30D7-4060-A1A6-256738F072B5} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
+		{690FA5EF-58A5-4354-8710-4743FD3B853F} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DE1C8-32E3-4CE8-9697-D97F9148664D}

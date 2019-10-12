@@ -28,6 +28,8 @@ namespace QuickPlot.WinForms
         public InteractivePlot()
         {
             InitializeComponent();
+            lblVersion.Text = $"QuickPlot {typeof(Figure).Assembly.GetName().Version}";
+            lblVersionForms.Text = $"QuickPlot.WinForms {typeof(InteractivePlot).Assembly.GetName().Version}";
 
             if (Process.GetCurrentProcess().ProcessName == "devenv")
             {

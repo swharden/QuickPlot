@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace QuickPlotDemos.Properties
+namespace WinFormsDemos.Properties
 {
 
 

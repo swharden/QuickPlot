@@ -16,7 +16,6 @@ namespace QuickPlot
 
         public void Render(SKCanvas canvas, int width, int height)
         {
-            Debug.WriteLine("rendering");
             stopwatchRender.Restart();
 
             var paint = new SKPaint

@@ -1,6 +1,6 @@
-﻿namespace QuickPlotDemos
+﻿namespace WinFormsDemos
 {
-    partial class FormInteractive
+    partial class FormMain
     {
         /// <summary>
         /// Required designer variable.
@@ -37,21 +37,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.interactivePlot1.BackColor = System.Drawing.Color.Navy;
-            this.interactivePlot1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.interactivePlot1.Location = new System.Drawing.Point(12, 12);
             this.interactivePlot1.Name = "interactivePlot1";
-            this.interactivePlot1.Size = new System.Drawing.Size(451, 246);
+            this.interactivePlot1.Size = new System.Drawing.Size(389, 250);
             this.interactivePlot1.TabIndex = 0;
             // 
-            // FormInteractive
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 270);
+            this.ClientSize = new System.Drawing.Size(413, 274);
             this.Controls.Add(this.interactivePlot1);
-            this.Name = "FormInteractive";
-            this.Text = "QuickPlot Interactive Demo";
-            this.SizeChanged += new System.EventHandler(this.FormInteractive_SizeChanged);
+            this.Name = "Form1";
+            this.Text = "QuickPlot WinForms Demos";
             this.ResumeLayout(false);
 
         }
@@ -61,3 +59,4 @@
         private QuickPlot.WinForms.InteractivePlot interactivePlot1;
     }
 }
+

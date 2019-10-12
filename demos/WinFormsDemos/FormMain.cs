@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace QuickPlotDemos
+namespace WinFormsDemos
 {
-    public partial class FormInteractive : Form
+    public partial class FormMain : Form
     {
-        public FormInteractive()
+        public FormMain()
         {
             InitializeComponent();
-        }
-
-        private void FormInteractive_SizeChanged(object sender, EventArgs e)
-        {
-            Text = interactivePlot1.figure.RenderBenchmarkMessage;
         }
     }
 }
