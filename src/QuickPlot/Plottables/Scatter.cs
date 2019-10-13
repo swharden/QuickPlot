@@ -10,11 +10,13 @@ namespace QuickPlot.Plottables
     public class Scatter : Plottable
     {
         double[] xs, ys;
+        Style style;
 
-        public Scatter(double[] xs, double[] ys)
+        public Scatter(double[] xs, double[] ys, Style style)
         {
             this.xs = xs;
             this.ys = ys;
+            this.style = style;
 
             if (xs == null || ys == null)
                 throw new ArgumentException("xs and ys cannot be null");
@@ -39,12 +41,6 @@ namespace QuickPlot.Plottables
             canvas.Save();
             canvas.ClipRect(axes.GetDataRect());
 
-            SKPaint paint = new SKPaint
-            {
-                Color = SKColor.Parse("#000000"),
-                IsAntialias = true
-            };
-
             // draw lines
             for (int i = 1; i < xs.Length; i++)
             {
@@ -53,7 +49,7 @@ namespace QuickPlot.Plottables
 
                 try
                 {
-                    canvas.DrawLine(pt1, pt2, paint);
+                    canvas.DrawLine(pt1, pt2, style.paint);
                 }
                 catch
                 {
@@ -65,7 +61,7 @@ namespace QuickPlot.Plottables
             for (int i = 0; i < xs.Length; i++)
             {
                 SKPoint pt = axes.GetPixel(xs[i], ys[i]);
-                canvas.DrawCircle(pt, 3, paint);
+                canvas.DrawCircle(pt, 3, style.paint);
             }
 
             canvas.Restore();

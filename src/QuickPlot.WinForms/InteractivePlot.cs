@@ -40,6 +40,11 @@ namespace QuickPlot.WinForms
             else
             {
                 figure = new Figure();
+
+                var color = SystemColors.Control;
+                string colorHex = "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+                figure.backgroundColor = SKColor.Parse(colorHex);
+
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);
                 glControl1 = new OpenTK.GLControl(glGraphicsMode)

@@ -11,6 +11,7 @@ namespace QuickPlot
         Random rand = new Random();
 
         public FigureSettings.Padding padding = new FigureSettings.Padding();
+        public SKColor backgroundColor = SKColor.Parse("#FFFFFF");
 
         public Figure()
         {
@@ -60,7 +61,7 @@ namespace QuickPlot
             stopwatchRender.Restart();
 
             Console.WriteLine();
-            canvas.Clear(SKColor.Parse("#DDDDDD"));
+            canvas.Clear(backgroundColor);
             foreach (Plot subplot in subplots)
                 subplot.Render(canvas, SubplotRect(figureSize, subplot));
 

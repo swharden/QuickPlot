@@ -30,10 +30,17 @@ namespace QuickPlot
 
         #region add or remove plottables
 
-        public void Scatter(double[] xs, double[] ys)
+        public void Scatter(double[] xs, double[] ys, Style style = null)
         {
-            var scatterPlot = new Plottables.Scatter(xs, ys);
+            if (style is null)
+                style = new Style(colorIndex: plottables.Count);
+            var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
+        }
+
+        public void Clear()
+        {
+            plottables.Clear();
         }
 
         #endregion
