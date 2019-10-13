@@ -10,7 +10,8 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: 'src/*.sln'
+  #solution: 'src/QuickPlot.sln'
+  solution: 'tests/QuickPlot.Tests.UnitTests/QuickPlot.Tests.UnitTests.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
