@@ -23,7 +23,7 @@ namespace QuickPlot.WinForms
 
         readonly OpenTK.GLControl glControl1;
 
-        public readonly Figure figure = new Figure();
+        public readonly Figure figure;
 
         public InteractivePlot()
         {
@@ -37,6 +37,7 @@ namespace QuickPlot.WinForms
             }
             else
             {
+                figure = new Figure();
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);
                 glControl1 = new OpenTK.GLControl(glGraphicsMode)
