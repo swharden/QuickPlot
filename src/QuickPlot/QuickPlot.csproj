@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.5.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIconUrl>https://raw.githubusercontent.com/swharden/QuickPlot/master/dev/icon/quickplot-icon.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/swharden/QuickPlot</PackageProjectUrl>
+    <Description>QuickPlot is a high-speed plotting library for .NET that makes it easy to interactively display high density data (tens of millions of points). QuickPlot is written in .NET Standard so it can be used in both .NET Framework and .NET Core projects. An interactive user control is available for Windows Forms and WPF Applications.</Description>
+    <PackageReleaseNotes>QuickPlot is early in development. ScottPlot is a mature and stable .NET library which can serve many plotting needs while QuickPlot continues to be developed.</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
