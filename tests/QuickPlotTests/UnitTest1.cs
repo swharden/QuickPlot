@@ -1,12 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace QuickPlot.Cookbook
+namespace QuickPlotTests
 {
     [TestClass]
     public class UnitTest1
     {
         [TestMethod]
-        public void BasicPlot()
+        public void TestMethod1()
         {
         }
     }
