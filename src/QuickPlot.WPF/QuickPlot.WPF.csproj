@@ -6,6 +6,11 @@
     <Version>0.5.0</Version>
     <RootNamespace>QuickPlot.WPF</RootNamespace>
     <AssemblyName>QuickPlot.WPF</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>WPF user control to provide mouse-interactive QuickPlot figures</Description>
+    <PackageProjectUrl>https://github.com/swharden/QuickPlot</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/swharden/QuickPlot/master/dev/icon/quickplot-icon.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

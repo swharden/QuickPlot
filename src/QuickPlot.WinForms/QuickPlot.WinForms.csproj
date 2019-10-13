@@ -4,6 +4,12 @@
     <OutputType>Library</OutputType>
     <TargetFramework>net461</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <Description>Windows Forms user control to provide mouse-interactive QuickPlot figures</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/swharden/QuickPlot</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/swharden/QuickPlot/master/dev/icon/quickplot-icon.png</PackageIconUrl>
+    <Version>0.5.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
