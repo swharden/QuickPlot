@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <Version>0.5.0</Version>
+    <RootNamespace>QuickPlotWPF</RootNamespace>
+    <AssemblyName>QuickPlotWPF</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

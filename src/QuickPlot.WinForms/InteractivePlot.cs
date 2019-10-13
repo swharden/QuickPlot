@@ -12,7 +12,7 @@ using System.Diagnostics;
 using SkiaSharp;
 using OpenTK.Graphics.ES20;
 
-namespace QuickPlot.WinForms
+namespace QuickPlotWinForms
 {
     public partial class InteractivePlot : UserControl
     {
@@ -23,14 +23,14 @@ namespace QuickPlot.WinForms
 
         readonly OpenTK.GLControl glControl1;
 
-        public readonly Figure figure;
+        public readonly QuickPlot.Figure figure;
 
         public SKSize figureSize { get { return new SKSize(glControl1.Width, glControl1.Height); } }
 
         public InteractivePlot()
         {
             InitializeComponent();
-            lblVersion.Text = $"QuickPlot {typeof(Figure).Assembly.GetName().Version}";
+            lblVersion.Text = $"QuickPlot {typeof(QuickPlot.Figure).Assembly.GetName().Version}";
             lblVersionForms.Text = $"QuickPlot.WinForms {typeof(InteractivePlot).Assembly.GetName().Version}";
 
             if (Process.GetCurrentProcess().ProcessName == "devenv" || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
@@ -39,7 +39,7 @@ namespace QuickPlot.WinForms
             }
             else
             {
-                figure = new Figure();
+                figure = new QuickPlot.Figure();
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);
                 glControl1 = new OpenTK.GLControl(glGraphicsMode)

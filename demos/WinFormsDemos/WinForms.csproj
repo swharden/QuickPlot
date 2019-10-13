@@ -95,9 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\QuickPlot.WinForms\QuickPlot.WinForms.csproj">
+    <ProjectReference Include="..\..\src\QuickPlot.WinForms\QuickPlotWinForms.csproj">
       <Project>{f83dd036-eea2-4f82-834e-09b6a6fdc33e}</Project>
-      <Name>QuickPlot.WinForms</Name>
+      <Name>QuickPlotWinForms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

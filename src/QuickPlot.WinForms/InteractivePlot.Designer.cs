@@ -1,4 +1,4 @@
-﻿namespace QuickPlot.WinForms
+﻿namespace QuickPlotWinForms
 {
     partial class InteractivePlot
     {

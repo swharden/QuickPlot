@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>QuickPlot.WinForms</RootNamespace>
-    <AssemblyName>QuickPlot.WinForms</AssemblyName>
+    <RootNamespace>QuickPlotWinForms</RootNamespace>
+    <AssemblyName>QuickPlot WinForms</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

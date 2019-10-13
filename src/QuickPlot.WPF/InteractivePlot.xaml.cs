@@ -16,14 +16,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace QuickPlot.WPF
+namespace QuickPlotWPF
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     public partial class InteractivePlot : UserControl
     {
-        public readonly Figure figure = new Figure();
+        public readonly QuickPlot.Figure figure = new QuickPlot.Figure();
 
         public InteractivePlot()
         {

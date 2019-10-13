@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDemos"
-        xmlns:WPF="clr-namespace:QuickPlot.WPF;assembly=QuickPlot.WPF" x:Class="WpfDemos.MainWindow"
+        xmlns:QuickPlotWPF="clr-namespace:QuickPlotWPF;assembly=QuickPlotWPF" x:Class="WpfDemos.MainWindow"
         mc:Ignorable="d"
-        Title="QuickPlot WPF User Control" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <WPF:InteractivePlot Name="interactivePlot1" Margin="10,10,10,10"/>
+        <QuickPlotWPF:InteractivePlot Name="interactivePlot1" Margin="10,0,10,0" VerticalAlignment="Center" Height="414"/>
     </Grid>
 </Window>
