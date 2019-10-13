@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.interactivePlot1 = new QuickPlotWinForms.InteractivePlot();
+            this.interactivePlot1 = new QuickPlot.WinForms.InteractivePlot();
             this.SuspendLayout();
             // 
             // interactivePlot1
@@ -56,7 +56,7 @@
 
         #endregion
 
-        private QuickPlotWinForms.InteractivePlot interactivePlot1;
+        private QuickPlot.WinForms.InteractivePlot interactivePlot1;
     }
 }
 

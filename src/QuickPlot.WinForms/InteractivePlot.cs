@@ -12,7 +12,7 @@ using System.Diagnostics;
 using SkiaSharp;
 using OpenTK.Graphics.ES20;
 
-namespace QuickPlotWinForms
+namespace QuickPlot.WinForms
 {
     public partial class InteractivePlot : UserControl
     {
@@ -23,15 +23,15 @@ namespace QuickPlotWinForms
 
         readonly OpenTK.GLControl glControl1;
 
-        public readonly QuickPlot.Figure figure;
+        public readonly Figure figure;
 
         public SKSize figureSize { get { return new SKSize(glControl1.Width, glControl1.Height); } }
 
         public InteractivePlot()
         {
             InitializeComponent();
-            lblVersion.Text = $"QuickPlot {typeof(QuickPlot.Figure).Assembly.GetName().Version}";
-            lblVersionForms.Text = $"QuickPlot.WinForms {typeof(InteractivePlot).Assembly.GetName().Version}";
+            lblVersion.Text = $"QuickPlot {typeof(Figure).Assembly.GetName().Version}";
+            lblVersionForms.Text = $"WinForms {typeof(InteractivePlot).Assembly.GetName().Version}";
 
             if (Process.GetCurrentProcess().ProcessName == "devenv" || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
             {
@@ -39,7 +39,7 @@ namespace QuickPlotWinForms
             }
             else
             {
-                figure = new QuickPlot.Figure();
+                figure = new Figure();
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);
                 glControl1 = new OpenTK.GLControl(glGraphicsMode)
@@ -99,7 +99,7 @@ namespace QuickPlotWinForms
 
         #region mouse interaction
 
-        QuickPlot.Plot plotEngagedWithMouse = null;
+        Plot plotEngagedWithMouse = null;
 
         private void glControl1_MouseDown(object sender, MouseEventArgs e)
         {

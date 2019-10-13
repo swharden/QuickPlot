@@ -3,34 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotWinForms", "QuickPlot.WinForms\QuickPlotWinForms.csproj", "{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.WinForms", "QuickPlot.WinForms\QuickPlot.WinForms.csproj", "{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot", "QuickPlot\QuickPlot.csproj", "{5B9E6988-0564-48B9-A3E7-608E89232310}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlotWPF", "QuickPlot.WPF\QuickPlotWPF.csproj", "{93706D4A-98BE-4D31-95C1-91F2233C24F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.WPF", "QuickPlot.WPF\QuickPlot.WPF.csproj", "{93706D4A-98BE-4D31-95C1-91F2233C24F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "..\demos\WinFormsDemos\WinForms.csproj", "{CDF302B7-D973-4F3F-A647-324C673CCED2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.Demos.WinForms", "..\demos\WinFormsDemos\QuickPlot.Demos.WinForms.csproj", "{CDF302B7-D973-4F3F-A647-324C673CCED2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{93BB24FD-32CF-4627-BE59-C05EC892AE7C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "..\demos\ConsoleDemos\Console.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Demos.Console", "..\demos\ConsoleDemos\QuickPlot.Demos.Console.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C1502AC-D18B-427F-9076-0AEDF6E67988}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlotCookbook", "..\tests\QuickPlotCookbook\QuickPlotCookbook.csproj", "{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.Cookbook", "..\tests\QuickPlotCookbook\QuickPlot.Tests.Cookbook.csproj", "{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotTests", "..\tests\QuickPlotTests\QuickPlotTests.csproj", "{3A71A208-824F-4B59-8100-9B068898FC89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.Tests.UnitTests", "..\tests\QuickPlotTests\QuickPlot.Tests.UnitTests.csproj", "{3A71A208-824F-4B59-8100-9B068898FC89}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{5F80D20B-BCAD-4991-B65E-84B4CAEC9452}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Demos.WPF", "..\demos\WpfDemos\QuickPlot.Demos.WPF.csproj", "{5F80D20B-BCAD-4991-B65E-84B4CAEC9452}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

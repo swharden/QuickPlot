@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QuickPlotCookbook
+namespace QuickPlot.Tests.Cookbook
 {
     class Program
     {

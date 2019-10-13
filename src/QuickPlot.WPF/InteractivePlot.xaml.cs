@@ -16,14 +16,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace QuickPlotWPF
+namespace QuickPlot.WPF
 {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     public partial class InteractivePlot : UserControl
     {
-        public readonly QuickPlot.Figure figure = new QuickPlot.Figure();
+        public readonly Figure figure = new Figure();
 
         public InteractivePlot()
         {
@@ -44,7 +44,7 @@ namespace QuickPlotWPF
 
         #region mouse interaction
 
-        QuickPlot.Plot plotEngagedWithMouse = null;
+        Plot plotEngagedWithMouse = null;
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
