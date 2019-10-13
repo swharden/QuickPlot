@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\QuickPlot.WinForms\QuickPlot.WinForms.csproj">
-      <Project>{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}</Project>
+      <Project>{f83dd036-eea2-4f82-834e-09b6a6fdc33e}</Project>
       <Name>QuickPlot.WinForms</Name>
     </ProjectReference>
   </ItemGroup>

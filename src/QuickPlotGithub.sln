@@ -10,18 +10,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.WPF", "QuickPlot.WPF\QuickPlot.WPF.csproj", "{93706D4A-98BE-4D31-95C1-91F2233C24F2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "..\demos\WinFormsDemos\WinForms.csproj", "{CDF302B7-D973-4F3F-A647-324C673CCED2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{93BB24FD-32CF-4627-BE59-C05EC892AE7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Console", "..\demos\ConsoleDemos\Console.csproj", "{86CF1C13-30D7-4060-A1A6-256738F072B5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{690FA5EF-58A5-4354-8710-4743FD3B853F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C1502AC-D18B-427F-9076-0AEDF6E67988}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotCookbook", "..\tests\QuickPlotCookbook\QuickPlotCookbook.csproj", "{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlotCookbook", "..\tests\QuickPlotCookbook\QuickPlotCookbook.csproj", "{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotTests", "..\tests\QuickPlotTests\QuickPlotTests.csproj", "{6D3CB15E-53E3-4787-BD65-355FCE173916}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotTests", "..\tests\QuickPlotTests\QuickPlotTests.csproj", "{3A71A208-824F-4B59-8100-9B068898FC89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +63,10 @@ Global
 		{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D3CB15E-53E3-4787-BD65-355FCE173916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D3CB15E-53E3-4787-BD65-355FCE173916}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D3CB15E-53E3-4787-BD65-355FCE173916}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D3CB15E-53E3-4787-BD65-355FCE173916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A71A208-824F-4B59-8100-9B068898FC89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A71A208-824F-4B59-8100-9B068898FC89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A71A208-824F-4B59-8100-9B068898FC89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A71A208-824F-4B59-8100-9B068898FC89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,7 +76,7 @@ Global
 		{86CF1C13-30D7-4060-A1A6-256738F072B5} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
 		{690FA5EF-58A5-4354-8710-4743FD3B853F} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
 		{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
-		{6D3CB15E-53E3-4787-BD65-355FCE173916} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
+		{3A71A208-824F-4B59-8100-9B068898FC89} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DE1C8-32E3-4CE8-9697-D97F9148664D}
