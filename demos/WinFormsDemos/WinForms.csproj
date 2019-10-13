@@ -42,9 +42,6 @@
     <Reference Include="OpenTK.GLControl">
       <HintPath>..\..\src\packages\OpenTK.GLControl.3.1.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
-    <Reference Include="QuickPlot">
-      <HintPath>..\..\src\QuickPlot\bin\Debug\netstandard2.0\QuickPlot.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\..\src\packages\SkiaSharp.1.68.0\lib\net45\SkiaSharp.dll</HintPath>
     </Reference>
@@ -99,6 +96,10 @@
     <ProjectReference Include="..\..\src\QuickPlot.WinForms\QuickPlotWinForms.csproj">
       <Project>{f83dd036-eea2-4f82-834e-09b6a6fdc33e}</Project>
       <Name>QuickPlotWinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\QuickPlot\QuickPlot.csproj">
+      <Project>{5b9e6988-0564-48b9-a3e7-608e89232310}</Project>
+      <Name>QuickPlot</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
