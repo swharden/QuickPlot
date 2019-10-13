@@ -21,8 +21,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C1502AC-D18B-427F-9076-0AEDF6E67988}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlotCookbook", "..\tests\QuickPlotCookbook\QuickPlotCookbook.csproj", "{9D6D8F15-F5EC-4350-BB60-5AB6BCD031C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlotTests", "..\tests\QuickPlotTests\QuickPlotTests.csproj", "{3A71A208-824F-4B59-8100-9B068898FC89}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5B9E6988-0564-48B9-A3E7-608E89232310} = {5B9E6988-0564-48B9-A3E7-608E89232310}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDemos", "..\demos\WpfDemos\WpfDemos.csproj", "{5F80D20B-BCAD-4991-B65E-84B4CAEC9452}"
 EndProject
