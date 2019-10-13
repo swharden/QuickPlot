@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2C1502AC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Demos.WPF", "..\demos\WpfDemos\QuickPlot.Demos.WPF.csproj", "{5F80D20B-BCAD-4991-B65E-84B4CAEC9452}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.UnitTestsCore3", "..\tests\QuickPlot.Tests.UnitTests\QuickPlot.Tests.UnitTestsCore3.csproj", "{2A3DFDD1-83D8-4EB7-BEED-7CF037610DF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.UnitTests", "..\tests\QuickPlot.Tests.UnitTests\QuickPlot.Tests.UnitTests.csproj", "{2A3DFDD1-83D8-4EB7-BEED-7CF037610DF2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.Cookbook", "..\tests\QuickPlot.Tests.Cookbook\QuickPlot.Tests.Cookbook.csproj", "{118E557C-AA9C-4B86-B9FA-D0766FDDFE56}"
 EndProject
