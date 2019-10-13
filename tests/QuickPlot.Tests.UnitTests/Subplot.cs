@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Text;
 
-namespace QuickPlot.Tests.UnitTests
+namespace QuickPlot.Tests.UnitTestsCore3
 {
     [TestClass]
-    public class SubplotLayout
+    public class Subplot
     {
         private readonly int width = 600;
         private readonly int height = 400;

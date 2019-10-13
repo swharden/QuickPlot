@@ -1,8 +1,7 @@
-﻿using System;
-using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
-namespace QuickPlot.Tests.UnitTests
+namespace QuickPlot.Tests.UnitTestsCore3
 {
     [TestClass]
     public class AAA
