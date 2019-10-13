@@ -28,11 +28,17 @@ namespace QuickPlot
             y2Ticks = new PlotSettings.TickCollection(PlotSettings.Side.right);
         }
 
+        #region add or remove plottables
+
         public void Scatter(double[] xs, double[] ys)
         {
             var scatterPlot = new Plottables.Scatter(xs, ys);
             plottables.Add(scatterPlot);
         }
+
+        #endregion
+
+        #region axis management
 
         public void AutoAxis(double marginX = .1, double marginY = .1)
         {
@@ -64,6 +70,10 @@ namespace QuickPlot
             axesAfterMouse.SetDataRect((SKRect)renderArea);
             return axesAfterMouse;
         }
+
+        #endregion
+
+        #region rendering
 
         public void Render(SKCanvas canvas, SKRect plotRect)
         {
@@ -184,5 +194,30 @@ namespace QuickPlot
             };
             canvas.DrawRect(layout.dataRect, layoutFramePaint);
         }
+
+        #endregion
+
+        #region mouse
+
+        public void MouseDown(SKPoint downLocation, bool left = false, bool right = false, bool middle = false)
+        {
+            mouse.leftDown = (left) ? downLocation : new SKPoint(0, 0);
+            mouse.rightDown = (right) ? downLocation : new SKPoint(0, 0);
+            mouse.middleDown = (middle) ? downLocation : new SKPoint(0, 0);
+        }
+
+        public void MouseUp(SKPoint upLocation)
+        {
+            axes = AxesAfterMouse();
+            mouse.leftDown = new SKPoint(0, 0);
+            mouse.rightDown = new SKPoint(0, 0);
+            mouse.middleDown = new SKPoint(0, 0);
+        }
+
+        public void MouseMove(SKPoint currentLocation)
+        {
+            mouse.now = currentLocation;
+        }
+        #endregion
     }
 }

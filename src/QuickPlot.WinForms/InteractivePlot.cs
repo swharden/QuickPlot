@@ -25,6 +25,8 @@ namespace QuickPlot.WinForms
 
         public readonly Figure figure;
 
+        public SKSize figureSize { get { return new SKSize(glControl1.Width, glControl1.Height); } }
+
         public InteractivePlot()
         {
             InitializeComponent();
@@ -50,9 +52,12 @@ namespace QuickPlot.WinForms
                     VSync = false,
                     Dock = DockStyle.Fill
                 };
-                Controls.Add(this.glControl1);
+                Controls.Add(glControl1);
                 glControl1.BringToFront();
-                glControl1.Paint += new PaintEventHandler(GlControl1_Paint);
+                glControl1.Paint += new PaintEventHandler(glControl1_Paint);
+                glControl1.MouseDown += new MouseEventHandler(glControl1_MouseDown);
+                glControl1.MouseMove += new MouseEventHandler(glControl1_MouseMove);
+                glControl1.MouseUp += new MouseEventHandler(glControl1_MouseUp);
                 Disposed += OnDispose;
             }
         }
@@ -64,7 +69,7 @@ namespace QuickPlot.WinForms
             context?.Dispose();
         }
 
-        private void GlControl1_Paint(object sender, PaintEventArgs e)
+        private void glControl1_Paint(object sender, PaintEventArgs e)
         {
             Control senderControl = (Control)sender;
 
@@ -86,10 +91,79 @@ namespace QuickPlot.WinForms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            figure.Render(surface.Canvas, new SKSize(senderControl.Width, senderControl.Height));
+            figure.Render(surface.Canvas, figureSize);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
         }
+
+        #region mouse interaction
+
+        QuickPlot.Plot plotEngagedWithMouse = null;
+
+        private void glControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
+            plotEngagedWithMouse = figure.PlotUnderMouse(figureSize, mousePoint);
+
+            if (plotEngagedWithMouse != null)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    glControl1.Cursor = Cursors.SizeAll;
+                    plotEngagedWithMouse.MouseDown(mousePoint, left: true);
+                }
+                else if (e.Button == MouseButtons.Right)
+                {
+                    glControl1.Cursor = Cursors.NoMove2D;
+                    plotEngagedWithMouse.MouseDown(mousePoint, right: true);
+                }
+                else if (e.Button == MouseButtons.Middle)
+                {
+                    glControl1.Cursor = Cursors.Cross;
+                    plotEngagedWithMouse.MouseDown(mousePoint, middle: true);
+                }
+            }
+        }
+
+        private void glControl1_MouseUp(object sender, MouseEventArgs e)
+        {
+            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
+            if (plotEngagedWithMouse != null)
+            {
+                plotEngagedWithMouse.MouseUp(mousePoint);
+                if (e.Button == MouseButtons.Middle)
+                {
+                    plotEngagedWithMouse.AutoAxis();
+                    glControl1.Refresh();
+                }
+                plotEngagedWithMouse = null;
+            }
+        }
+
+        private void glControl1_MouseMove(object sender, MouseEventArgs e)
+        {
+            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
+            if (plotEngagedWithMouse != null)
+            {
+                plotEngagedWithMouse.MouseMove(mousePoint);
+                glControl1.Refresh();
+            }
+            else
+            {
+                var plotUnderMouse = figure.PlotUnderMouse(figureSize, mousePoint);
+                glControl1.Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Cross;
+            }
+        }
+
+        private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
+            double zoom = (e.Delta > 0) ? 1.15 : 0.85;
+            figure.PlotUnderMouse(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
+            glControl1.Refresh();
+        }
+
+        #endregion
     }
 }

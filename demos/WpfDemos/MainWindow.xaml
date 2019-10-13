@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WpfDemos"
         xmlns:WPF="clr-namespace:QuickPlot.WPF;assembly=QuickPlot.WPF" x:Class="WpfDemos.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="QuickPlot WPF User Control" Height="450" Width="800">
     <Grid>
-        <WPF:InteractivePlot Margin="10,10,10,10"/>
+        <WPF:InteractivePlot Name="interactivePlot1" Margin="10,10,10,10"/>
     </Grid>
 </Window>

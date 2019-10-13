@@ -8,9 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="240" 
              d:DesignWidth="320"
+             MouseDown="UserControl_MouseDown" 
+             MouseMove="UserControl_MouseMove"
+             MouseUp="UserControl_MouseUp" 
+             MouseWheel="UserControl_MouseWheel"
              >
     <Grid>
-        <Canvas x:Name="myCanvas" Background="DarkBlue">
+        <Canvas x:Name="myCanvas" Background="DarkBlue" >
             <StackPanel>
                 <Label Name="lblTitle" Content="QuickPlot" FontSize="16" FontWeight="Bold" Foreground="White"/>
                 <Label Name="lblSubtitle" Content="with Skia and OpenGL" FontSize="12" Foreground="White"/>
@@ -18,6 +22,6 @@
                 <Label Name="lblVersion2" Content="QuickPlot.WPF x.x.x.x" FontSize="12" Foreground="Gray"/>
             </StackPanel>
         </Canvas>
-        <skia:SKElement PaintSurface="OnPaintSurface" Name="skiaElement"/>
+        <skia:SKElement PaintSurface="OnPaintSurface" Name="skiaElement" />
     </Grid>
 </UserControl>

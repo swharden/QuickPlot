@@ -39,16 +39,16 @@
             this.interactivePlot1.BackColor = System.Drawing.Color.Navy;
             this.interactivePlot1.Location = new System.Drawing.Point(12, 12);
             this.interactivePlot1.Name = "interactivePlot1";
-            this.interactivePlot1.Size = new System.Drawing.Size(389, 250);
+            this.interactivePlot1.Size = new System.Drawing.Size(756, 393);
             this.interactivePlot1.TabIndex = 0;
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 274);
+            this.ClientSize = new System.Drawing.Size(780, 417);
             this.Controls.Add(this.interactivePlot1);
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Text = "QuickPlot WinForms Demos";
             this.ResumeLayout(false);
 
