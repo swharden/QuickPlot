@@ -111,8 +111,14 @@ namespace QuickPlot
             yTicks.Render(canvas, axes);
             xTicks.Render(canvas, axes);
 
+
+            canvas.Save();
+            canvas.ClipRect(axes.GetDataRect());
+
             for (int i = 0; i < plottables.Count; i++)
                 plottables[i].Render(canvas, axes);
+            
+            canvas.Restore();
 
             //RenderLayoutDebug(canvas);
             RenderLabels(canvas);

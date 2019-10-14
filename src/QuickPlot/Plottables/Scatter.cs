@@ -37,10 +37,7 @@ namespace QuickPlot.Plottables
         }
 
         public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
-        {
-            canvas.Save();
-            canvas.ClipRect(axes.GetDataRect());
-
+        {           
             using (SKPath linePath = new SKPath())
             {
                 linePath.MoveTo(axes.GetPixel(xs[0], ys[0]));
@@ -65,8 +62,7 @@ namespace QuickPlot.Plottables
                 //style.paint.Style = SKPaintStyle.Fill;
 
                 canvas.DrawPath(markerPath, style.paint);
-            }
-            canvas.Restore();
+            }            
         }
     }
 }
