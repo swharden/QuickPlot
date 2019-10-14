@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.WinForms", "QuickPlot.WinForms\QuickPlot.WinForms.csproj", "{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.WinForms", "QuickPlot.WinForms\QuickPlot.WinForms.csproj", "{F83DD036-EEA2-4F82-834E-09B6A6FDC33E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot", "QuickPlot\QuickPlot.csproj", "{5B9E6988-0564-48B9-A3E7-608E89232310}"
 EndProject
@@ -25,6 +25,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.Cookbook", "..\tests\QuickPlot.Tests.Cookbook\QuickPlot.Tests.Cookbook.csproj", "{118E557C-AA9C-4B86-B9FA-D0766FDDFE56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests.UnitTests", "..\tests\QuickPlot.Tests.UnitTests\QuickPlot.Tests.UnitTests.csproj", "{5FC9288E-A3D6-4787-A13D-6840434C250F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickPlot.Tests.NUnitTests", "QuickPlot.Tests.NUnitTests\QuickPlot.Tests.NUnitTests.csproj", "{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,10 @@ Global
 		{5FC9288E-A3D6-4787-A13D-6840434C250F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FC9288E-A3D6-4787-A13D-6840434C250F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FC9288E-A3D6-4787-A13D-6840434C250F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{5F80D20B-BCAD-4991-B65E-84B4CAEC9452} = {93BB24FD-32CF-4627-BE59-C05EC892AE7C}
 		{118E557C-AA9C-4B86-B9FA-D0766FDDFE56} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
 		{5FC9288E-A3D6-4787-A13D-6840434C250F} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
+		{7052EC2E-92E5-4C0E-9B81-21DDE0C98A9D} = {2C1502AC-D18B-427F-9076-0AEDF6E67988}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0C4DE1C8-32E3-4CE8-9697-D97F9148664D}
