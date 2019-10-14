@@ -41,7 +41,7 @@ namespace QuickPlot.Tests.NUnitTests
         {
             var result = Generate.Random(50, 5, 3);
 
-            Assert.That(!result.Any(x => x < 3 - 5 || x > 3 + 5));
+            Assert.That(!result.Any(x => x < 3 || x > 3 + 5 ));
         }
 
         [Test]
