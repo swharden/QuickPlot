@@ -16,6 +16,8 @@ namespace QuickPlot
 
         public static double[] Random(int count, double mult = 1, double offset = 0, int? seed = null)
         {
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count can't be negative");
             Random rand = SeededRandom(seed);
             double[] values = new double[count];
             for (int i = 0; i < values.Length; i++)
