@@ -20,6 +20,8 @@ namespace WinFormsDemos
 
         public void DemoLayout()
         {
+            int CenterSubplotPointsCount = 1000;
+
             interactivePlot1.figure.Clear();
 
             interactivePlot1.figure.Subplot(3, 2, 1);
@@ -29,10 +31,13 @@ namespace WinFormsDemos
             interactivePlot1.figure.Subplot(3, 2, 2);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Sin(50));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Cos(50));
-            int n = 5000;
+
             interactivePlot1.figure.Subplot(3, 2, 3, colSpan: 2);
-            interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(n), QuickPlot.Generate.Random(n, seed: 0));
-            interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(n), QuickPlot.Generate.Random(n, seed: 1));
+            double[] x = QuickPlot.Generate.Consecutative(CenterSubplotPointsCount);
+            double[] y1 = QuickPlot.Generate.Random(CenterSubplotPointsCount, seed: 0);
+            double[] y2 = QuickPlot.Generate.Random(CenterSubplotPointsCount, seed: 1);
+            interactivePlot1.figure.plot.Scatter(x, y1);
+            interactivePlot1.figure.plot.Scatter(x, y2);
 
             interactivePlot1.figure.Subplot(3, 2, 5);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
