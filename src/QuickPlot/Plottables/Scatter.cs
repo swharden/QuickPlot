@@ -57,9 +57,8 @@ namespace QuickPlot.Plottables
                     SKPoint pt = axes.GetPixel(xs[i], ys[i]);
                     markerPath.AddCircle(pt.X, pt.Y, 3);
                 }
-
-                // using fill style produce memory leak's Stroke style works, but looks bad
-                //style.paint.Style = SKPaintStyle.Fill;
+                
+                style.paint.Style = SKPaintStyle.Fill;
 
                 canvas.DrawPath(markerPath, style.paint);
             }            

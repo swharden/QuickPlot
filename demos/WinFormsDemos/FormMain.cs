@@ -29,7 +29,7 @@ namespace WinFormsDemos
             interactivePlot1.figure.Subplot(3, 2, 2);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Sin(50));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Cos(50));
-            int n = 10_000;
+            int n = 5000;
             interactivePlot1.figure.Subplot(3, 2, 3, colSpan: 2);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(n), QuickPlot.Generate.Random(n, seed: 0));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(n), QuickPlot.Generate.Random(n, seed: 1));
