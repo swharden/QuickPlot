@@ -37,34 +37,31 @@ namespace QuickPlot.Plottables
         }
 
         public override void Render(SKCanvas canvas, PlotSettings.Axes axes)
-        {
-            canvas.Save();
-            canvas.ClipRect(axes.GetDataRect());
-
-            // draw lines
-            for (int i = 1; i < xs.Length; i++)
+        {           
+            using (SKPath linePath = new SKPath())
             {
-                SKPoint pt1 = axes.GetPixel(xs[i - 1], ys[i - 1]);
-                SKPoint pt2 = axes.GetPixel(xs[i], ys[i]);
-
-                try
+                linePath.MoveTo(axes.GetPixel(xs[0], ys[0]));
+                // draw lines
+                for (int i = 1; i < xs.Length; i++)
                 {
-                    canvas.DrawLine(pt1, pt2, style.paint);
+                    linePath.LineTo(axes.GetPixel(xs[i], ys[i]));
                 }
-                catch
-                {
-                    Debug.WriteLine($"scatter crashed drawing line {i}");
-                }
+                style.paint.Style = SKPaintStyle.Stroke;
+                canvas.DrawPath(linePath, style.paint);
             }
-
             // draw markers
-            for (int i = 0; i < xs.Length; i++)
+            using (SKPath markerPath = new SKPath())
             {
-                SKPoint pt = axes.GetPixel(xs[i], ys[i]);
-                canvas.DrawCircle(pt, 3, style.paint);
-            }
+                for (int i = 0; i < xs.Length; i++)
+                {
+                    SKPoint pt = axes.GetPixel(xs[i], ys[i]);
+                    markerPath.AddCircle(pt.X, pt.Y, 3);
+                }
+                
+                style.paint.Style = SKPaintStyle.Fill;
 
-            canvas.Restore();
+                canvas.DrawPath(markerPath, style.paint);
+            }            
         }
     }
 }

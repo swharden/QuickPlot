@@ -56,14 +56,25 @@ namespace QuickPlot
         #region rendering
 
         private Stopwatch stopwatchRender = Stopwatch.StartNew();
-        public void Render(SKCanvas canvas, SKSize figureSize)
+        public void Render(SKCanvas canvas, SKSize figureSize, Plot onlySubplot = null)
         {
             stopwatchRender.Restart();
 
-            Console.WriteLine();
-            canvas.Clear(backgroundColor);
-            foreach (Plot subplot in subplots)
-                subplot.Render(canvas, SubplotRect(figureSize, subplot));
+            if (onlySubplot is null)
+            {
+                canvas.Clear(backgroundColor);
+                foreach (Plot subplot in subplots)
+                    subplot.Render(canvas, SubplotRect(figureSize, subplot));
+            }
+            else
+            {
+                SKRect plotRect = SubplotRect(figureSize, onlySubplot);
+                canvas.Save();
+                canvas.ClipRect(plotRect);
+                canvas.Clear(backgroundColor);
+                onlySubplot.Render(canvas, plotRect);
+                canvas.Restore();
+            }
 
             stopwatchRender.Stop();
         }
@@ -77,7 +88,7 @@ namespace QuickPlot
             padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
             padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
             padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
-            renderArea = Tools.RectShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
+            renderArea = renderArea.ShrinkBy(padLeft, padRight, padBottom, padTop);
 
             return renderArea;
         }

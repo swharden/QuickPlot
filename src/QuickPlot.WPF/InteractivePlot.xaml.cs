@@ -2,6 +2,7 @@ using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,7 +40,7 @@ namespace QuickPlot.WPF
         {
             scaleFactor = (float)PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
             figureSize = new SKSize(e.Info.Width / scaleFactor, e.Info.Height / scaleFactor);
-            figure.Render(e.Surface.Canvas, figureSize);
+            figure.Render(e.Surface.Canvas, figureSize, plotEngagedWithMouse);
         }
 
         #region mouse interaction
