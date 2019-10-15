@@ -1,12 +1,15 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
-namespace QuickPlot.Tests.UnitTestsCore3
+namespace QuickPlot.Tests.NUnitTests
 {
-    [TestClass]
-    public class AAA
+    [TestFixture]
+    class AAA
     {
-        [TestMethod]
+        [Test]
         public void ClearOldImages()
         {
             foreach (string fileName in System.IO.Directory.GetFiles("./", "*.png"))
