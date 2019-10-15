@@ -56,14 +56,27 @@ namespace QuickPlot
         #region rendering
 
         private Stopwatch stopwatchRender = Stopwatch.StartNew();
-        public void Render(SKCanvas canvas, SKSize figureSize)
+        public void Render(SKCanvas canvas, SKSize figureSize, SKRect clipRectangle = new SKRect())
         {
             stopwatchRender.Restart();
+            var fillPaint = new SKPaint();
+            fillPaint.Color = backgroundColor;
 
             Console.WriteLine();
-            canvas.Clear(backgroundColor);
             foreach (Plot subplot in subplots)
-                subplot.Render(canvas, SubplotRect(figureSize, subplot));
+            {
+                var subplotRect = SubplotRect(figureSize, subplot);
+
+                // Redraw only subplots what affected by clipRect
+                // if clipRect not specified redraw all supbplots
+                if (clipRectangle.IsEmpty || clipRectangle.Contains(subplotRect) || clipRectangle.IntersectsWith(subplotRect))
+                {
+                    SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
+                    // Clear subplot area
+                    canvas.DrawRect(renderArea, fillPaint);
+                    subplot.Render(canvas, subplotRect);
+                };
+            };
 
             stopwatchRender.Stop();
         }

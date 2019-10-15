@@ -96,7 +96,7 @@ namespace QuickPlot.WinForms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            figure.Render(surface.Canvas, figureSize);
+            figure.Render(surface.Canvas, figureSize, new SKRect(e.ClipRectangle.Left, e.ClipRectangle.Top, e.ClipRectangle.Right, e.ClipRectangle.Bottom));
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
@@ -140,7 +140,8 @@ namespace QuickPlot.WinForms
                 if (e.Button == MouseButtons.Middle)
                 {
                     plotEngagedWithMouse.AutoAxis();
-                    glControl1.Refresh();
+                    var redrawRect = plotEngagedWithMouse.layout.plotRect;
+                    glControl1.Invalidate(new Rectangle((int)redrawRect.Left, (int)redrawRect.Top, (int)redrawRect.Width, (int)redrawRect.Height));
                 }
                 plotEngagedWithMouse = null;
             }
@@ -152,7 +153,8 @@ namespace QuickPlot.WinForms
             if (plotEngagedWithMouse != null)
             {
                 plotEngagedWithMouse.MouseMove(mousePoint);
-                glControl1.Refresh();
+                var redrawRect = plotEngagedWithMouse.layout.plotRect;
+                glControl1.Invalidate(new Rectangle((int)redrawRect.Left, (int)redrawRect.Top, (int)redrawRect.Width, (int)redrawRect.Height));
             }
             else
             {
@@ -165,8 +167,13 @@ namespace QuickPlot.WinForms
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
-            figure.PlotUnderMouse(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
-            glControl1.Refresh();
+            var subplot = figure.PlotUnderMouse(figureSize, mousePoint);
+            if (subplot != null)
+            {
+                subplot.axes.Zoom(zoom, zoom);
+                var redrawRect = subplot.layout.plotRect;
+                glControl1.Invalidate(new Rectangle((int)redrawRect.Left, (int)redrawRect.Top, (int)redrawRect.Width, (int)redrawRect.Height));
+            }
         }
 
         #endregion
