@@ -14,6 +14,17 @@ namespace QuickPlot
             return new SKPoint(x, y);
         }
 
+        public static SKColor RandomColor()
+        {
+            Random rand = new Random();
+            SKColor color = new SKColor(
+                red: (byte)rand.Next(255),
+                green: (byte)rand.Next(255),
+                blue: (byte)rand.Next(255)
+            );
+            return color;
+        }
+
         public static SKRect ShrinkBy(this SKRect rect, float left = 0, float right = 0, float bottom = 0, float top = 0)
         {
             rect.Left += left;

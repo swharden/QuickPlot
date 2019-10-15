@@ -106,6 +106,7 @@ namespace QuickPlot
 
             var fillPaint = new SKPaint();
             fillPaint.Color = SKColor.Parse("#FFFFFF");
+            //fillPaint.Color = Tools.RandomColor(); // useful for assessing when plots are redrawn
             canvas.DrawRect(layout.dataRect, fillPaint);
 
             yTicks.Render(canvas, axes);
