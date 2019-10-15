@@ -37,7 +37,7 @@ steps:
     packageFeedSelector: 'nugetOrg'
     versionSelector: 'latestStable'
 
-- task: VSTestToo@2
+- task: VSTest@2
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
