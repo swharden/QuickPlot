@@ -96,7 +96,7 @@ namespace QuickPlot.WinForms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            figure.Render(surface.Canvas, figureSize);
+            figure.Render(surface.Canvas, figureSize, plotEngagedWithMouse);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
