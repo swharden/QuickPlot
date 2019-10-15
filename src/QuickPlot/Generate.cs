@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace QuickPlot
@@ -19,10 +20,7 @@ namespace QuickPlot
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count can't be negative");
             Random rand = SeededRandom(seed);
-            double[] values = new double[count];
-            for (int i = 0; i < values.Length; i++)
-                values[i] = rand.NextDouble() * mult + offset;
-            return values;
+            return Enumerable.Range(0, count).Select(x => rand.NextDouble() * mult + offset).ToArray();
         }
 
         public static double[] Consecutative(int count, double mult = 1, double offset = 0)
