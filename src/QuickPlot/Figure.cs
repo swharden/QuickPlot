@@ -77,7 +77,7 @@ namespace QuickPlot
             padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
             padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
             padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
-            renderArea = Tools.RectShrinkBy(renderArea, padLeft, padRight, padBottom, padTop);
+            renderArea = renderArea.ShrinkBy(padLeft, padRight, padBottom, padTop);
 
             return renderArea;
         }

@@ -14,7 +14,7 @@ namespace QuickPlot
             return new SKPoint(x, y);
         }
 
-        public static SKRect RectShrinkBy(SKRect rect, float left = 0, float right = 0, float bottom = 0, float top = 0)
+        public static SKRect ShrinkBy(this SKRect rect, float left = 0, float right = 0, float bottom = 0, float top = 0)
         {
             rect.Left += left;
             rect.Right -= right;
@@ -23,31 +23,31 @@ namespace QuickPlot
             return rect;
         }
 
-        public static SKRect RectMatchVert(SKRect rect, SKRect reference)
+        public static SKRect MatchVert(this SKRect rect, SKRect reference)
         {
             rect.Top = reference.Top;
             rect.Bottom = reference.Bottom;
             return rect;
         }
 
-        public static SKRect RectMatchHoriz(SKRect rect, SKRect reference)
+        public static SKRect MatchHoriz(this SKRect rect, SKRect reference)
         {
             rect.Left = reference.Left;
             rect.Right = reference.Right;
             return rect;
         }
 
-        public static SKPoint RectCenter(SKRect rect)
+        public static SKPoint Center(this SKRect rect)
         {
-            return new SKPoint(RectCenterX(rect), RectCenterY(rect));
+            return new SKPoint(rect.CenterX(), rect.CenterY());
         }
 
-        public static float RectCenterX(SKRect rect)
+        public static float CenterX(this SKRect rect)
         {
             return (rect.Right + rect.Left) / 2;
         }
 
-        public static float RectCenterY(SKRect rect)
+        public static float CenterY(this SKRect rect)
         {
             return (rect.Top + rect.Bottom) / 2;
         }

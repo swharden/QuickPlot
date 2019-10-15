@@ -49,7 +49,7 @@ namespace QuickPlot.PlotSettings
 
             // shrink dataRect to its final size
             dataRect = plotRect;
-            dataRect = Tools.RectShrinkBy(dataRect,
+            dataRect = dataRect.ShrinkBy(
                     left: yLabelRect.Width + yScaleRect.Width,
                     right: y2LabelRect.Width + y2ScaleRect.Width,
                     bottom: xLabelRect.Height + xScaleRect.Height,
@@ -57,12 +57,12 @@ namespace QuickPlot.PlotSettings
                 );
 
             // shrink labels and scales to match dataRect
-            yLabelRect = Tools.RectMatchVert(yLabelRect, dataRect);
-            yScaleRect = Tools.RectMatchVert(yScaleRect, dataRect);
-            y2LabelRect = Tools.RectMatchVert(y2LabelRect, dataRect);
-            y2ScaleRect = Tools.RectMatchVert(y2ScaleRect, dataRect);
-            xLabelRect = Tools.RectMatchHoriz(xLabelRect, dataRect);
-            xScaleRect = Tools.RectMatchHoriz(xScaleRect, dataRect);
+            yLabelRect = yLabelRect.MatchVert(dataRect);
+            yScaleRect = yScaleRect.MatchVert(dataRect);
+            y2LabelRect = y2LabelRect.MatchVert(dataRect);
+            y2ScaleRect = y2ScaleRect.MatchVert(dataRect);
+            xLabelRect = xLabelRect.MatchHoriz(dataRect);
+            xScaleRect = xScaleRect.MatchHoriz(dataRect);
         }
     }
 }
