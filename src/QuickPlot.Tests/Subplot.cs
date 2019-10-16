@@ -1,18 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+﻿using NUnit.Framework;
+using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
-namespace QuickPlot.Tests.UnitTestsCore3
+namespace QuickPlot.Tests.NUnitTests
 {
-    [TestClass]
-    public class Subplot
+    [TestFixture]
+    class Subplot
     {
         private readonly int width = 600;
         private readonly int height = 400;
 
-        [TestMethod]
+        [Test]
         public void Subplot_Default()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
@@ -24,7 +22,7 @@ namespace QuickPlot.Tests.UnitTestsCore3
             figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
         }
 
-        [TestMethod]
+        [Test]
         public void Subplot_TwoStackedHorizontally()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
@@ -39,7 +37,7 @@ namespace QuickPlot.Tests.UnitTestsCore3
             figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
         }
 
-        [TestMethod]
+        [Test]
         public void Subplot_TwoStackedVertically()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
@@ -54,7 +52,7 @@ namespace QuickPlot.Tests.UnitTestsCore3
             figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
         }
 
-        [TestMethod]
+        [Test]
         public void Subplot_FourInGrid()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
@@ -73,7 +71,7 @@ namespace QuickPlot.Tests.UnitTestsCore3
             figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
         }
 
-        [TestMethod]
+        [Test]
         public void Subplot_TwoOverOne()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
@@ -90,7 +88,7 @@ namespace QuickPlot.Tests.UnitTestsCore3
             figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
         }
 
-        [TestMethod]
+        [Test]
         public void Subplot_TwoBesideOne()
         {
             double[] xs = QuickPlot.Generate.Consecutative(100);
