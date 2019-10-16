@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace QuickPlot.Tests.NUnitTests
+namespace QuickPlot.Tests.Unit
 {
     [TestFixture]
     class AAA

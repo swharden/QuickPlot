@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace QuickPlot.Tests.NUnitTests
+namespace QuickPlot.Tests.Unit
 {
     [TestFixture]
     class Subplot
