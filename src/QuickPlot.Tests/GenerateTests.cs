@@ -261,5 +261,13 @@ namespace QuickPlot.Tests.NUnitTests
             var resultWithShift = Generate.Cos(20, 5, 12, 3, shift);
             Assert.That(result, Is.EqualTo(resultWithShift).Within(0.0001));
         }
+
+        [Test]
+        public void Cos_SomeCos_EqualtoSinWithquaterShift()
+        {
+            double[] resultCos = Generate.Cos(100, 5, 12, 3, 0);
+            double[] resultSin = Generate.Sin(100, 5, 12, 3, 0.25);
+            Assert.That(resultSin, Is.EqualTo(resultCos).Within(0.0001));
+        }
     }
 }

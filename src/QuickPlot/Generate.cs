@@ -46,16 +46,7 @@ namespace QuickPlot
 
         public static double[] Cos(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double shiftOscillations = 0)
         {
-            if (pointCount < 0)
-                throw new ArgumentOutOfRangeException("pointCount can't be negative");
-            double cosScale = 1;
-            if (pointCount > 1)
-                cosScale = 2 * Math.PI * oscillations / (pointCount - 1);
-            else
-                cosScale = 1;
-            return Enumerable.Range(0, pointCount)
-                .Select(x => mult * Math.Cos(cosScale * x + shiftOscillations * Math.PI * 2) + offset)
-                .ToArray();
+            return Sin(pointCount, oscillations, offset, mult, shiftOscillations + 0.25);
         }
     }
 }
