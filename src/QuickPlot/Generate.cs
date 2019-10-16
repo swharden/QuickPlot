@@ -25,10 +25,9 @@ namespace QuickPlot
 
         public static double[] Consecutative(int count, double mult = 1, double offset = 0)
         {
-            double[] values = new double[count];
-            for (int i = 0; i < values.Length; i++)
-                values[i] = i * mult + offset;
-            return values;
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count can't be negative");
+            return Enumerable.Range(0, count).Select(x => (double)x * mult + offset).ToArray();
         }
 
         public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
