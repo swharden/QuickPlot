@@ -30,13 +30,19 @@ namespace QuickPlot
             return Enumerable.Range(0, count).Select(x => (double)x * mult + offset).ToArray();
         }
 
-        public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
+        public static double[] Sin(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double shiftOscillations = 0)
         {
-            double sinScale = 2 * Math.PI * oscillations / pointCount;
-            double[] ys = new double[pointCount];
-            for (int i = 0; i < ys.Length; i++)
-                ys[i] = Math.Sin(i * sinScale + phase * Math.PI * 2) * mult + offset;
-            return ys;
+
+            if (pointCount < 0)
+                throw new ArgumentOutOfRangeException("pointCount can't be nagative");
+            double sinScale = 1;
+            if (pointCount > 1)
+                sinScale = 2 * Math.PI * oscillations / (pointCount - 1);
+            else
+                sinScale = 1;
+            return Enumerable.Range(0, pointCount)
+                .Select(x => mult * Math.Sin(sinScale * x + shiftOscillations * Math.PI * 2) + offset)
+                .ToArray();
         }
 
         public static double[] Cos(int pointCount, double oscillations = 1, double offset = 0, double mult = 1, double phase = 0)
