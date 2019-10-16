@@ -7,13 +7,9 @@
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/1?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=1&branchName=master)
 [![](https://img.shields.io/azure-devops/tests/swharden/swharden/1?label=Tests&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=1&branchName=master)
 
-**QuickPlot is a high-speed plotting library for .NET** that makes it easy to interactively display high density data (tens of millions of points). QuickPlot is written in .NET Standard so it can be used in both .NET Framework and .NET Core projects. An interactive user control is available for Windows Forms and WPF Applications. 
+**QuickPlot is a high-speed plotting library for .NET** that makes it easy to interactively display high density data (tens of millions of points). QuickPlot uses Google's Skia rendering engine (provided by [SkiaSharp](https://www.nuget.org/packages/SkiaSharp/)) which benefits from hardware acceleration (provided by [OpenTK.GLControl](https://www.nuget.org/packages/OpenTK.GLControl/)) on systems which support it. QuickPlot is written in .NET Standard so it can be used in both .NET Framework and .NET Core projects. An interactive user control is available for Windows Forms and WPF Applications. 
 
 ![](dev/screenshot.jpg)
-
-### Rendering System
-
-QuickPlot uses Google's Skia rendering engine (provided by [SkiaSharp](https://www.nuget.org/packages/SkiaSharp/)) which benefits from hardware acceleration (provided by [OpenTK.GLControl](https://www.nuget.org/packages/OpenTK.GLControl/)) on systems which support it.
 
 ### Supported Platforms
 
