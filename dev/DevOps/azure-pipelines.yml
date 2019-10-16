@@ -38,12 +38,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: 'src/QuickPlot.Tests.Integration/QuickPlot.Tests.Integration.csproj'
+    projects: 'src/QuickPlot.Tests.Unit/QuickPlot.Tests.Unit.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 # NUnit tests for .NET Core project
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: 'src/QuickPlot.Tests.Unit/QuickPlot.Tests.Unit.csproj'
+    projects: 'src/QuickPlot.Tests.Integration/QuickPlot.Tests.Integration.csproj'
     arguments: '--configuration $(buildConfiguration)'
