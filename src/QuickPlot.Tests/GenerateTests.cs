@@ -145,7 +145,7 @@ namespace QuickPlot.Tests.NUnitTests
         [TestCase(15, 7, 32)]
         [TestCase(0, 3, 1)]
         [TestCase(3, 3, 3)]
-        public void Sin_1PointZeroPhase_AlwaysEqualOffset(double oscillations, double offset, double mult)
+        public void Sin_1PointZeroShift_AlwaysEqualOffset(double oscillations, double offset, double mult)
         {
             double[] result = Generate.Sin(1, oscillations, offset, mult, 0);
             Assert.AreEqual(offset, result[0]);
@@ -183,6 +183,82 @@ namespace QuickPlot.Tests.NUnitTests
             double[] expected = new double[] { 0, 1, 0, -1, 0, 1, 0, -1, 0 };
             var result = Generate.Sin(20, 5, 12, 3, 0);
             var resultWithShift = Generate.Sin(20, 5, 12, 3, shift);
+            Assert.That(result, Is.EqualTo(resultWithShift).Within(0.0001));
+        }
+
+        [Test]
+        public void Cos_ZeroCount_ReturnEmptyArray()
+        {
+            double[] result = Generate.Cos(0);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void Cos_ZeroCountSomeParams_ReturnEmptyArray()
+        {
+            double[] result = Generate.Cos(0, 12, 2, 4, 5);
+            Assert.IsEmpty(result);
+        }
+
+        [Test]
+        public void Cos_NegativeCount_Throws()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Generate.Cos(-7, 32, 15, 6, 2));
+        }
+
+        [TestCase(5)]
+        [TestCase(9)]
+        [TestCase(42)]
+        [TestCase(7)]
+        public void Cos_SmallCounts_ArraySizeEqualCount(int count)
+        {
+            var result = Generate.Cos(count, 6, 12, 5, 3);
+            Assert.AreEqual(count, result.Length);
+        }
+
+        [TestCase(1, 5, 12)]
+        [TestCase(15, 7, 32)]
+        [TestCase(0, 3, 1)]
+        [TestCase(3, 3, 3)]
+        public void Cos_1PointZeroShift_AlwaysEqualOffsetPlusMult(double oscillations, double offset, double mult)
+        {
+            double[] result = Generate.Cos(1, oscillations, offset, mult, 0);
+            Assert.AreEqual(offset + mult, result[0]);
+        }
+
+
+        [Test]
+        public void Cos_5pointsManualCalc_GenerateCorrect()
+        {
+            double[] expected = new double[] { 1, 0, -1, 0, 1 };
+            var result = Generate.Cos(5, 1, 0, 1, 0);
+            Assert.That(result, Is.EqualTo(expected).Within(0.0001));
+        }
+
+        [Test]
+        public void Cos_5pointsWithOffsetManualCalc_GenerateCorrect()
+        {
+            double[] expected = new double[] { 2, 1, 0, 1, 2 };
+            var result = Generate.Cos(5, 1, 1, 1, 0);
+            Assert.That(result, Is.EqualTo(expected).Within(0.0001));
+        }
+
+        [Test]
+        public void Cos_9PointsManualCalc_GenerateCorrect()
+        {
+            double[] expected = new double[] { 1, 0, -1, 0, 1, 0, -1, 0, 1 };
+            var result = Generate.Cos(9, 2, 0, 1, 0);
+            Assert.That(result, Is.EqualTo(expected).Within(0.0001));
+        }
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(15)]
+        [TestCase(21)]
+        public void Cos_ShiftByInteger_GenerateEqualResult(int shift)
+        {
+            double[] expected = new double[] { 0, 1, 0, -1, 0, 1, 0, -1, 0 };
+            var result = Generate.Cos(20, 5, 12, 3, 0);
+            var resultWithShift = Generate.Cos(20, 5, 12, 3, shift);
             Assert.That(result, Is.EqualTo(resultWithShift).Within(0.0001));
         }
     }
