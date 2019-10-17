@@ -55,17 +55,20 @@ namespace QuickPlot.PlotSettings
         public void IncreaseDensity(double low, double high)
         {
             spacing /= divBy[divisions % divBy.Length];
-            divisions += 1;
-            double offset = Math.Abs(low % spacing);
-            firstTick = (low < 0) ? low + offset : low - offset;
+            divisions++;
+            double offset = low % spacing;
+            firstTick = low - offset;
         }
 
         public void DecreaseDensity(double low, double high)
         {
-            divisions = (divisions == 0) ? divBy.Length - 1 : divisions - 1;
+            divisions--;
+            if ( divisions < 0 )
+                divisions += divBy.Length;
+            
             spacing *= divBy[divisions % divBy.Length];            
-            double offset = Math.Abs(low % spacing);
-            firstTick = (low < 0) ? low + offset : low - offset;
+            double offset = low % spacing;
+            firstTick = low - offset;
         }
     }
 
