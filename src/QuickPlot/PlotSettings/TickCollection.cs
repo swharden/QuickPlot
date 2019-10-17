@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace QuickPlot.PlotSettings
@@ -19,52 +20,46 @@ namespace QuickPlot.PlotSettings
         }
     }
 
+    /* The TickSpacing class is used to determine ideal tick spacing for a given range and number of ticks.
+     * Currently only numeric spacings are supported (10, 5, 2.5, 1)
+     * Future efforts may create similar classes for ideal ticks for dates and times (years, months, days, hours, minutes) 
+     */
     class TickSpacing
     {
         private int divisions;
         private readonly double[] divBy = new double[] { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
-        private double range;
 
         public double low { get; private set; }
         public double high { get; private set; }
         public double spacing { get; private set; }
         public double firstTick => low - (low % spacing);
-        public int tickCount => (int)(range / spacing);
-
-        private TickSpacing() // closed default constructor
-        {
-        }
+        public int tickCount => (int)(span / spacing);
+        public double span => high - low;
 
         public TickSpacing(double low, double high, int maxTickCount)
         {
             this.low = low;
             this.high = high;
 
-            range = high - low;
-            spacing = Math.Pow(10, (int)Math.Log10(range)); // Start from Power of 10 close to range
+            spacing = Math.Pow(10, (int)Math.Log10(span)); // Start from Power of 10 close to range
             divisions = 0;
 
             while (tickCount <= maxTickCount)
-            {
                 IncreaseDensity();
-
-                if (divisions > 1000)
-                    throw new ArgumentException("Divisions count reach 1000");
-            }
         }
 
         public void IncreaseDensity()
         {
             spacing /= divBy[divisions % divBy.Length];
             divisions++;
+            if (divisions > 1000)
+                throw new OverflowException("Tick density is too high.");
         }
 
         public void DecreaseDensity()
         {
             divisions--;
 
-            // This check can be removed if initiate division with big number like (1_000 * divBy.Length + 1) 
-            // that guaranty what it never be negative
             if (divisions < 0)
                 divisions += divBy.Length;
 
@@ -73,18 +68,13 @@ namespace QuickPlot.PlotSettings
     }
 
     /* The TickCollection class stores tick styling settings (font, size, etc) and calculates ideal tick positions.
-     * It is useful to two both in the same class because ideal tick density depends on things like font and font size.
-     * 
-     * When the time comes, consider splitting into NumericTickCollection and DatetimeTickCollection.
+     * It is useful to do both in the same class because ideal tick density depends on things like font and font size.
      */
     public class TickCollection
     {
         public int length = 3;
         public SKPaint paint = new SKPaint();
-        //public Font font = new Font(FontFamily.GenericSansSerif, 8, FontStyle.Regular);
-        //public Brush brush = new SolidBrush(Color.Black);
-
-        List<Tick> ticks;
+        readonly List<Tick> ticks;
         public SKSize biggestTickLabelSize;
 
         public readonly Side side;
