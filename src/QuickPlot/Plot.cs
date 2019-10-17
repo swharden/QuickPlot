@@ -15,6 +15,7 @@ namespace QuickPlot
         private PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
         public PlotSettings.Label title, yLabel, xLabel, y2Label;
         public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
+        public Plot sharex, sharey;
 
         public Plot()
         {
@@ -22,6 +23,9 @@ namespace QuickPlot
             yLabel = new PlotSettings.Label { text = "Vertical Label" };
             xLabel = new PlotSettings.Label { text = "Horzontal Label" };
             y2Label = new PlotSettings.Label { text = "" };
+
+            sharex = null;
+            sharey = null;
 
             yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
             xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);

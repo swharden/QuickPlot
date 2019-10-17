@@ -23,7 +23,11 @@ namespace QuickPlot
         private readonly List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
-        public void Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
+        public Plot Subplot(
+            int nRows, int nCols, int subPlotNumber, 
+            int rowSpan = 1, int colSpan = 1,
+            Plot sharex = null, Plot sharey = null
+            )
         {
             // activate the plot with this configuration
             foreach (Plot subplot in subplots)
@@ -39,10 +43,13 @@ namespace QuickPlot
             // no plot with this configuration exists, so create it, add it to the list, and activate it
             var newPlot = new Plot
             {
-                subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan)
+                subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan),
+                sharex = sharex,
+                sharey = sharey
             };
             subplots.Add(newPlot);
             plot = subplots.Last();
+            return newPlot;
         }
 
         public void Clear()
