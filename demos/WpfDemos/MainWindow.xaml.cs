@@ -42,10 +42,10 @@ namespace WpfDemos
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Random(50, seed: 0));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Random(50, seed: 1));
 
-            interactivePlot1.figure.Subplot(3, 2, 5);
+            var plotA = interactivePlot1.figure.Subplot(3, 2, 5);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
 
-            interactivePlot1.figure.Subplot(3, 2, 6);
+            interactivePlot1.figure.Subplot(3, 2, 6, sharex: plotA);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
         }
     }

@@ -39,10 +39,10 @@ namespace WinFormsDemos
             interactivePlot1.figure.plot.Scatter(x, y1);
             interactivePlot1.figure.plot.Scatter(x, y2);
 
-            interactivePlot1.figure.Subplot(3, 2, 5);
+            var plotA = interactivePlot1.figure.Subplot(3, 2, 5);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
 
-            interactivePlot1.figure.Subplot(3, 2, 6);
+            interactivePlot1.figure.Subplot(3, 2, 6, sharex: plotA);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
         }
     }
