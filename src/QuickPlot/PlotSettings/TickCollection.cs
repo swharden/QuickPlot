@@ -62,8 +62,8 @@ namespace QuickPlot.PlotSettings
 
         public void DecreaseDensity(double low, double high)
         {
-            spacing *= divBy[divisions % divBy.Length];
             divisions = (divisions == 0) ? divBy.Length - 1 : divisions - 1;
+            spacing *= divBy[divisions % divBy.Length];            
             double offset = Math.Abs(low % spacing);
             firstTick = (low < 0) ? low + offset : low - offset;
         }
