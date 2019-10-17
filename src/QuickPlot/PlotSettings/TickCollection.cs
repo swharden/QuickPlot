@@ -23,52 +23,52 @@ namespace QuickPlot.PlotSettings
     {
         private int divisions;
         private readonly double[] divBy = new double[] { 2, 2, 2.5 }; // dividing from 10 yields 5, 2.5, and 1.
+        private double range;
 
+        public double low { get; private set; }
+        public double high { get; private set; }
         public double spacing { get; private set; }
-        public double firstTick { get; private set; }
+        public double firstTick => low - (low % spacing);
+        public int tickCount => (int)(range / spacing);
+
+        private TickSpacing() // closed default constructor
+        {
+        }
 
         public TickSpacing(double low, double high, int maxTickCount)
         {
-            Initiailize(low, high, maxTickCount);
-        }
+            this.low = low;
+            this.high = high;
 
-        public void Initiailize(double low, double high, int maxTickCount)
-        {
-            double range = high - low;
-            int exponent = (int)Math.Log10(range);
-            spacing = Math.Pow(10, exponent); // start at a multiple of 10
+            range = high - low;
+            spacing = Math.Pow(10, (int)Math.Log10(range)); // Start from Power of 10 close to range
             divisions = 0;
 
-            while (true)
+            while (tickCount <= maxTickCount)
             {
-                IncreaseDensity(low, high);
-
-                double tickCount = (int)(range / spacing);
-                if (tickCount > maxTickCount)
-                    break;
+                IncreaseDensity();
 
                 if (divisions > 1000)
-                    throw new ArgumentException();
+                    throw new ArgumentException("Divisions count reach 1000");
             }
         }
 
-        public void IncreaseDensity(double low, double high)
+        public void IncreaseDensity()
         {
             spacing /= divBy[divisions % divBy.Length];
             divisions++;
-            double offset = low % spacing;
-            firstTick = low - offset;
         }
 
-        public void DecreaseDensity(double low, double high)
+        public void DecreaseDensity()
         {
             divisions--;
-            if ( divisions < 0 )
+
+            // This check can be removed if initiate division with big number like (1_000 * divBy.Length + 1) 
+            // that guaranty what it never be negative
+            if (divisions < 0)
                 divisions += divBy.Length;
-            
-            spacing *= divBy[divisions % divBy.Length];            
-            double offset = low % spacing;
-            firstTick = low - offset;
+
+            spacing *= divBy[divisions % divBy.Length];
         }
     }
 
@@ -106,20 +106,20 @@ namespace QuickPlot.PlotSettings
 
             for (int i = 0; i < 10; i++)
             {
-                Recalculate(ts, low, high);
+                Recalculate(ts);
                 if (!TicksOverlap(dataRect))
                     break;
                 else
-                    ts.DecreaseDensity(low, high);
+                    ts.DecreaseDensity();
             }
         }
 
-        private void Recalculate(TickSpacing ts, double low, double high)
+        private void Recalculate(TickSpacing ts)
         {
             ticks.Clear();
 
             float maxTickWidth = 0;
-            for (double value = ts.firstTick; value < high; value += ts.spacing)
+            for (double value = ts.firstTick; value < ts.high; value += ts.spacing)
             {
                 string label = Math.Round(value, 10).ToString();
                 ticks.Add(new Tick(value, label));
@@ -219,7 +219,7 @@ namespace QuickPlot.PlotSettings
                     SKPoint dataRight = new SKPoint(dataRect.Right, yPixel);
                     SKPoint tickLeft = new SKPoint(dataRect.Left - length, yPixel);
                     canvas.DrawLine(tickLeft, dataLeft, paintTick);
-                    canvas.DrawText(tick.label, tickLeft.X - 3, yPixel + paintTick.TextSize*(float).35, paintTick);
+                    canvas.DrawText(tick.label, tickLeft.X - 3, yPixel + paintTick.TextSize * 0.35f, paintTick);
                     canvas.DrawLine(dataLeft, dataRight, paintGrid);
                 }
             }
