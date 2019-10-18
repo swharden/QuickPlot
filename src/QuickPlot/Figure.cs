@@ -71,6 +71,18 @@ namespace QuickPlot
             return null;
         }
 
+        private List<Plot> SubplotsSharingAxes(Plot sourcePlot)
+        {
+            List<Plot> plotsSharingAxes = new List<Plot>();
+            foreach (Plot subplot in subplots)
+            {
+                if ((subplot.axes.x == sourcePlot.axes.x) || (subplot.axes.y == sourcePlot.axes.y))
+                    if (!plotsSharingAxes.Contains(subplot))
+                        plotsSharingAxes.Add(subplot);
+            }
+            return plotsSharingAxes;
+        }
+
         #endregion
 
         #region rendering
@@ -80,21 +92,17 @@ namespace QuickPlot
         {
             stopwatchRender.Restart();
 
-            bool FORCE_RENDER_EVERY_SUBPLOT = true; // TODO: remove after debugging is finished
-
-            if (onlySubplot is null || FORCE_RENDER_EVERY_SUBPLOT)
-            {
+            if (onlySubplot is null)
                 canvas.Clear(backgroundColor);
-                foreach (Plot subplot in subplots)
-                    subplot.Render(canvas, SubplotRect(figureSize, subplot));
-            }
-            else
+
+            List<Plot> plotsToRender = (onlySubplot is null) ? subplots : SubplotsSharingAxes(onlySubplot);
+            foreach (Plot subplot in plotsToRender)
             {
-                SKRect plotRect = SubplotRect(figureSize, onlySubplot);
+                SKRect plotRect = SubplotRect(figureSize, subplot);
                 canvas.Save();
                 canvas.ClipRect(plotRect);
                 canvas.Clear(backgroundColor);
-                onlySubplot.Render(canvas, plotRect);
+                subplot.Render(canvas, plotRect);
                 canvas.Restore();
             }
 
