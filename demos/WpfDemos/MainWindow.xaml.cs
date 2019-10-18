@@ -28,25 +28,32 @@ namespace WpfDemos
 
         public void DemoLayout()
         {
+            int CenterSubplotPointsCount = 1000;
+
             interactivePlot1.figure.Clear();
 
-            interactivePlot1.figure.Subplot(3, 2, 1);
+            var plotA = interactivePlot1.figure.Subplot(3, 2, 1);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
 
-            interactivePlot1.figure.Subplot(3, 2, 2);
+            var plotB = interactivePlot1.figure.Subplot(3, 2, 2);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Sin(50));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Cos(50));
 
             interactivePlot1.figure.Subplot(3, 2, 3, colSpan: 2);
-            interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Random(50, seed: 0));
-            interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Random(50, seed: 1));
+            double[] x = QuickPlot.Generate.Consecutative(CenterSubplotPointsCount);
+            double[] y1 = QuickPlot.Generate.Random(CenterSubplotPointsCount, seed: 0);
+            double[] y2 = QuickPlot.Generate.Random(CenterSubplotPointsCount, seed: 1);
+            interactivePlot1.figure.plot.Scatter(x, y1);
+            interactivePlot1.figure.plot.Scatter(x, y2);
 
-            var plotA = interactivePlot1.figure.Subplot(3, 2, 5);
+            var plotC = interactivePlot1.figure.Subplot(3, 2, 5);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
 
-            interactivePlot1.figure.Subplot(3, 2, 6, sharex: plotA);
+            var plotD = interactivePlot1.figure.Subplot(3, 2, 6, sharex: plotA, sharey: plotB);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
+
+            plotC.ShareAxis(plotD, plotD);
         }
     }
 }
