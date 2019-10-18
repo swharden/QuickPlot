@@ -67,7 +67,9 @@ namespace QuickPlot
         {
             stopwatchRender.Restart();
 
-            if (onlySubplot is null)
+            bool FORCE_RENDER_EVERY_SUBPLOT = true; // TODO: remove after debugging is finished
+
+            if (onlySubplot is null || FORCE_RENDER_EVERY_SUBPLOT)
             {
                 canvas.Clear(backgroundColor);
                 foreach (Plot subplot in subplots)
