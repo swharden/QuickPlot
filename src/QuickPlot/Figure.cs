@@ -71,18 +71,6 @@ namespace QuickPlot
             return null;
         }
 
-        private List<Plot> SubplotsSharingAxes(Plot sourcePlot)
-        {
-            List<Plot> plotsSharingAxes = new List<Plot>();
-            foreach (Plot subplot in subplots)
-            {
-                if ((subplot.axes.x == sourcePlot.axes.x) || (subplot.axes.y == sourcePlot.axes.y))
-                    if (!plotsSharingAxes.Contains(subplot))
-                        plotsSharingAxes.Add(subplot);
-            }
-            return plotsSharingAxes;
-        }
-
         #endregion
 
         #region rendering
@@ -94,8 +82,10 @@ namespace QuickPlot
 
             if (onlySubplot is null)
                 canvas.Clear(backgroundColor);
-
-            List<Plot> plotsToRender = (onlySubplot is null) ? subplots : SubplotsSharingAxes(onlySubplot);
+            
+            var plotsToRender = subplots.Where(p => (onlySubplot is null) 
+                                                    || onlySubplot.axes.x == p.axes.x 
+                                                    || onlySubplot.axes.y == p.axes.y);
             foreach (Plot subplot in plotsToRender)
             {
                 SKRect plotRect = SubplotRect(figureSize, subplot);
