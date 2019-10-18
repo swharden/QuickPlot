@@ -67,6 +67,15 @@ namespace QuickPlot
                 axes.y = sharey.axes.y;
         }
 
+        public void UnShareAxis(bool unshareX = true, bool unshareY = true)
+        {
+            var axesCopy = new PlotSettings.Axes(axes);
+            if (unshareX)
+                axes.x = axesCopy.x;
+            if (unshareY)
+                axes.y = axesCopy.y;
+        }
+
         #endregion
 
         #region rendering

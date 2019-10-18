@@ -46,6 +46,14 @@ namespace WinFormsDemos
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
 
             plotC.ShareAxis(plotD, plotD);
+            Task.Run(() => {
+                Task.Delay(10_000).Wait();
+                plotC.UnShareAxis(true, true);
+                Task.Delay(10_000).Wait();
+                plotA.UnShareAxis();
+                Task.Delay(10_000).Wait();
+                plotB.UnShareAxis();
+            });
         }
     }
 }
