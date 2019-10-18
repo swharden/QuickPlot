@@ -44,9 +44,10 @@ namespace QuickPlot
             var newPlot = new Plot
             {
                 subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan),
-                sharex = sharex,
-                sharey = sharey
             };
+
+            newPlot.ShareAxis(sharex, sharey);
+
             subplots.Add(newPlot);
             plot = subplots.Last();
             return newPlot;
