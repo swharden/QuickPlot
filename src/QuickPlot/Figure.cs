@@ -58,6 +58,18 @@ namespace QuickPlot
             Subplot(1, 1, 1);
         }
 
+        public Plot PlotAtPoint(SKSize figureSize, SKPoint point)
+        {
+            foreach (Plot subplot in subplots)
+            {
+                SKRect rect = SubplotRect(figureSize, subplot);
+                if (rect.Contains(point))
+                    return subplot;
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region rendering
@@ -137,20 +149,6 @@ namespace QuickPlot
             }
         }
 
-        #endregion
-
-        #region mouse
-        public Plot PlotUnderMouse(SKSize figureSize, SKPoint currentLocation)
-        {
-            foreach (Plot subplot in subplots)
-            {
-                SKRect rect = SubplotRect(figureSize, subplot);
-                if (rect.Contains(currentLocation))
-                    return subplot;
-            }
-
-            return null;
-        }
         #endregion
     }
 }

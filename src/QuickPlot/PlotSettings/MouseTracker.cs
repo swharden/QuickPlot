@@ -24,6 +24,8 @@ namespace QuickPlot.PlotSettings
 
         public SKRect lastRenderArea;
 
+        public AxisLimits mouseDownLimits;
+
         public MouseTracker()
         {
 

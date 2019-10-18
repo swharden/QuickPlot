@@ -104,29 +104,32 @@ namespace QuickPlot.WinForms
 
         #region mouse interaction
 
-        Plot plotEngagedWithMouse = null;
+        Plot plotEngagedWithMouse = null; // TODO: move this inside mouse class?
+        readonly PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
         private void glControl1_MouseDown(object sender, MouseEventArgs e)
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
-            plotEngagedWithMouse = figure.PlotUnderMouse(figureSize, mousePoint);
+            plotEngagedWithMouse = figure.PlotAtPoint(figureSize, mousePoint);
 
             if (plotEngagedWithMouse != null)
             {
+                mouse.mouseDownLimits = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+
                 if (e.Button == MouseButtons.Left)
                 {
                     glControl1.Cursor = Cursors.SizeAll;
-                    plotEngagedWithMouse.MouseDown(mousePoint, left: true);
+                    mouse.leftDown = mousePoint;
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
                     glControl1.Cursor = Cursors.NoMove2D;
-                    plotEngagedWithMouse.MouseDown(mousePoint, right: true);
+                    mouse.rightDown = mousePoint;
                 }
                 else if (e.Button == MouseButtons.Middle)
                 {
                     glControl1.Cursor = Cursors.Cross;
-                    plotEngagedWithMouse.MouseDown(mousePoint, middle: true);
+                    mouse.middleDown = mousePoint;
                 }
             }
         }
@@ -136,7 +139,10 @@ namespace QuickPlot.WinForms
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             if (plotEngagedWithMouse != null)
             {
-                plotEngagedWithMouse.MouseUp(mousePoint);
+                mouse.leftDown = new SKPoint(0, 0);
+                mouse.rightDown = new SKPoint(0, 0);
+                mouse.middleDown = new SKPoint(0, 0);
+
                 if (e.Button == MouseButtons.Middle)
                 {
                     plotEngagedWithMouse.AutoAxis();
@@ -151,12 +157,20 @@ namespace QuickPlot.WinForms
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             if (plotEngagedWithMouse != null)
             {
-                plotEngagedWithMouse.MouseMove(mousePoint);
+                mouse.now = mousePoint;
+                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimits);
+
+                if (mouse.leftButtonIsDown)
+                    plotEngagedWithMouse.axes.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+
+                if (mouse.rightButtonIsDown)
+                    plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+
                 glControl1.Refresh();
             }
             else
             {
-                var plotUnderMouse = figure.PlotUnderMouse(figureSize, mousePoint);
+                var plotUnderMouse = figure.PlotAtPoint(figureSize, mousePoint);
                 glControl1.Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Cross;
             }
         }
@@ -165,7 +179,7 @@ namespace QuickPlot.WinForms
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
-            figure.PlotUnderMouse(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
+            figure.PlotAtPoint(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
             glControl1.Refresh();
         }
 

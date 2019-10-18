@@ -46,29 +46,33 @@ namespace QuickPlot.WPF
         #region mouse interaction
 
         Plot plotEngagedWithMouse = null;
+        readonly PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
-            SKPoint location = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
+            SKPoint mousePoint = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
-            plotEngagedWithMouse = figure.PlotUnderMouse(figureSize, location);
+            plotEngagedWithMouse = figure.PlotAtPoint(figureSize, mousePoint);
+
             if (plotEngagedWithMouse != null)
             {
+                mouse.mouseDownLimits = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+
                 if (e.ChangedButton == MouseButton.Left)
                 {
                     Cursor = Cursors.SizeAll;
-                    plotEngagedWithMouse.MouseDown(location, left: true);
+                    mouse.leftDown = mousePoint;
                 }
                 else if (e.ChangedButton == MouseButton.Right)
                 {
                     Cursor = Cursors.SizeAll;
-                    plotEngagedWithMouse.MouseDown(location, right: true);
+                    mouse.rightDown = mousePoint;
                 }
                 else if (e.ChangedButton == MouseButton.Middle)
                 {
                     Cursor = Cursors.Cross;
-                    plotEngagedWithMouse.MouseDown(location, middle: true);
+                    mouse.middleDown = mousePoint;
                 }
             }
 
@@ -78,16 +82,24 @@ namespace QuickPlot.WPF
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             var position = e.GetPosition(this);
-            SKPoint location = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
+            SKPoint mousePoint = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             if (plotEngagedWithMouse != null)
             {
-                plotEngagedWithMouse.MouseMove(currentLocation: location);
+                mouse.now = mousePoint;
+                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimits);
+
+                if (mouse.leftButtonIsDown)
+                    plotEngagedWithMouse.axes.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+
+                if (mouse.rightButtonIsDown)
+                    plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+
                 skiaElement.InvalidateVisual();
             }
             else
             {
-                var plotUnderMouse = figure.PlotUnderMouse(figureSize, location);
+                var plotUnderMouse = figure.PlotAtPoint(figureSize, mousePoint);
                 Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Hand;
             }
         }
@@ -99,7 +111,10 @@ namespace QuickPlot.WPF
 
             if (plotEngagedWithMouse != null)
             {
-                plotEngagedWithMouse.MouseUp(upLocation: location);
+                mouse.leftDown = new SKPoint(0, 0);
+                mouse.rightDown = new SKPoint(0, 0);
+                mouse.middleDown = new SKPoint(0, 0);
+
                 if (e.ChangedButton == MouseButton.Middle)
                 {
                     plotEngagedWithMouse.AutoAxis();
@@ -116,7 +131,7 @@ namespace QuickPlot.WPF
             SKPoint location = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
-            figure.PlotUnderMouse(figureSize, location)?.axes.Zoom(zoom, zoom);
+            figure.PlotAtPoint(figureSize, location)?.axes.Zoom(zoom, zoom);
             skiaElement.InvalidateVisual();
         }
 

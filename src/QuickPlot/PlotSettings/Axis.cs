@@ -9,8 +9,9 @@ namespace QuickPlot.PlotSettings
         public double low, high;
         public double span { get { return high - low; } }
         public double center { get { return (high + low) / 2.0; } }
+        public bool isValid { get { return (low < high); } }
 
-        public Axis(double low = -1, double high = 1)
+        public Axis(double low = 0, double high = 0)
         {
             Set(low, high);
         }

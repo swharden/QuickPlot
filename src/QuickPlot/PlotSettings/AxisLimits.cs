@@ -13,6 +13,19 @@ namespace QuickPlot.PlotSettings
             Set(initialX, initialY);
         }
 
+        public AxisLimits(Axes source)
+        {
+            xLow = source.x.low;
+            xHigh = source.x.high;
+            yLow = source.y.low;
+            yHigh = source.y.high;
+        }
+
+        public override string ToString()
+        {
+            return $"AxisLimits: x1={xLow}, x2={xHigh}, y1={yLow}, y2={yHigh}";
+        }
+
         public void Set(double x, double y)
         {
             xLow = x;

@@ -11,8 +11,7 @@ namespace QuickPlot
         public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
         private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
         public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
-        public PlotSettings.Axes axes;
-        private PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
+        public readonly PlotSettings.Axes axes = new PlotSettings.Axes();
         public PlotSettings.Label title, yLabel, xLabel, y2Label;
         public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
         public Plot sharex, sharey;
@@ -53,9 +52,6 @@ namespace QuickPlot
 
         public void AutoAxis(double marginX = .1, double marginY = .1)
         {
-            if (axes == null)
-                axes = new PlotSettings.Axes();
-
             if (plottables.Count > 0)
             {
                 axes.Set(plottables[0].GetDataArea());
@@ -66,37 +62,19 @@ namespace QuickPlot
             axes.Zoom(1 - marginX, 1 - marginY);
         }
 
-        private PlotSettings.Axes AxesAfterMouse(SKRect? renderArea = null)
-        {
-            if (renderArea is null)
-                renderArea = mouse.lastRenderArea;
-            else
-                mouse.lastRenderArea = (SKRect)renderArea;
-
-            var axesAfterMouse = new PlotSettings.Axes(axes);
-            if (mouse.leftButtonIsDown)
-                axesAfterMouse.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
-            if (mouse.rightButtonIsDown)
-                axesAfterMouse.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
-            axesAfterMouse.SetDataRect((SKRect)renderArea);
-            return axesAfterMouse;
-        }
-
         #endregion
 
         #region rendering
 
         public void Render(SKCanvas canvas, SKRect plotRect)
         {
-
             // update plot-level layout with the latest plot dimensions
             layout.Update(plotRect);
 
-            // update axes, then create a local copy containing mouse manipulations
-            if (this.axes == null)
+            if (!axes.x.isValid || !axes.y.isValid)
                 AutoAxis();
-            this.axes.SetDataRect(layout.dataRect);
-            var axes = AxesAfterMouse(layout.dataRect);
+
+            axes.SetDataRect(layout.dataRect);
 
             // draw the graphics
             yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect);
@@ -213,29 +191,6 @@ namespace QuickPlot
             canvas.DrawRect(layout.dataRect, layoutFramePaint);
         }
 
-        #endregion
-
-        #region mouse
-
-        public void MouseDown(SKPoint downLocation, bool left = false, bool right = false, bool middle = false)
-        {
-            mouse.leftDown = (left) ? downLocation : new SKPoint(0, 0);
-            mouse.rightDown = (right) ? downLocation : new SKPoint(0, 0);
-            mouse.middleDown = (middle) ? downLocation : new SKPoint(0, 0);
-        }
-
-        public void MouseUp(SKPoint upLocation)
-        {
-            axes = AxesAfterMouse();
-            mouse.leftDown = new SKPoint(0, 0);
-            mouse.rightDown = new SKPoint(0, 0);
-            mouse.middleDown = new SKPoint(0, 0);
-        }
-
-        public void MouseMove(SKPoint currentLocation)
-        {
-            mouse.now = currentLocation;
-        }
         #endregion
     }
 }

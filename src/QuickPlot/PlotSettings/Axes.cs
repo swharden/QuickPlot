@@ -7,7 +7,7 @@ namespace QuickPlot.PlotSettings
 {
     public class Axes
     {
-        public Axis x, y;
+        public readonly Axis x, y;
         private SKRect rect;
         private double pixelsPerUnitX, pixelsPerUnitY;
         private double unitsPerPixelX, unitsPerPixelY;
