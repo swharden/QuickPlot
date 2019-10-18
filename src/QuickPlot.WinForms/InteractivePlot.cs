@@ -16,6 +16,8 @@ namespace QuickPlot.WinForms
 {
     public partial class InteractivePlot : UserControl
     {
+        #region setup and rendering 
+
         SKColorType colorType = SKColorType.Rgba8888;
         GRBackendRenderTarget renderTarget;
         SKSurface surface;
@@ -102,6 +104,8 @@ namespace QuickPlot.WinForms
             glControl1.SwapBuffers();
         }
 
+        #endregion
+
         #region mouse interaction
 
         Plot plotEngagedWithMouse = null; // TODO: move this inside mouse class?
@@ -134,24 +138,6 @@ namespace QuickPlot.WinForms
             }
         }
 
-        private void glControl1_MouseUp(object sender, MouseEventArgs e)
-        {
-            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
-            if (plotEngagedWithMouse != null)
-            {
-                mouse.leftDown = new SKPoint(0, 0);
-                mouse.rightDown = new SKPoint(0, 0);
-                mouse.middleDown = new SKPoint(0, 0);
-
-                if (e.Button == MouseButtons.Middle)
-                {
-                    plotEngagedWithMouse.AutoAxis();
-                    glControl1.Refresh();
-                }
-                plotEngagedWithMouse = null;
-            }
-        }
-
         private void glControl1_MouseMove(object sender, MouseEventArgs e)
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
@@ -172,6 +158,24 @@ namespace QuickPlot.WinForms
             {
                 var plotUnderMouse = figure.PlotAtPoint(figureSize, mousePoint);
                 glControl1.Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Cross;
+            }
+        }
+
+        private void glControl1_MouseUp(object sender, MouseEventArgs e)
+        {
+            var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
+            if (plotEngagedWithMouse != null)
+            {
+                mouse.leftDown = new SKPoint(0, 0);
+                mouse.rightDown = new SKPoint(0, 0);
+                mouse.middleDown = new SKPoint(0, 0);
+
+                if (e.Button == MouseButtons.Middle)
+                {
+                    plotEngagedWithMouse.AutoAxis();
+                    glControl1.Refresh();
+                }
+                plotEngagedWithMouse = null;
             }
         }
 

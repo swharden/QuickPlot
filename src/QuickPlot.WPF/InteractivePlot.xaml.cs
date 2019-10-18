@@ -24,6 +24,8 @@ namespace QuickPlot.WPF
     /// </summary>
     public partial class InteractivePlot : UserControl
     {
+        #region setup and rendering
+
         public readonly Figure figure = new Figure();
 
         public InteractivePlot()
@@ -42,6 +44,8 @@ namespace QuickPlot.WPF
             figureSize = new SKSize(e.Info.Width / scaleFactor, e.Info.Height / scaleFactor);
             figure.Render(e.Surface.Canvas, figureSize, plotEngagedWithMouse);
         }
+
+        #endregion
 
         #region mouse interaction
 
