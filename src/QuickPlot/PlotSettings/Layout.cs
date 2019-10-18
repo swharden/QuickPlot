@@ -10,7 +10,7 @@ namespace QuickPlot.PlotSettings
         // user can reach in and configure these options
         public float yLabelWidth = 20;
         public float yScaleWidth = 40;
-        public float y2LabelWidth = 0;
+        public float y2LabelWidth = 3; // zero is too close to the edge
         public float y2ScaleWidth = 0;
         public float titleHeight = 20;
         public float xLabelHeight = 20;
