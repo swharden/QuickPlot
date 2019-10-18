@@ -58,7 +58,7 @@ namespace QuickPlot
             axes.Zoom(1 - marginX, 1 - marginY);
         }
 
-        public void ShareAxis(Plot sharex, Plot sharey)
+        public void ShareAxis(Plot sharex = null, Plot sharey = null)
         {
             if (sharex != null)
                 axes.x = sharex.axes.x;
