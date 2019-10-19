@@ -141,12 +141,12 @@ namespace QuickPlot.PlotSettings
         {
             if ((side == Side.left) || (side == Side.right))
             {
-                double totalTickHeight = biggestTickLabelSize.Height * ticks.Count;
+                int totalTickHeight = (int)(biggestTickLabelSize.Height * ticks.Count);
                 return (totalTickHeight > dataRect.Height);
             }
             else if ((side == Side.bottom) || (side == Side.top))
             {
-                double totalTickWidth = biggestTickLabelSize.Width * ticks.Count;
+                int totalTickWidth = (int)(biggestTickLabelSize.Width * ticks.Count);
                 return (totalTickWidth > dataRect.Width);
             }
             else
