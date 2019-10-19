@@ -9,8 +9,21 @@ namespace QuickPlot.PlotSettings
     {
         public string text = "label";
         public float fontSize = 12;
-        public bool bold = false;
+        public SKFontStyleWeight weight = SKFontStyleWeight.Normal;
         public string fontName = "Segoe UI";
         public SKColor fontColor = SKColors.Black;
+        public SKTextAlign align = SKTextAlign.Center;
+
+        public SKPaint MakePaint()
+        {
+            return new SKPaint()
+            {
+                IsAntialias = true,
+                Color = fontColor,
+                TextSize = fontSize,
+                TextAlign = align,
+                Typeface = SKTypeface.FromFamilyName(fontName, weight, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
+            };
+        }
     }
 }

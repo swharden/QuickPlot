@@ -17,10 +17,10 @@ namespace QuickPlot
 
         public Plot()
         {
-            title = new PlotSettings.Label { text = "Title", fontSize = 16, bold = true };
-            yLabel = new PlotSettings.Label { text = "Vertical Label" };
-            xLabel = new PlotSettings.Label { text = "Horzontal Label" };
-            y2Label = new PlotSettings.Label { text = "" };
+            title = new PlotSettings.Label { text = "Title", fontSize = 16, weight = SKFontStyleWeight.Bold };
+            yLabel = new PlotSettings.Label { text = "Vertical Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+            xLabel = new PlotSettings.Label { text = "Horzontal Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+            y2Label = new PlotSettings.Label { text = "Vertical Label Too", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
 
             yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
             xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
@@ -154,36 +154,31 @@ namespace QuickPlot
 
         private void RenderLabels(SKCanvas canvas)
         {
-
-            SKPaint paintLabel = new SKPaint()
-            {
-                Color = SKColor.Parse("#000000"),
-                TextSize = 16,
-                TextAlign = SKTextAlign.Center,
-                IsAntialias = true
-            };
-
             int pathExtend = 500;
 
             SKPath titlePath = new SKPath();
-            titlePath.MoveTo(layout.titleRect.Left - pathExtend, layout.titleRect.Top + paintLabel.TextSize);
-            titlePath.LineTo(layout.titleRect.Right + pathExtend, layout.titleRect.Top + paintLabel.TextSize);
-            canvas.DrawTextOnPath(title.text, titlePath, 0, 0, paintLabel);
+            SKPaint titlePaint = title.MakePaint();
+            titlePath.MoveTo(layout.titleRect.Left - pathExtend, layout.titleRect.Top + titlePaint.TextSize);
+            titlePath.LineTo(layout.titleRect.Right + pathExtend, layout.titleRect.Top + titlePaint.TextSize);
+            canvas.DrawTextOnPath(title.text, titlePath, 0, 0, titlePaint);
 
             SKPath yLabelPath = new SKPath();
-            yLabelPath.MoveTo(layout.yLabelRect.Left + paintLabel.TextSize, layout.yLabelRect.Bottom + pathExtend);
-            yLabelPath.LineTo(layout.yLabelRect.Left + paintLabel.TextSize, layout.yLabelRect.Top - pathExtend);
-            canvas.DrawTextOnPath(yLabel.text, yLabelPath, 0, 0, paintLabel);
+            SKPaint yLabelPaint = yLabel.MakePaint();
+            yLabelPath.MoveTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Bottom + pathExtend);
+            yLabelPath.LineTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Top - pathExtend);
+            canvas.DrawTextOnPath(yLabel.text, yLabelPath, 0, 0, yLabelPaint);
 
             SKPath y2LabelPath = new SKPath();
-            y2LabelPath.MoveTo(layout.y2LabelRect.Right - paintLabel.TextSize, layout.y2LabelRect.Top - pathExtend);
-            y2LabelPath.LineTo(layout.y2LabelRect.Right - paintLabel.TextSize, layout.y2LabelRect.Bottom + pathExtend);
-            canvas.DrawTextOnPath(y2Label.text, y2LabelPath, 0, 0, paintLabel);
+            SKPaint y2LabelPaint = y2Label.MakePaint();
+            y2LabelPath.MoveTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Top - pathExtend);
+            y2LabelPath.LineTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Bottom + pathExtend);
+            canvas.DrawTextOnPath(y2Label.text, y2LabelPath, 0, 0, y2LabelPaint);
 
             SKPath xLabelPath = new SKPath();
-            xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + paintLabel.TextSize);
-            xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + paintLabel.TextSize);
-            canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, paintLabel);
+            SKPaint xLabelPaint = xLabel.MakePaint();
+            xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
+            xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
+            canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, xLabelPaint);
 
 
             // Outline the data area
