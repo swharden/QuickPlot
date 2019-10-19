@@ -9,6 +9,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
+# note: sometimes the nuget installer fails on Azure Pipelines... ythough?
 steps:
 - task: NuGetToolInstaller@1
 
