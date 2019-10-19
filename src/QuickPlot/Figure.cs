@@ -24,9 +24,8 @@ namespace QuickPlot
         public Plot plot;
 
         public Plot Subplot(
-            int nRows, int nCols, int subPlotNumber, 
-            int rowSpan = 1, int colSpan = 1,
-            Plot sharex = null, Plot sharey = null
+            int nRows, int nCols, int subPlotNumber,
+            int rowSpan = 1, int colSpan = 1
             )
         {
             // activate the plot with this configuration
@@ -45,8 +44,6 @@ namespace QuickPlot
             {
                 subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan),
             };
-
-            newPlot.ShareAxis(sharex, sharey);
 
             subplots.Add(newPlot);
             plot = subplots.Last();
@@ -82,9 +79,9 @@ namespace QuickPlot
 
             if (onlySubplot is null)
                 canvas.Clear(backgroundColor);
-            
-            var plotsToRender = subplots.Where(p => (onlySubplot is null) 
-                                                    || onlySubplot.axes.x == p.axes.x 
+
+            var plotsToRender = subplots.Where(p => (onlySubplot is null)
+                                                    || onlySubplot.axes.x == p.axes.x
                                                     || onlySubplot.axes.y == p.axes.y);
             foreach (Plot subplot in plotsToRender)
             {
