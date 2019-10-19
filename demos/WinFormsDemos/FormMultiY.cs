@@ -41,5 +41,23 @@ namespace WinFormsDemos
             interactivePlot1.figure.plot.y2Label.text = "Secondary Vertical Axis";
             interactivePlot1.figure.plot.y2Label.fontColor = SkiaSharp.SKColors.Red;
         }
+
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            interactivePlot1.figure.plot.axes2.y.Zoom(1.5);
+            interactivePlot1.Render();
+        }
+
+        private void btnZoomOut_Click(object sender, EventArgs e)
+        {
+            interactivePlot1.figure.plot.axes2.y.Zoom(0.5);
+            interactivePlot1.Render();
+        }
+
+        private void btnAuto_Click(object sender, EventArgs e)
+        {
+            interactivePlot1.figure.plot.AutoAxis();
+            interactivePlot1.Render();
+        }
     }
 }
