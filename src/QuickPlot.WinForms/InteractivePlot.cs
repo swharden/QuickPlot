@@ -111,6 +111,15 @@ namespace QuickPlot.WinForms
         Plot plotEngagedWithMouse = null; // TODO: move this inside mouse class?
         readonly PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
+        private void LockTickDensity(bool locked)
+        {
+            foreach (Plot subplot in figure.subplots)
+            {
+                subplot.xTicks.lockTickDensity = locked;
+                subplot.yTicks.lockTickDensity = locked;
+            }
+        }
+
         private void glControl1_MouseDown(object sender, MouseEventArgs e)
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
@@ -122,6 +131,7 @@ namespace QuickPlot.WinForms
 
                 if (e.Button == MouseButtons.Left)
                 {
+                    LockTickDensity(true);
                     glControl1.Cursor = Cursors.SizeAll;
                     mouse.leftDown = mousePoint;
                 }
@@ -169,6 +179,7 @@ namespace QuickPlot.WinForms
                 mouse.leftDown = new SKPoint(0, 0);
                 mouse.rightDown = new SKPoint(0, 0);
                 mouse.middleDown = new SKPoint(0, 0);
+                LockTickDensity(false);
 
                 if (e.Button == MouseButtons.Middle)
                 {

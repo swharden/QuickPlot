@@ -48,6 +48,12 @@ namespace QuickPlot.PlotSettings
                 IncreaseDensity();
         }
 
+        public void ShiftTo(double low, double high)
+        {
+            this.low = low;
+            this.high = high;
+        }
+
         public void IncreaseDensity()
         {
             spacing /= divBy[divisions % divBy.Length];
@@ -82,8 +88,9 @@ namespace QuickPlot.PlotSettings
         readonly List<Tick> ticks;
         public SKSize biggestTickLabelSize;
         public double? fixedSpacing = null;
-
+        TickSpacing ts;
         public readonly Side side;
+        public bool lockTickDensity = false;
 
         public TickCollection(Side side)
         {
@@ -93,13 +100,20 @@ namespace QuickPlot.PlotSettings
 
         public void FindBestTickDensity(double low, double high, SKRect dataRect)
         {
+            if (lockTickDensity && ts != null)
+            {
+                ts.ShiftTo(low, high);
+                Recalculate(ts);
+                return;
+            }
+
             // Start by using a too-high tick density (tick labels will overlap)
             // then decrease density until tick labels no longer overlap
             int verticalTickCount = (int)(dataRect.Height / 8);
             int horizontalTickCount = (int)(dataRect.Width / 8 * 3);
             int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
 
-            TickSpacing ts = new TickSpacing(low, high, startingTickCount);
+            ts = new TickSpacing(low, high, startingTickCount);
 
             if (fixedSpacing == null || fixedSpacing <= 0)
             {
