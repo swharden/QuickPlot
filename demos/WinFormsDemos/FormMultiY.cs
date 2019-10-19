@@ -28,8 +28,18 @@ namespace WinFormsDemos
             double[] data1 = QuickPlot.Generate.Sin(pointCount, mult: 0.01);
             double[] data2 = QuickPlot.Generate.Cos(pointCount, mult: 100);
 
-            interactivePlot1.figure.plot.Scatter(dataX, data1);
-            interactivePlot1.figure.plot.Scatter(dataX, data2);
+            var style1 = new QuickPlot.Style();
+            style1.paint.Color = SkiaSharp.SKColors.Blue;
+            interactivePlot1.figure.plot.Scatter(dataX, data1, style1);
+            interactivePlot1.figure.plot.yLabel.text = "Primary Vertical Axis";
+            interactivePlot1.figure.plot.yLabel.fontColor = SkiaSharp.SKColors.Blue;
+
+            var style2 = new QuickPlot.Style();
+            style2.paint.Color = SkiaSharp.SKColors.Red;
+            style2.secondY = true;
+            interactivePlot1.figure.plot.Scatter(dataX, data2, style2);
+            interactivePlot1.figure.plot.y2Label.text = "Secondary Vertical Axis";
+            interactivePlot1.figure.plot.y2Label.fontColor = SkiaSharp.SKColors.Red;
         }
     }
 }
