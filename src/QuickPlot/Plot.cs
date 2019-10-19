@@ -83,8 +83,8 @@ namespace QuickPlot
             axes.SetDataRect(layout.dataRect);
 
             // draw the graphics
-            yTicks.FindBestTickDensity(axes.y.low, axes.y.high, layout.dataRect);
-            xTicks.FindBestTickDensity(axes.x.low, axes.x.high, layout.dataRect);
+            yTicks.Generate(axes.y.low, axes.y.high, layout.dataRect);
+            xTicks.Generate(axes.x.low, axes.x.high, layout.dataRect);
             if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
             {
                 Debug.WriteLine("increasing Y scale width to prevent overlapping with label Y label");

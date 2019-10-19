@@ -48,7 +48,7 @@ namespace QuickPlot.PlotSettings
                 IncreaseDensity();
         }
 
-        public void ShiftTo(double low, double high)
+        public void SetRange(double low, double high)
         {
             this.low = low;
             this.high = high;
@@ -87,9 +87,10 @@ namespace QuickPlot.PlotSettings
         public SKPaint paint = new SKPaint();
         readonly List<Tick> ticks;
         public SKSize biggestTickLabelSize;
-        public double? fixedSpacing = null;
-        TickSpacing ts;
         public readonly Side side;
+        TickSpacing ts;
+
+        public double? fixedSpacing = null; // set this to manually define tick spacing
         public bool lockTickDensity = false;
 
         public TickCollection(Side side)
@@ -98,47 +99,47 @@ namespace QuickPlot.PlotSettings
             ticks = new List<Tick>();
         }
 
-        public void FindBestTickDensity(double low, double high, SKRect dataRect)
+        public void Generate(double low, double high, SKRect dataRect)
         {
             if (lockTickDensity && ts != null)
             {
-                ts.ShiftTo(low, high);
-                Recalculate(ts);
+                GenerateTickList(low, high, ts.spacing);
                 return;
             }
-
-            // Start by using a too-high tick density (tick labels will overlap)
-            // then decrease density until tick labels no longer overlap
-            int verticalTickCount = (int)(dataRect.Height / 8);
-            int horizontalTickCount = (int)(dataRect.Width / 8 * 3);
-            int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
-
-            ts = new TickSpacing(low, high, startingTickCount);
-
-            if (fixedSpacing == null || fixedSpacing <= 0)
+            else if (fixedSpacing != null)
             {
+                if (fixedSpacing <= 0)
+                    throw new ArgumentException("fixedSpacing must be >0");
+                GenerateTickList(low, high, (double)fixedSpacing);
+                return;
+            }
+            else
+            {
+                // Start by using a too-high tick density (tick labels will overlap)
+                if (side == Side.left || side == Side.right)
+                    ts = new TickSpacing(low, high, (int)(dataRect.Height / 8));
+                else
+                    ts = new TickSpacing(low, high, (int)(dataRect.Width / 24));
+
+                // then decrease density until tick labels no longer overlap
                 for (int i = 0; i < 10; i++)
                 {
-                    Recalculate(ts);
+                    GenerateTickList(ts.low, ts.high, ts.spacing);
                     if (!TicksOverlap(dataRect))
                         break;
                     else
                         ts.DecreaseDensity();
                 }
             }
-            else
-            {
-                ts.SetDensity((double)fixedSpacing);
-                Recalculate(ts);
-            }
         }
 
-        private void Recalculate(TickSpacing ts)
+        private void GenerateTickList(double low, double high, double spacing)
         {
-            ticks.Clear();
+            double firstTick = low - (low % spacing);
 
+            ticks.Clear();
             float maxTickWidth = 0;
-            for (double value = ts.firstTick; value < ts.high; value += ts.spacing)
+            for (double value = firstTick; value < high; value += spacing)
             {
                 string label = Math.Round(value, 10).ToString();
                 ticks.Add(new Tick(value, label));
