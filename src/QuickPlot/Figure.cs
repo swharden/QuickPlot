@@ -20,7 +20,7 @@ namespace QuickPlot
 
         #region subplot management
 
-        private readonly List<Plot> subplots = new List<Plot>();
+        public readonly List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
         public Plot Subplot(
