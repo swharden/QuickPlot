@@ -58,13 +58,14 @@ namespace QuickPlot
             axes.Zoom(1 - marginX, 1 - marginY);
         }
 
-        public void ShareAxis(Plot sharex = null, Plot sharey = null)
+        public void ShareX(Plot source)
         {
-            if (sharex != null)
-                axes.x = sharex.axes.x;
+            axes.x = (source is null) ? new PlotSettings.Axis(axes.x.low, axes.x.high) : axes.x = source.axes.x;
+        }
 
-            if (sharey != null)
-                axes.y = sharey.axes.y;
+        public void ShareY(Plot source)
+        {
+            axes.y = (source is null) ? new PlotSettings.Axis(axes.y.low, axes.y.high) : axes.y = source.axes.y;
         }
 
         #endregion

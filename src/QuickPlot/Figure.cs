@@ -24,9 +24,8 @@ namespace QuickPlot
         public Plot plot;
 
         public Plot Subplot(
-            int nRows, int nCols, int subPlotNumber, 
-            int rowSpan = 1, int colSpan = 1,
-            Plot sharex = null, Plot sharey = null
+            int nRows, int nCols, int subPlotNumber,
+            int rowSpan = 1, int colSpan = 1
             )
         {
             // activate the plot with this configuration
@@ -45,8 +44,6 @@ namespace QuickPlot
             {
                 subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan),
             };
-
-            newPlot.ShareAxis(sharex, sharey);
 
             subplots.Add(newPlot);
             plot = subplots.Last();
@@ -71,18 +68,6 @@ namespace QuickPlot
             return null;
         }
 
-        private List<Plot> SubplotsSharingAxes(Plot sourcePlot)
-        {
-            List<Plot> plotsSharingAxes = new List<Plot>();
-            foreach (Plot subplot in subplots)
-            {
-                if ((subplot.axes.x == sourcePlot.axes.x) || (subplot.axes.y == sourcePlot.axes.y))
-                    if (!plotsSharingAxes.Contains(subplot))
-                        plotsSharingAxes.Add(subplot);
-            }
-            return plotsSharingAxes;
-        }
-
         #endregion
 
         #region rendering
@@ -95,7 +80,9 @@ namespace QuickPlot
             if (onlySubplot is null)
                 canvas.Clear(backgroundColor);
 
-            List<Plot> plotsToRender = (onlySubplot is null) ? subplots : SubplotsSharingAxes(onlySubplot);
+            var plotsToRender = subplots.Where(p => (onlySubplot is null)
+                                                    || onlySubplot.axes.x == p.axes.x
+                                                    || onlySubplot.axes.y == p.axes.y);
             foreach (Plot subplot in plotsToRender)
             {
                 SKRect plotRect = SubplotRect(figureSize, subplot);
