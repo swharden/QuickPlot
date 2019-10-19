@@ -45,6 +45,11 @@ namespace QuickPlot.WPF
             figure.Render(e.Surface.Canvas, figureSize, plotEngagedWithMouse);
         }
 
+        public void Render()
+        {
+            skiaElement.InvalidateVisual();
+        }
+
         #endregion
 
         #region mouse interaction
@@ -109,7 +114,7 @@ namespace QuickPlot.WPF
                 if (mouse.rightButtonIsDown)
                     plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
 
-                skiaElement.InvalidateVisual();
+                Render();
             }
             else
             {
@@ -133,7 +138,7 @@ namespace QuickPlot.WPF
                 if (e.ChangedButton == MouseButton.Middle)
                 {
                     plotEngagedWithMouse.AutoAxis();
-                    skiaElement.InvalidateVisual();
+                    Render();
                 }
                 plotEngagedWithMouse = null;
             }
@@ -147,7 +152,7 @@ namespace QuickPlot.WPF
 
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
             figure.PlotAtPoint(figureSize, location)?.axes.Zoom(zoom, zoom);
-            skiaElement.InvalidateVisual();
+            Render();
         }
 
         #endregion

@@ -104,6 +104,11 @@ namespace QuickPlot.WinForms
             glControl1.SwapBuffers();
         }
 
+        public void Render()
+        {
+            glControl1.Refresh();
+        }
+
         #endregion
 
         #region mouse interaction
@@ -162,7 +167,7 @@ namespace QuickPlot.WinForms
                 if (mouse.rightButtonIsDown)
                     plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
 
-                glControl1.Refresh();
+                Render();
             }
             else
             {
@@ -184,7 +189,7 @@ namespace QuickPlot.WinForms
                 if (e.Button == MouseButtons.Middle)
                 {
                     plotEngagedWithMouse.AutoAxis();
-                    glControl1.Refresh();
+                    Render();
                 }
                 plotEngagedWithMouse = null;
             }
@@ -195,7 +200,7 @@ namespace QuickPlot.WinForms
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
             figure.PlotAtPoint(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
-            glControl1.Refresh();
+            Render();
         }
 
         #endregion
