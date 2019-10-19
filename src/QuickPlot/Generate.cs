@@ -23,6 +23,16 @@ namespace QuickPlot
             return Enumerable.Range(0, count).Select(x => rand.NextDouble() * mult + offset).ToArray();
         }
 
+        public static double[] RandomWalk(int count, double mult = 1, double offset = 0, int? seed = null)
+        {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException("count must be >1");
+            double[] values = Random(count, mult, offset, seed);
+            for (int i = 1; i < values.Length; i++)
+                values[i] += values[i - 1] - mult / 2;
+            return values;
+        }
+
         public static double[] Consecutative(int count, double mult = 1, double offset = 0)
         {
             if (count < 0)
