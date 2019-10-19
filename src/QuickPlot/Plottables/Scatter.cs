@@ -10,7 +10,6 @@ namespace QuickPlot.Plottables
     public class Scatter : Plottable
     {
         double[] xs, ys;
-        Style style;
 
         public Scatter(double[] xs, double[] ys, Style style)
         {

@@ -12,6 +12,7 @@ namespace QuickPlot
         private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
         public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
         public readonly PlotSettings.Axes axes = new PlotSettings.Axes();
+        public readonly PlotSettings.Axes axes2 = new PlotSettings.Axes();
         public PlotSettings.Label title, yLabel, xLabel, y2Label;
         public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
 
@@ -46,16 +47,37 @@ namespace QuickPlot
 
         #region axis management
 
+        private List<Plottables.Plottable> GetPlottableList(bool secondaryAxis = false)
+        {
+            List<Plottables.Plottable> plist = new List<Plottables.Plottable>();
+            foreach (Plottables.Plottable plottable in plottables)
+                if (plottable.style.secondY == secondaryAxis)
+                    plist.Add(plottable);
+            return plist;
+        }
+
         public void AutoAxis(double marginX = .1, double marginY = .1)
         {
-            if (plottables.Count > 0)
+            // auto axis for primary XY
+            var primaryPlottables = GetPlottableList(false);
+            if (primaryPlottables.Count > 0)
             {
-                axes.Set(plottables[0].GetDataArea());
-                for (int i = 1; i < plottables.Count; i++)
-                    axes.Expand(plottables[i].GetDataArea());
+                axes.Set(primaryPlottables[0].GetDataArea());
+                for (int i = 1; i < primaryPlottables.Count; i++)
+                    axes.Expand(primaryPlottables[i].GetDataArea());
             }
-
             axes.Zoom(1 - marginX, 1 - marginY);
+
+            // auto axis for secondary XY
+            var secondaryPlottables = GetPlottableList(true);
+            if (secondaryPlottables.Count > 0)
+            {
+                axes2.Set(secondaryPlottables[0].GetDataArea());
+                for (int i = 1; i < secondaryPlottables.Count; i++)
+                    axes2.Expand(secondaryPlottables[i].GetDataArea());
+            }
+            axes2.Zoom(1 - marginX, 1 - marginY);
+            axes2.x = axes.x;
         }
 
         public void ShareX(Plot source)
@@ -81,9 +103,11 @@ namespace QuickPlot
                 AutoAxis();
 
             axes.SetDataRect(layout.dataRect);
+            axes2.SetDataRect(layout.dataRect);
 
             // draw the graphics
             yTicks.Generate(axes.y.low, axes.y.high, layout.dataRect);
+            y2Ticks.Generate(axes2.y.low, axes2.y.high, layout.dataRect);
             xTicks.Generate(axes.x.low, axes.x.high, layout.dataRect);
             if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
             {
@@ -98,14 +122,16 @@ namespace QuickPlot
             canvas.DrawRect(layout.dataRect, fillPaint);
 
             yTicks.Render(canvas, axes);
+            y2Ticks.Render(canvas, axes2);
             xTicks.Render(canvas, axes);
-
 
             canvas.Save();
             canvas.ClipRect(axes.GetDataRect());
 
-            for (int i = 0; i < plottables.Count; i++)
-                plottables[i].Render(canvas, axes);
+            foreach (var primaryPlottable in GetPlottableList(false))
+                primaryPlottable.Render(canvas, axes);
+            foreach (var secondaryPlottable in GetPlottableList(true))
+                secondaryPlottable.Render(canvas, axes2);
 
             canvas.Restore();
 

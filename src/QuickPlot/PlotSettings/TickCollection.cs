@@ -101,6 +101,12 @@ namespace QuickPlot.PlotSettings
 
         public void Generate(double low, double high, SKRect dataRect)
         {
+            if (low == high)
+            {
+                ticks.Clear();
+                return;
+            }
+
             if (lockTickDensity && ts != null)
             {
                 GenerateTickList(low, high, ts.spacing);
@@ -255,8 +261,6 @@ namespace QuickPlot.PlotSettings
                 TextAlign = SKTextAlign.Left,
                 Color = SKColor.Parse("#FF000000")
             };
-
-            Debug.WriteLine($"ticksRight {ticks.Count}");
 
             SKRect dataRect = axes.GetDataRect();
             foreach (Tick tick in ticks)
