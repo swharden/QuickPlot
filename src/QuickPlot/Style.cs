@@ -11,7 +11,7 @@ namespace QuickPlot
         readonly float lineWidth, markerSize, fontSize;
         readonly string fontName, label;
         public readonly SKPaint paint;
-
+        public bool secondY = false;
 
         public Style(int colorIndex = 0, SKColor? color = null, float lineWidth = 1, float markerSize = 3, string fontName = "Segoe UI", float fontSize = 12, string label = null)
         {
