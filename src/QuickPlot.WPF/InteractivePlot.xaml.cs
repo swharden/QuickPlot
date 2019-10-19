@@ -52,6 +52,15 @@ namespace QuickPlot.WPF
         Plot plotEngagedWithMouse = null;
         readonly PlotSettings.MouseTracker mouse = new PlotSettings.MouseTracker();
 
+        private void LockTickDensity(bool locked)
+        {
+            foreach (Plot subplot in figure.subplots)
+            {
+                subplot.xTicks.lockTickDensity = locked;
+                subplot.yTicks.lockTickDensity = locked;
+            }
+        }
+
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var position = e.GetPosition(this);
@@ -65,6 +74,7 @@ namespace QuickPlot.WPF
 
                 if (e.ChangedButton == MouseButton.Left)
                 {
+                    LockTickDensity(true);
                     Cursor = Cursors.SizeAll;
                     mouse.leftDown = mousePoint;
                 }
@@ -118,6 +128,7 @@ namespace QuickPlot.WPF
                 mouse.leftDown = new SKPoint(0, 0);
                 mouse.rightDown = new SKPoint(0, 0);
                 mouse.middleDown = new SKPoint(0, 0);
+                LockTickDensity(false);
 
                 if (e.ChangedButton == MouseButton.Middle)
                 {
