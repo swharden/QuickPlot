@@ -176,6 +176,8 @@ namespace QuickPlot.PlotSettings
                 RenderLeft(canvas, axes);
             else if (side == Side.bottom)
                 RenderBottom(canvas, axes);
+            else if (side == Side.right)
+                RenderRight(canvas, axes);
             else
                 throw new NotImplementedException();
         }
@@ -214,7 +216,6 @@ namespace QuickPlot.PlotSettings
 
         private void RenderLeft(SKCanvas canvas, Axes axes)
         {
-
             SKPaint paintTick = new SKPaint()
             {
                 IsAntialias = true,
@@ -241,6 +242,32 @@ namespace QuickPlot.PlotSettings
                     canvas.DrawLine(tickLeft, dataLeft, paintTick);
                     canvas.DrawText(tick.label, tickLeft.X - 3, yPixel + paintTick.TextSize * 0.35f, paintTick);
                     canvas.DrawLine(dataLeft, dataRight, paintGrid);
+                }
+            }
+        }
+
+        private void RenderRight(SKCanvas canvas, Axes axes)
+        {
+            SKPaint paintTick = new SKPaint()
+            {
+                IsAntialias = true,
+                TextSize = 12,
+                TextAlign = SKTextAlign.Left,
+                Color = SKColor.Parse("#FF000000")
+            };
+
+            Debug.WriteLine($"ticksRight {ticks.Count}");
+
+            SKRect dataRect = axes.GetDataRect();
+            foreach (Tick tick in ticks)
+            {
+                if ((tick.value >= axes.y.low) && (tick.value <= axes.y.high))
+                {
+                    float yPixel = axes.GetPixel(0, tick.value).Y;
+                    SKPoint tickLeft = new SKPoint(dataRect.Right, yPixel);
+                    SKPoint tickRight = new SKPoint(dataRect.Right + length, yPixel);
+                    canvas.DrawLine(tickLeft, tickRight, paintTick);
+                    canvas.DrawText(tick.label, tickRight.X + 3, yPixel + paintTick.TextSize * 0.35f, paintTick);
                 }
             }
         }
