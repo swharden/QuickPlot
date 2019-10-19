@@ -65,6 +65,11 @@ namespace QuickPlot.PlotSettings
 
             spacing *= divBy[divisions % divBy.Length];
         }
+
+        public void SetDensity(double density)
+        {
+            spacing = density;
+        }
     }
 
     /* The TickCollection class stores tick styling settings (font, size, etc) and calculates ideal tick positions.
@@ -76,6 +81,7 @@ namespace QuickPlot.PlotSettings
         public SKPaint paint = new SKPaint();
         readonly List<Tick> ticks;
         public SKSize biggestTickLabelSize;
+        public double? fixedSpacing = null;
 
         public readonly Side side;
 
@@ -92,15 +98,24 @@ namespace QuickPlot.PlotSettings
             int verticalTickCount = (int)(dataRect.Height / 8);
             int horizontalTickCount = (int)(dataRect.Width / 8 * 3);
             int startingTickCount = (side == Side.left || side == Side.right) ? verticalTickCount : horizontalTickCount;
+
             TickSpacing ts = new TickSpacing(low, high, startingTickCount);
 
-            for (int i = 0; i < 10; i++)
+            if (fixedSpacing == null || fixedSpacing <= 0)
             {
+                for (int i = 0; i < 10; i++)
+                {
+                    Recalculate(ts);
+                    if (!TicksOverlap(dataRect))
+                        break;
+                    else
+                        ts.DecreaseDensity();
+                }
+            }
+            else
+            {
+                ts.SetDensity((double)fixedSpacing);
                 Recalculate(ts);
-                if (!TicksOverlap(dataRect))
-                    break;
-                else
-                    ts.DecreaseDensity();
             }
         }
 
