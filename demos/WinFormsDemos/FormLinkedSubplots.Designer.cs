@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.interactivePlot1 = new QuickPlot.WinForms.InteractivePlot();
             this.btnShare = new System.Windows.Forms.Button();
             this.btnUnshare = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // interactivePlot1
@@ -64,6 +66,12 @@
             this.btnUnshare.UseVisualStyleBackColor = true;
             this.btnUnshare.Click += new System.EventHandler(this.btnUnshare_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 200;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // FormLinkedSubplots
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -74,6 +82,7 @@
             this.Controls.Add(this.interactivePlot1);
             this.Name = "FormLinkedSubplots";
             this.Text = "QuickPlot: Linked Subplot Demo";
+            this.Load += new System.EventHandler(this.FormLinkedSubplots_Load);
             this.ResumeLayout(false);
 
         }
@@ -83,6 +92,7 @@
         private QuickPlot.WinForms.InteractivePlot interactivePlot1;
         private System.Windows.Forms.Button btnShare;
         private System.Windows.Forms.Button btnUnshare;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
