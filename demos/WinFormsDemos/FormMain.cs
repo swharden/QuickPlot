@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace WinFormsDemos
         public FormMain()
         {
             InitializeComponent();
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            if (Debugger.IsAttached)
+                btnQuickstart_Click(null, null);
         }
 
         private void btnQuickstart_Click(object sender, EventArgs e)

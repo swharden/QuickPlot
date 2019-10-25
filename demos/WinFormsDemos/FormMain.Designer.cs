@@ -89,6 +89,7 @@
             this.Controls.Add(this.btnMultiY);
             this.Name = "FormMain";
             this.Text = "QuickPlot Demos";
+            this.Load += new System.EventHandler(this.FormMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
