@@ -8,13 +8,13 @@ namespace QuickPlot.PlotSettings
     public class Layout
     {
         // user can reach in and configure these options
-        public float yLabelWidth = 20;
-        public float yScaleWidth = 40;
-        public float y2LabelWidth = 20; // zero is too close to the edge
-        public float y2ScaleWidth = 40;
-        public float titleHeight = 20;
-        public float xLabelHeight = 20;
-        public float xScaleHeight = 20;
+        public float yLabelWidth = 0;
+        public float yScaleWidth = 0;
+        public float y2LabelWidth = 0;
+        public float y2ScaleWidth = 0;
+        public float titleHeight = 0;
+        public float xLabelHeight = 0;
+        public float xScaleHeight = 0;
 
         // these are calculated internally
         public SKRect plotRect { get; private set; }
