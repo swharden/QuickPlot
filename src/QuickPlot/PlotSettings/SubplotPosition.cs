@@ -10,16 +10,23 @@ namespace QuickPlot.PlotSettings
     /// </summary>
     public class SubplotPosition
     {
-        public readonly double widthFrac, heightFrac;
-        public readonly double topFrac, leftFrac, botFrac, rightFrac;
-
+        public double widthFrac { get; private set; }
+        public double heightFrac { get; private set; }
+        public double topFrac { get; private set; }
+        public double leftFrac { get; private set; }
+        public double botFrac { get; private set; }
+        public double rightFrac { get; private set; }
         public bool isFullSize { get { return ((widthFrac == 1) && (heightFrac == 1)); } }
 
         public SubplotPosition(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
             if (subPlotNumber < 1)
                 throw new ArgumentException("subplot numbers start at 1");
+            Update(nRows, nCols, subPlotNumber, rowSpan, colSpan);
+        }
 
+        public void Update(int nRows, int nCols, int subPlotNumber, int rowSpan, int colSpan)
+        {
             widthFrac = (double)colSpan / nCols;
             heightFrac = (double)rowSpan / nRows;
 
