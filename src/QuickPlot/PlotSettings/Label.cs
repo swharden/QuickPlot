@@ -7,7 +7,7 @@ namespace QuickPlot.PlotSettings
 {
     public class Label
     {
-        public string text = "label";
+        public string text = null;
         public float fontSize = 12;
         public SKFontStyleWeight weight = SKFontStyleWeight.Normal;
         public string fontName = "Segoe UI";

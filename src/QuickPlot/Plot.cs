@@ -8,28 +8,26 @@ namespace QuickPlot
 {
     public class Plot
     {
+        // users can reach in and customize labels directly
+        public readonly PlotSettings.Label title = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.Bold };
+        public readonly PlotSettings.Label yLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+        public readonly PlotSettings.Label xLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+        public readonly PlotSettings.Label y2Label = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+
         public readonly PlotSettings.Axes axes = new PlotSettings.Axes();
         public readonly PlotSettings.Axes axes2 = new PlotSettings.Axes();
 
+        public PlotSettings.TickCollection yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
+        public PlotSettings.TickCollection y2Ticks = new PlotSettings.TickCollection(PlotSettings.Side.right);
+        public PlotSettings.TickCollection xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
+
         public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
+        public readonly PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
 
-        public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
-        
-        public PlotSettings.Label title, yLabel, xLabel, y2Label;
-        public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
-
-        private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
+        private readonly List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
 
         public Plot()
         {
-            title = new PlotSettings.Label { text = "Title", fontSize = 16, weight = SKFontStyleWeight.Bold };
-            yLabel = new PlotSettings.Label { text = "Vertical Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-            xLabel = new PlotSettings.Label { text = "Horzontal Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-            y2Label = new PlotSettings.Label { text = null, fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-
-            yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
-            xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
-            y2Ticks = new PlotSettings.TickCollection(PlotSettings.Side.right);
         }
 
         #region add or remove plottables
@@ -60,7 +58,10 @@ namespace QuickPlot
             return plist;
         }
 
-        public void AutoAxis(double marginX = .1, double marginY = .1)
+        /// <summary>
+        /// Automatically set axis limits to fit the data (with a margin of padding)
+        /// </summary>
+        public void AutoAxis(double marginX = .05, double marginY = .1)
         {
             // auto axis for primary XY
             var primaryPlottables = GetPlottableList(false);
