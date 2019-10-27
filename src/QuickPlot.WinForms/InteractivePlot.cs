@@ -45,7 +45,7 @@ namespace QuickPlot.WinForms
 
                 var color = SystemColors.Control;
                 string colorHex = "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
-                figure.backgroundColor = SKColor.Parse(colorHex);
+                figure.style.bgColor = SKColor.Parse(colorHex);
 
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);
@@ -128,7 +128,7 @@ namespace QuickPlot.WinForms
         private void glControl1_MouseDown(object sender, MouseEventArgs e)
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
-            plotEngagedWithMouse = figure.PlotAtPoint(figureSize, mousePoint);
+            plotEngagedWithMouse = figure.GetSubplotAtPoint(figureSize, mousePoint);
 
             if (plotEngagedWithMouse != null)
             {
@@ -171,7 +171,7 @@ namespace QuickPlot.WinForms
             }
             else
             {
-                var plotUnderMouse = figure.PlotAtPoint(figureSize, mousePoint);
+                var plotUnderMouse = figure.GetSubplotAtPoint(figureSize, mousePoint);
                 glControl1.Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Cross;
             }
         }
@@ -199,7 +199,7 @@ namespace QuickPlot.WinForms
         {
             var mousePoint = new SKPoint(e.Location.X, e.Location.Y);
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
-            figure.PlotAtPoint(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
+            figure.GetSubplotAtPoint(figureSize, mousePoint)?.axes.Zoom(zoom, zoom);
             Render();
         }
 

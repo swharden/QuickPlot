@@ -12,7 +12,7 @@ namespace QuickPlot
 
         public Figure()
         {
-            Clear();
+            Reset();
         }
 
         #region subplot management
@@ -47,17 +47,17 @@ namespace QuickPlot
             return newPlot;
         }
 
-        public void Clear()
+        public void Reset()
         {
             subplots.Clear();
             Subplot(1, 1, 1);
         }
 
-        public Plot PlotAtPoint(SKSize figureSize, SKPoint point)
+        public Plot GetSubplotAtPoint(SKSize figureSize, SKPoint point)
         {
             foreach (Plot subplot in subplots)
             {
-                SKRect rect = SubplotRect(figureSize, subplot);
+                SKRect rect = GetSubplotRect(figureSize, subplot);
                 if (rect.Contains(point))
                     return subplot;
             }
@@ -78,7 +78,7 @@ namespace QuickPlot
                 // render everything
                 canvas.Clear(style.bgColor);
                 foreach (Plot plot in subplots)
-                    plot.Render(canvas, SubplotRect(figureSize, plot));
+                    plot.Render(canvas, GetSubplotRect(figureSize, plot));
             }
             else
             {
@@ -88,7 +88,7 @@ namespace QuickPlot
                     if (plot == onlySubplot || plot.axes.x == onlySubplot.axes.x || plot.axes.y == onlySubplot.axes.y)
                     {
                         // redraw only inside the rectangle of that plot
-                        SKRect plotRect = SubplotRect(figureSize, plot);
+                        SKRect plotRect = GetSubplotRect(figureSize, plot);
                         canvas.Save();
                         canvas.ClipRect(plotRect);
                         canvas.Clear(style.bgColor);
@@ -103,7 +103,7 @@ namespace QuickPlot
             string message = string.Format("rendered in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
         }
 
-        private SKRect SubplotRect(SKSize figureSize, Plot subplot)
+        private SKRect GetSubplotRect(SKSize figureSize, Plot subplot)
         {
             SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
 

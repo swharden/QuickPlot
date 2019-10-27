@@ -71,7 +71,7 @@ namespace QuickPlot.WPF
             var position = e.GetPosition(this);
             SKPoint mousePoint = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
-            plotEngagedWithMouse = figure.PlotAtPoint(figureSize, mousePoint);
+            plotEngagedWithMouse = figure.GetSubplotAtPoint(figureSize, mousePoint);
 
             if (plotEngagedWithMouse != null)
             {
@@ -118,7 +118,7 @@ namespace QuickPlot.WPF
             }
             else
             {
-                var plotUnderMouse = figure.PlotAtPoint(figureSize, mousePoint);
+                var plotUnderMouse = figure.GetSubplotAtPoint(figureSize, mousePoint);
                 Cursor = (plotUnderMouse == null) ? Cursors.Arrow : Cursors.Hand;
             }
         }
@@ -151,7 +151,7 @@ namespace QuickPlot.WPF
             SKPoint location = new SKPoint((int)(position.X * scaleFactor), (int)(position.Y * scaleFactor));
 
             double zoom = (e.Delta > 0) ? 1.15 : 0.85;
-            figure.PlotAtPoint(figureSize, location)?.axes.Zoom(zoom, zoom);
+            figure.GetSubplotAtPoint(figureSize, location)?.axes.Zoom(zoom, zoom);
             Render();
         }
 

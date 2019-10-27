@@ -28,7 +28,7 @@ namespace WpfDemos
 
         public void DemoLayout()
         {
-            interactivePlot1.figure.Clear();
+            interactivePlot1.figure.Reset();
 
             var plotA = interactivePlot1.figure.Subplot(2, 1, 1);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
