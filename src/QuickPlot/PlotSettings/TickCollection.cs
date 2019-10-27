@@ -149,7 +149,7 @@ namespace QuickPlot.PlotSettings
             {
                 string label = Math.Round(value, 10).ToString();
                 ticks.Add(new Tick(value, label));
-                maxTickWidth = Math.Max(maxTickWidth, paint.MeasureText(label));
+                maxTickWidth = Math.Max(maxTickWidth, paint.MeasureText(label + " "));
             }
             biggestTickLabelSize = new SKSize(maxTickWidth, paint.FontMetrics.CapHeight);
 
