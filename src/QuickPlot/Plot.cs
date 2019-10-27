@@ -31,6 +31,7 @@ namespace QuickPlot
         /// </summary>
         public Plot()
         {
+            axes2.y.display = false;
             AutoAxis();
         }
 
@@ -200,9 +201,12 @@ namespace QuickPlot
 
         private void DrawTicks(SKCanvas canvas)
         {
-            yTicks.Render(canvas, axes);
-            y2Ticks.Render(canvas, axes2);
-            xTicks.Render(canvas, axes);
+            if (axes.y.display)
+                yTicks.Render(canvas, axes);
+            if (axes2.y.display)
+                y2Ticks.Render(canvas, axes2);
+            if (axes.x.display)
+                xTicks.Render(canvas, axes);
         }
 
         private void DrawLabels(SKCanvas canvas)
