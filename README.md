@@ -19,4 +19,4 @@ Library | Platform | Function
 ---|---|---
 QuickPlot | .NET Standard 2.0 | Plot data and return (or save) Bitmaps
 QuickPlot.WinForms | .NET Framework 4.6.1 | Interactively display plots
-QuickPlot.WPF | .NET Core 2.0 | Interactively display plots
+QuickPlot.WPF | .NET Core 3.0 | Interactively display plots
