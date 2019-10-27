@@ -8,20 +8,24 @@ namespace QuickPlot
 {
     public class Plot
     {
-        public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
-        private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
-        public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
         public readonly PlotSettings.Axes axes = new PlotSettings.Axes();
         public readonly PlotSettings.Axes axes2 = new PlotSettings.Axes();
+
+        public readonly PlotSettings.Layout layout = new PlotSettings.Layout();
+
+        public PlotSettings.SubplotPosition subplotPosition = new PlotSettings.SubplotPosition(1, 1, 1);
+        
         public PlotSettings.Label title, yLabel, xLabel, y2Label;
         public PlotSettings.TickCollection yTicks, xTicks, y2Ticks;
+
+        private List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
 
         public Plot()
         {
             title = new PlotSettings.Label { text = "Title", fontSize = 16, weight = SKFontStyleWeight.Bold };
             yLabel = new PlotSettings.Label { text = "Vertical Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
             xLabel = new PlotSettings.Label { text = "Horzontal Label", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-            y2Label = new PlotSettings.Label { text = "Vertical Label Too", fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+            y2Label = new PlotSettings.Label { text = null, fontSize = 16, weight = SKFontStyleWeight.SemiBold };
 
             yTicks = new PlotSettings.TickCollection(PlotSettings.Side.left);
             xTicks = new PlotSettings.TickCollection(PlotSettings.Side.bottom);
@@ -173,29 +177,41 @@ namespace QuickPlot
         {
             int pathExtend = 500;
 
-            SKPath titlePath = new SKPath();
-            SKPaint titlePaint = title.MakePaint();
-            titlePath.MoveTo(layout.titleRect.Left - pathExtend, layout.titleRect.Top + titlePaint.TextSize);
-            titlePath.LineTo(layout.titleRect.Right + pathExtend, layout.titleRect.Top + titlePaint.TextSize);
-            canvas.DrawTextOnPath(title.text, titlePath, 0, 0, titlePaint);
+            if (title.text != null)
+            {
+                SKPath titlePath = new SKPath();
+                SKPaint titlePaint = title.MakePaint();
+                titlePath.MoveTo(layout.titleRect.Left - pathExtend, layout.titleRect.Top + titlePaint.TextSize);
+                titlePath.LineTo(layout.titleRect.Right + pathExtend, layout.titleRect.Top + titlePaint.TextSize);
+                canvas.DrawTextOnPath(title.text, titlePath, 0, 0, titlePaint);
+            }
 
-            SKPath yLabelPath = new SKPath();
-            SKPaint yLabelPaint = yLabel.MakePaint();
-            yLabelPath.MoveTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Bottom + pathExtend);
-            yLabelPath.LineTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Top - pathExtend);
-            canvas.DrawTextOnPath(yLabel.text, yLabelPath, 0, 0, yLabelPaint);
+            if (yLabel.text != null)
+            {
+                SKPath yLabelPath = new SKPath();
+                SKPaint yLabelPaint = yLabel.MakePaint();
+                yLabelPath.MoveTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Bottom + pathExtend);
+                yLabelPath.LineTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Top - pathExtend);
+                canvas.DrawTextOnPath(yLabel.text, yLabelPath, 0, 0, yLabelPaint);
+            }
 
-            SKPath y2LabelPath = new SKPath();
-            SKPaint y2LabelPaint = y2Label.MakePaint();
-            y2LabelPath.MoveTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Top - pathExtend);
-            y2LabelPath.LineTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Bottom + pathExtend);
-            canvas.DrawTextOnPath(y2Label.text, y2LabelPath, 0, 0, y2LabelPaint);
+            if (y2Label.text != null)
+            {
+                SKPath y2LabelPath = new SKPath();
+                SKPaint y2LabelPaint = y2Label.MakePaint();
+                y2LabelPath.MoveTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Top - pathExtend);
+                y2LabelPath.LineTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Bottom + pathExtend);
+                canvas.DrawTextOnPath(y2Label.text, y2LabelPath, 0, 0, y2LabelPaint);
+            }
 
-            SKPath xLabelPath = new SKPath();
-            SKPaint xLabelPaint = xLabel.MakePaint();
-            xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
-            xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
-            canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, xLabelPaint);
+            if (xLabel.text != null)
+            {
+                SKPath xLabelPath = new SKPath();
+                SKPaint xLabelPaint = xLabel.MakePaint();
+                xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
+                xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
+                canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, xLabelPaint);
+            }
         }
 
         private void DrawFrame(SKCanvas canvas)
