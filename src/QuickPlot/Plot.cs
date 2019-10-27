@@ -96,89 +96,80 @@ namespace QuickPlot
 
         public void Render(SKCanvas canvas, SKRect plotRect)
         {
-            // update plot-level layout with the latest plot dimensions
-            layout.Update(plotRect);
+            // this is a chicken-and-egg problem
+            UpdateLayout(plotRect); // guess dimensions
+            UpdateTicks(); // guess tick density
+            UpdateLayout(plotRect); // refine layout based on new ticks
+            UpdateTicks(); // refine ticks based on new layout
 
+            // now that the layout is optimized, draw everything
+            DrawBackground(canvas);
+            DrawTicks(canvas);
+            DrawPlottables(canvas);
+            DrawLabels(canvas);
+            DrawFrame(canvas);
+        }
+
+        private void UpdateTicks()
+        {
             if (!axes.x.isValid || !axes.y.isValid)
                 AutoAxis();
 
             axes.SetDataRect(layout.dataRect);
             axes2.SetDataRect(layout.dataRect);
 
-            // draw the graphics
             yTicks.Generate(axes.y.low, axes.y.high, layout.dataRect);
             y2Ticks.Generate(axes2.y.low, axes2.y.high, layout.dataRect);
             xTicks.Generate(axes.x.low, axes.x.high, layout.dataRect);
-            if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
-            {
-                Debug.WriteLine("increasing Y scale width to prevent overlapping with label Y label");
-                layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
-                layout.Update(plotRect);
-            }
 
+            if (yTicks.biggestTickLabelSize.Width > layout.yScaleWidth)
+                layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
+        }
+
+        private void UpdateLayout(SKRect plotRect)
+        {
+            // TODO: currently there is no way to manually define these values. They are always auto-detected.
+            float textPadPx = 3;
+
+            layout.titleHeight = (title.text is null) ? 0 : title.fontSize + textPadPx;
+            layout.yLabelWidth = (yLabel.text is null) ? 0 : yLabel.fontSize + textPadPx;
+            layout.y2LabelWidth = (y2Label.text is null) ? 0 : y2Label.fontSize + textPadPx;
+            layout.xLabelHeight = (xLabel.text is null) ? 0 : xLabel.fontSize + textPadPx;
+
+            layout.yScaleWidth = (!axes.y.isValid) ? 0 : yTicks.biggestTickLabelSize.Width + textPadPx;
+            layout.y2ScaleWidth = (!axes2.y.isValid) ? 0 : y2Ticks.biggestTickLabelSize.Width + textPadPx;
+            layout.xScaleHeight = (!axes.x.isValid) ? 0 : xTicks.biggestTickLabelSize.Height + textPadPx;
+
+            layout.Update(plotRect);
+        }
+
+        private void DrawBackground(SKCanvas canvas)
+        {
             var fillPaint = new SKPaint();
             fillPaint.Color = SKColor.Parse("#FFFFFF");
             //fillPaint.Color = Tools.RandomColor(); // useful for assessing when plots are redrawn
             canvas.DrawRect(layout.dataRect, fillPaint);
+        }
 
-            yTicks.Render(canvas, axes);
-            y2Ticks.Render(canvas, axes2);
-            xTicks.Render(canvas, axes);
-
+        private void DrawPlottables(SKCanvas canvas)
+        {
             canvas.Save();
             canvas.ClipRect(axes.GetDataRect());
-
             foreach (var primaryPlottable in GetPlottableList(false))
                 primaryPlottable.Render(canvas, axes);
             foreach (var secondaryPlottable in GetPlottableList(true))
                 secondaryPlottable.Render(canvas, axes2);
-
             canvas.Restore();
-
-            //RenderLayoutDebug(canvas);
-            RenderLabels(canvas);
         }
 
-        private void RenderLayoutDebug(SKCanvas canvas)
+        private void DrawTicks(SKCanvas canvas)
         {
-            SKPaint paintTitle = new SKPaint()
-            {
-                Color = SKColor.Parse("#55000000"),
-                IsAntialias = true
-            };
-
-            SKPaint paintLabel = new SKPaint()
-            {
-                Color = SKColor.Parse("#550000FF"),
-                IsAntialias = true
-            };
-
-            SKPaint paintScale = new SKPaint()
-            {
-                Color = SKColor.Parse("#5500FF00"),
-                IsAntialias = true
-            };
-
-            SKPaint paintData = new SKPaint()
-            {
-                Color = SKColor.Parse("#55FF0000"),
-                IsAntialias = true
-            };
-
-            canvas.DrawRect(layout.titleRect, paintTitle);
-
-            canvas.DrawRect(layout.yLabelRect, paintLabel);
-            canvas.DrawRect(layout.y2LabelRect, paintLabel);
-            canvas.DrawRect(layout.xLabelRect, paintLabel);
-
-            canvas.DrawRect(layout.yScaleRect, paintScale);
-            canvas.DrawRect(layout.y2ScaleRect, paintScale);
-            canvas.DrawRect(layout.xScaleRect, paintScale);
-
-            canvas.DrawRect(layout.dataRect, paintData);
+            yTicks.Render(canvas, axes);
+            y2Ticks.Render(canvas, axes2);
+            xTicks.Render(canvas, axes);
         }
 
-        private void RenderLabels(SKCanvas canvas)
+        private void DrawLabels(SKCanvas canvas)
         {
             int pathExtend = 500;
 
@@ -205,17 +196,21 @@ namespace QuickPlot
             xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
             xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
             canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, xLabelPaint);
+        }
 
-
-            // Outline the data area
-
+        private void DrawFrame(SKCanvas canvas)
+        {
             SKPaint layoutFramePaint = new SKPaint()
             {
                 Color = SKColor.Parse("#000000"),
                 Style = SKPaintStyle.Stroke,
                 IsAntialias = false
             };
-            canvas.DrawRect(layout.dataRect, layoutFramePaint);
+
+            SKRect outline = layout.dataRect;
+            outline.Right -= 1;
+            outline.Bottom -= 1;
+            canvas.DrawRect(outline, layoutFramePaint);
         }
 
         #endregion
