@@ -8,10 +8,7 @@ namespace QuickPlot
 {
     public class Figure
     {
-        Random rand = new Random();
-
-        public FigureSettings.Padding padding = new FigureSettings.Padding();
-        public SKColor backgroundColor = SKColor.Parse("#FFFFFF");
+        public FigureSettings.FigureStyle style = new FigureSettings.FigureStyle();
 
         public Figure()
         {
@@ -72,28 +69,38 @@ namespace QuickPlot
 
         #region rendering
 
-        private Stopwatch stopwatchRender = Stopwatch.StartNew();
         public void Render(SKCanvas canvas, SKSize figureSize, Plot onlySubplot = null)
         {
-            stopwatchRender.Restart();
+            Stopwatch stopwatch = Stopwatch.StartNew();
 
             if (onlySubplot is null)
-                canvas.Clear(backgroundColor);
-
-            var plotsToRender = subplots.Where(p => (onlySubplot is null)
-                                                    || onlySubplot.axes.x == p.axes.x
-                                                    || onlySubplot.axes.y == p.axes.y);
-            foreach (Plot subplot in plotsToRender)
             {
-                SKRect plotRect = SubplotRect(figureSize, subplot);
-                canvas.Save();
-                canvas.ClipRect(plotRect);
-                canvas.Clear(backgroundColor);
-                subplot.Render(canvas, plotRect);
-                canvas.Restore();
+                // render everything
+                canvas.Clear(style.bgColor);
+                foreach (Plot plot in subplots)
+                    plot.Render(canvas, SubplotRect(figureSize, plot));
+            }
+            else
+            {
+                // only render the given subplot and plots with linked axes
+                foreach (Plot plot in subplots)
+                {
+                    if (plot == onlySubplot || plot.axes.x == onlySubplot.axes.x || plot.axes.y == onlySubplot.axes.y)
+                    {
+                        // redraw only inside the rectangle of that plot
+                        SKRect plotRect = SubplotRect(figureSize, plot);
+                        canvas.Save();
+                        canvas.ClipRect(plotRect);
+                        canvas.Clear(style.bgColor);
+                        plot.Render(canvas, plotRect);
+                        canvas.Restore();
+                    }
+                }
             }
 
-            stopwatchRender.Stop();
+            stopwatch.Stop();
+            double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
+            string message = string.Format("rendered in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
         }
 
         private SKRect SubplotRect(SKSize figureSize, Plot subplot)
@@ -101,23 +108,13 @@ namespace QuickPlot
             SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
 
             float padLeft, padRight, padBottom, padTop;
-            padLeft = (subplot.subplotPosition.leftFrac == 0) ? padding.edges : padding.horizontal;
-            padRight = (subplot.subplotPosition.rightFrac == 1) ? padding.edges : padding.horizontal;
-            padBottom = (subplot.subplotPosition.botFrac == 1) ? padding.edges : padding.vertical;
-            padTop = (subplot.subplotPosition.topFrac == 0) ? padding.edges : padding.vertical;
+            padLeft = (subplot.subplotPosition.leftFrac == 0) ? style.edges : style.horizontal;
+            padRight = (subplot.subplotPosition.rightFrac == 1) ? style.edges : style.horizontal;
+            padBottom = (subplot.subplotPosition.botFrac == 1) ? style.edges : style.vertical;
+            padTop = (subplot.subplotPosition.topFrac == 0) ? style.edges : style.vertical;
             renderArea = renderArea.ShrinkBy(padLeft, padRight, padBottom, padTop);
 
             return renderArea;
-        }
-
-        public string RenderBenchmarkMessage
-        {
-            get
-            {
-                double elapsedSec = (double)stopwatchRender.ElapsedTicks / Stopwatch.Frequency;
-                string message = string.Format("rendered in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
-                return message;
-            }
         }
 
         #endregion
