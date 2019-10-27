@@ -10,6 +10,9 @@ namespace QuickPlot
     {
         public FigureSettings.FigureStyle style = new FigureSettings.FigureStyle();
 
+        /// <summary>
+        /// A figure contains one or more plots (subplots)
+        /// </summary>
         public Figure()
         {
             Reset();
@@ -20,10 +23,10 @@ namespace QuickPlot
         public readonly List<Plot> subplots = new List<Plot>();
         public Plot plot;
 
-        public Plot Subplot(
-            int nRows, int nCols, int subPlotNumber,
-            int rowSpan = 1, int colSpan = 1
-            )
+        /// <summary>
+        /// Create and/or activate a Plot in a multi-plot Figure
+        /// </summary>
+        public Plot Subplot(int nRows, int nCols, int subPlotNumber, int rowSpan = 1, int colSpan = 1)
         {
             // activate the plot with this configuration
             foreach (Plot subplot in subplots)
@@ -37,22 +40,25 @@ namespace QuickPlot
                     subplots.Clear();
 
             // no plot with this configuration exists, so create it, add it to the list, and activate it
-            var newPlot = new Plot
-            {
-                subplotPosition = new PlotSettings.SubplotPosition(nRows, nCols, subPlotNumber, rowSpan, colSpan),
-            };
-
+            var newPlot = new Plot();
+            newPlot.subplotPosition.Update(nRows, nCols, subPlotNumber, rowSpan, colSpan);
             subplots.Add(newPlot);
             plot = subplots.Last();
             return newPlot;
         }
 
+        /// <summary>
+        /// Clear all subplots (and data) and start over with a single full-size plot
+        /// </summary>
         public void Reset()
         {
             subplots.Clear();
             Subplot(1, 1, 1);
         }
 
+        /// <summary>
+        /// Return the Plot at a given location of the Figure
+        /// </summary>
         public Plot GetSubplotAtPoint(SKSize figureSize, SKPoint point)
         {
             foreach (Plot subplot in subplots)
@@ -69,6 +75,9 @@ namespace QuickPlot
 
         #region rendering
 
+        /// <summary>
+        /// Draw the figure onto a SKCanvas
+        /// </summary>
         public void Render(SKCanvas canvas, SKSize figureSize, Plot onlySubplot = null)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -103,17 +112,20 @@ namespace QuickPlot
             string message = string.Format("rendered in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
         }
 
+        /// <summary>
+        /// Return the rectangle occupied by a subplot
+        /// </summary>
         private SKRect GetSubplotRect(SKSize figureSize, Plot subplot)
         {
-            SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
-
+            // determine padding around the subplot (plot-plot padding is different than plot-edge padding)
             float padLeft, padRight, padBottom, padTop;
             padLeft = (subplot.subplotPosition.leftFrac == 0) ? style.edges : style.horizontal;
             padRight = (subplot.subplotPosition.rightFrac == 1) ? style.edges : style.horizontal;
             padBottom = (subplot.subplotPosition.botFrac == 1) ? style.edges : style.vertical;
             padTop = (subplot.subplotPosition.topFrac == 0) ? style.edges : style.vertical;
-            renderArea = renderArea.ShrinkBy(padLeft, padRight, padBottom, padTop);
 
+            SKRect renderArea = subplot.subplotPosition.GetRectangle(figureSize);
+            renderArea = renderArea.ShrinkBy(padLeft, padRight, padBottom, padTop);
             return renderArea;
         }
 
@@ -121,6 +133,9 @@ namespace QuickPlot
 
         #region misc
 
+        /// <summary>
+        /// Render the Figure and save it as an image
+        /// </summary>
         public void Save(int width, int height, string fileName, int quality = 100)
         {
             string filePath = System.IO.Path.GetFullPath(fileName);
