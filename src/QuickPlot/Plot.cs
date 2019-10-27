@@ -217,8 +217,9 @@ namespace QuickPlot
             {
                 SKPath titlePath = new SKPath();
                 SKPaint titlePaint = title.MakePaint();
-                titlePath.MoveTo(layout.titleRect.Left - pathExtend, layout.titleRect.Top + titlePaint.TextSize);
-                titlePath.LineTo(layout.titleRect.Right + pathExtend, layout.titleRect.Top + titlePaint.TextSize);
+                float yPixel = layout.titleRect.CenterY() + layout.titleRect.Height / 5;
+                titlePath.MoveTo(layout.titleRect.Left - pathExtend, yPixel);
+                titlePath.LineTo(layout.titleRect.Right + pathExtend, yPixel);
                 canvas.DrawTextOnPath(title.text, titlePath, 0, 0, titlePaint);
             }
 
@@ -226,8 +227,9 @@ namespace QuickPlot
             {
                 SKPath yLabelPath = new SKPath();
                 SKPaint yLabelPaint = yLabel.MakePaint();
-                yLabelPath.MoveTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Bottom + pathExtend);
-                yLabelPath.LineTo(layout.yLabelRect.Left + yLabelPaint.TextSize, layout.yLabelRect.Top - pathExtend);
+                float xPixel = layout.yLabelRect.Left + yLabelPaint.TextSize - yLabelPaint.TextSize / 5;
+                yLabelPath.MoveTo(xPixel, layout.yLabelRect.Bottom + pathExtend);
+                yLabelPath.LineTo(xPixel, layout.yLabelRect.Top - pathExtend);
                 canvas.DrawTextOnPath(yLabel.text, yLabelPath, 0, 0, yLabelPaint);
             }
 
@@ -235,8 +237,9 @@ namespace QuickPlot
             {
                 SKPath y2LabelPath = new SKPath();
                 SKPaint y2LabelPaint = y2Label.MakePaint();
-                y2LabelPath.MoveTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Top - pathExtend);
-                y2LabelPath.LineTo(layout.y2LabelRect.Right - y2LabelPaint.TextSize, layout.y2LabelRect.Bottom + pathExtend);
+                float xPixel = layout.y2LabelRect.Right - y2LabelPaint.TextSize + y2LabelPaint.TextSize / 5;
+                y2LabelPath.MoveTo(xPixel, layout.y2LabelRect.Top - pathExtend);
+                y2LabelPath.LineTo(xPixel, layout.y2LabelRect.Bottom + pathExtend);
                 canvas.DrawTextOnPath(y2Label.text, y2LabelPath, 0, 0, y2LabelPaint);
             }
 
@@ -244,8 +247,9 @@ namespace QuickPlot
             {
                 SKPath xLabelPath = new SKPath();
                 SKPaint xLabelPaint = xLabel.MakePaint();
-                xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
-                xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, layout.xLabelRect.Top + xLabelPaint.TextSize);
+                float yPixel = layout.xLabelRect.Bottom;
+                xLabelPath.MoveTo(layout.xLabelRect.Left - pathExtend, yPixel);
+                xLabelPath.LineTo(layout.xLabelRect.Right + pathExtend, yPixel);
                 canvas.DrawTextOnPath(xLabel.text, xLabelPath, 0, 0, xLabelPaint);
             }
         }
