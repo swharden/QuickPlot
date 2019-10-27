@@ -54,9 +54,15 @@ namespace WinFormsDemos
             interactivePlot1.Render();
         }
 
-        private void btnAuto_Click(object sender, EventArgs e)
+        private void btnAuto1_Click(object sender, EventArgs e)
         {
-            interactivePlot1.figure.plot.AutoAxis();
+            interactivePlot1.figure.plot.AutoAxis(primaryY: true, secondaryY: false);
+            interactivePlot1.Render();
+        }
+
+        private void btnAuto2_Click(object sender, EventArgs e)
+        {
+            interactivePlot1.figure.plot.AutoAxis(primaryY: false, secondaryY: true);
             interactivePlot1.Render();
         }
     }

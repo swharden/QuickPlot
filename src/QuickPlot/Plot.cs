@@ -46,6 +46,8 @@ namespace QuickPlot
                 style = new Style(colorIndex: plottables.Count);
             var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
+            if (style.secondY)
+                axes2.y.display = true;
             AutoAxis();
         }
 
@@ -73,36 +75,40 @@ namespace QuickPlot
         /// <summary>
         /// Automatically set axis limits to fit the data (with a margin of padding)
         /// </summary>
-        public void AutoAxis(double marginX = .05, double marginY = .1)
+        public void AutoAxis(double marginX = .05, double marginY = .1, bool primaryY = true, bool secondaryY = true)
         {
-            // auto axis for primary XY
-            var primaryPlottables = GetPlottablesByAxis(false);
-            if (primaryPlottables.Count > 0)
+            if (primaryY)
             {
-                axes.Set(primaryPlottables[0].GetDataArea());
-                for (int i = 1; i < primaryPlottables.Count; i++)
-                    axes.Expand(primaryPlottables[i].GetDataArea());
+                var primaryPlottables = GetPlottablesByAxis(false);
+                if (primaryPlottables.Count > 0)
+                {
+                    axes.Set(primaryPlottables[0].GetDataArea());
+                    for (int i = 1; i < primaryPlottables.Count; i++)
+                        axes.Expand(primaryPlottables[i].GetDataArea());
+                }
+                else
+                {
+                    axes.Set(-1, 1, -1, 1);
+                }
+                axes.Zoom(1 - marginX, 1 - marginY);
             }
-            else
-            {
-                axes.Set(-1, 1, -1, 1);
-            }
-            axes.Zoom(1 - marginX, 1 - marginY);
 
-            // auto axis for secondary XY
-            var secondaryPlottables = GetPlottablesByAxis(true);
-            if (secondaryPlottables.Count > 0)
+            if (secondaryY)
             {
-                axes2.Set(secondaryPlottables[0].GetDataArea());
-                for (int i = 1; i < secondaryPlottables.Count; i++)
-                    axes2.Expand(secondaryPlottables[i].GetDataArea());
+                var secondaryPlottables = GetPlottablesByAxis(true);
+                if (secondaryPlottables.Count > 0)
+                {
+                    axes2.Set(secondaryPlottables[0].GetDataArea());
+                    for (int i = 1; i < secondaryPlottables.Count; i++)
+                        axes2.Expand(secondaryPlottables[i].GetDataArea());
+                }
+                else
+                {
+                    axes2.Set(null, null, -1, 1);
+                }
+                axes2.Zoom(1 - marginX, 1 - marginY);
+                axes2.x = axes.x;
             }
-            else
-            {
-                axes2.Set(null, null, -1, 1);
-            }
-            axes2.Zoom(1 - marginX, 1 - marginY);
-            axes2.x = axes.x;
         }
 
         /// <summary>

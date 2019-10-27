@@ -9,6 +9,7 @@ namespace QuickPlot
     public class Figure
     {
         public FigureSettings.FigureStyle style = new FigureSettings.FigureStyle();
+        public double renderTimeMsec { get; private set; }
 
         /// <summary>
         /// A figure contains one or more plots (subplots)
@@ -78,38 +79,17 @@ namespace QuickPlot
         /// <summary>
         /// Draw the figure onto a SKCanvas
         /// </summary>
-        public void Render(SKCanvas canvas, SKSize figureSize, Plot onlySubplot = null)
+        public void Render(SKCanvas canvas, SKSize figureSize)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            if (onlySubplot is null)
-            {
-                // render everything
-                canvas.Clear(style.bgColor);
-                foreach (Plot plot in subplots)
-                    plot.Render(canvas, GetSubplotRect(figureSize, plot));
-            }
-            else
-            {
-                // only render the given subplot and plots with linked axes
-                foreach (Plot plot in subplots)
-                {
-                    if (plot == onlySubplot || plot.axes.x == onlySubplot.axes.x || plot.axes.y == onlySubplot.axes.y)
-                    {
-                        // redraw only inside the rectangle of that plot
-                        SKRect plotRect = GetSubplotRect(figureSize, plot);
-                        canvas.Save();
-                        canvas.ClipRect(plotRect);
-                        canvas.Clear(style.bgColor);
-                        plot.Render(canvas, plotRect);
-                        canvas.Restore();
-                    }
-                }
-            }
+            // Every plot must be completely redrawn on every render because plots dont strictly stay inside their rectangles.
+            canvas.Clear(style.bgColor);
+            foreach (Plot plot in subplots)
+                plot.Render(canvas, GetSubplotRect(figureSize, plot));
 
             stopwatch.Stop();
-            double elapsedSec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
-            string message = string.Format("rendered in {0:0.00} ms ({1:0.00} Hz)", elapsedSec * 1000.0, 1 / elapsedSec);
+            renderTimeMsec = (double)stopwatch.ElapsedTicks / Stopwatch.Frequency;
         }
 
         /// <summary>

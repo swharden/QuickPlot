@@ -20,8 +20,8 @@ namespace WinFormsDemos
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            if (Debugger.IsAttached)
-                btnQuickstart_Click(null, null);
+            //if (Debugger.IsAttached)
+                //btnQuickstart_Click(null, null);
         }
 
         private void btnQuickstart_Click(object sender, EventArgs e)

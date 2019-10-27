@@ -42,7 +42,7 @@ namespace QuickPlot.WPF
         {
             scaleFactor = (float)PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
             figureSize = new SKSize(e.Info.Width / scaleFactor, e.Info.Height / scaleFactor);
-            figure.Render(e.Surface.Canvas, figureSize, plotEngagedWithMouse);
+            figure.Render(e.Surface.Canvas, figureSize);
         }
 
         public void Render()
@@ -63,6 +63,7 @@ namespace QuickPlot.WPF
             {
                 subplot.xTicks.lockTickDensity = locked;
                 subplot.yTicks.lockTickDensity = locked;
+                subplot.y2Ticks.lockTickDensity = locked;
             }
         }
 
@@ -75,7 +76,8 @@ namespace QuickPlot.WPF
 
             if (plotEngagedWithMouse != null)
             {
-                mouse.mouseDownLimits = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+                mouse.mouseDownLimitsPrimary = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+                mouse.mouseDownLimitsSecondary = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes2);
 
                 if (e.ChangedButton == MouseButton.Left)
                 {
@@ -106,13 +108,20 @@ namespace QuickPlot.WPF
             if (plotEngagedWithMouse != null)
             {
                 mouse.now = mousePoint;
-                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimits);
+                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimitsPrimary);
+                plotEngagedWithMouse.axes2.Set(mouse.mouseDownLimitsSecondary);
 
                 if (mouse.leftButtonIsDown)
+                {
                     plotEngagedWithMouse.axes.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+                    plotEngagedWithMouse.axes2.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+                }
 
                 if (mouse.rightButtonIsDown)
+                {
                     plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+                    plotEngagedWithMouse.axes2.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+                }
 
                 Render();
             }

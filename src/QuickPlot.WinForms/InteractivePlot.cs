@@ -98,7 +98,7 @@ namespace QuickPlot.WinForms
                 surface = SKSurface.Create(context, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
             }
 
-            figure.Render(surface.Canvas, figureSize, plotEngagedWithMouse);
+            figure.Render(surface.Canvas, figureSize);
 
             surface.Canvas.Flush();
             glControl1.SwapBuffers();
@@ -122,6 +122,7 @@ namespace QuickPlot.WinForms
             {
                 subplot.xTicks.lockTickDensity = locked;
                 subplot.yTicks.lockTickDensity = locked;
+                subplot.y2Ticks.lockTickDensity = locked;
             }
         }
 
@@ -132,7 +133,8 @@ namespace QuickPlot.WinForms
 
             if (plotEngagedWithMouse != null)
             {
-                mouse.mouseDownLimits = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+                mouse.mouseDownLimitsPrimary = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes);
+                mouse.mouseDownLimitsSecondary = new PlotSettings.AxisLimits(plotEngagedWithMouse.axes2);
 
                 if (e.Button == MouseButtons.Left)
                 {
@@ -159,13 +161,20 @@ namespace QuickPlot.WinForms
             if (plotEngagedWithMouse != null)
             {
                 mouse.now = mousePoint;
-                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimits);
+                plotEngagedWithMouse.axes.Set(mouse.mouseDownLimitsPrimary);
+                plotEngagedWithMouse.axes2.Set(mouse.mouseDownLimitsSecondary);
 
                 if (mouse.leftButtonIsDown)
+                {
                     plotEngagedWithMouse.axes.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+                    plotEngagedWithMouse.axes2.PanPixels(mouse.leftDelta.X, mouse.leftDelta.Y);
+                }
 
                 if (mouse.rightButtonIsDown)
+                {
                     plotEngagedWithMouse.axes.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+                    plotEngagedWithMouse.axes2.ZoomPixels(mouse.rightDelta.X, mouse.rightDelta.Y);
+                }
 
                 Render();
             }

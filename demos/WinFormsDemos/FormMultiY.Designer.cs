@@ -31,7 +31,8 @@
             this.interactivePlot1 = new QuickPlot.WinForms.InteractivePlot();
             this.btnZoomIn = new System.Windows.Forms.Button();
             this.btnZoomOut = new System.Windows.Forms.Button();
-            this.btnAuto = new System.Windows.Forms.Button();
+            this.btnAuto2 = new System.Windows.Forms.Button();
+            this.btnAuto1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // interactivePlot1
@@ -65,22 +66,33 @@
             this.btnZoomOut.UseVisualStyleBackColor = true;
             this.btnZoomOut.Click += new System.EventHandler(this.btnZoomOut_Click);
             // 
-            // btnAuto
+            // btnAuto2
             // 
-            this.btnAuto.Location = new System.Drawing.Point(202, 12);
-            this.btnAuto.Name = "btnAuto";
-            this.btnAuto.Size = new System.Drawing.Size(89, 23);
-            this.btnAuto.TabIndex = 3;
-            this.btnAuto.Text = "y2 auto";
-            this.btnAuto.UseVisualStyleBackColor = true;
-            this.btnAuto.Click += new System.EventHandler(this.btnAuto_Click);
+            this.btnAuto2.Location = new System.Drawing.Point(297, 12);
+            this.btnAuto2.Name = "btnAuto2";
+            this.btnAuto2.Size = new System.Drawing.Size(89, 23);
+            this.btnAuto2.TabIndex = 3;
+            this.btnAuto2.Text = "y2 auto";
+            this.btnAuto2.UseVisualStyleBackColor = true;
+            this.btnAuto2.Click += new System.EventHandler(this.btnAuto2_Click);
+            // 
+            // btnAuto1
+            // 
+            this.btnAuto1.Location = new System.Drawing.Point(202, 12);
+            this.btnAuto1.Name = "btnAuto1";
+            this.btnAuto1.Size = new System.Drawing.Size(89, 23);
+            this.btnAuto1.TabIndex = 4;
+            this.btnAuto1.Text = "y1 auto";
+            this.btnAuto1.UseVisualStyleBackColor = true;
+            this.btnAuto1.Click += new System.EventHandler(this.btnAuto1_Click);
             // 
             // FormMultiY
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnAuto);
+            this.Controls.Add(this.btnAuto1);
+            this.Controls.Add(this.btnAuto2);
             this.Controls.Add(this.btnZoomOut);
             this.Controls.Add(this.btnZoomIn);
             this.Controls.Add(this.interactivePlot1);
@@ -96,6 +108,7 @@
         private QuickPlot.WinForms.InteractivePlot interactivePlot1;
         private System.Windows.Forms.Button btnZoomIn;
         private System.Windows.Forms.Button btnZoomOut;
-        private System.Windows.Forms.Button btnAuto;
+        private System.Windows.Forms.Button btnAuto2;
+        private System.Windows.Forms.Button btnAuto1;
     }
 }
