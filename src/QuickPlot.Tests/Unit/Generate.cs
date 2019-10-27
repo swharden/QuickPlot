@@ -6,6 +6,9 @@ using System.Text;
 
 namespace QuickPlot.Tests.Unit
 {
+    /// <summary>
+    /// Tests that cover the QuickPlot.Generate module
+    /// </summary>
     [TestFixture]
     public class GenerateTests
     {
