@@ -18,7 +18,14 @@ namespace QuickPlot.PlotSettings
         public readonly Side side;
         TickSpacing ts;
 
-        public double? fixedSpacing = null; // set this to manually define tick spacing
+        // set these to adjust the density of auto-generated ticks
+        public float tickLabelPaddingX = (float)1.3;
+        public float tickLabelPaddingY = (float)2.5;
+
+        // set this to manually define tick spacing
+        public double? fixedSpacing = null; 
+
+        // set this to disable adjustments of tick density (useful when mouse panning)
         public bool lockTickDensity = false;
 
         public SKColor yTickColor, xTickColor, gridColor;
@@ -87,8 +94,8 @@ namespace QuickPlot.PlotSettings
             biggestTickLabelSize = new SKSize(maxTickWidth, paint.FontMetrics.CapHeight);
 
             // add extra padding to the label to make spacing more comfortable
-            biggestTickLabelSize.Width += 5;
-            biggestTickLabelSize.Height += 5;
+            biggestTickLabelSize.Width *= tickLabelPaddingX;
+            biggestTickLabelSize.Height *= tickLabelPaddingY;
         }
 
         private bool TicksOverlap(SKRect dataRect)
