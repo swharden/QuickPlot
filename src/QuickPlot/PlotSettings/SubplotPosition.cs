@@ -5,6 +5,9 @@ using System.Text;
 
 namespace QuickPlot.PlotSettings
 {
+    /// <summary>
+    /// Figure-level subplot position information stored in a plot-level object
+    /// </summary>
     public class SubplotPosition
     {
         public readonly double widthFrac, heightFrac;
