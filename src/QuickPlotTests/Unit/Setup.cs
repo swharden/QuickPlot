@@ -1,19 +1,12 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
 namespace QuickPlotTests.Unit
 {
-    /// <summary>
-    /// These tests run before other tests
-    /// </summary>
-    [TestFixture]
-    class AAA
+    [SetUpFixture]
+    public class Setup
     {
-        // TODO: find a better way to ensure this is the first test run
-        [Test]
+        [OneTimeSetUp]
         public void ClearOutputFolder()
         {
             if (System.IO.Directory.Exists(Tools.outputFolder))
@@ -22,6 +15,12 @@ namespace QuickPlotTests.Unit
             System.IO.Directory.CreateDirectory(Tools.outputFolder);
 
             Console.WriteLine($"Cleared output folder: {Tools.outputFolder}");
+        }
+
+        [OneTimeTearDown]
+        public void WrapUp()
+        {
+            // todo: generate markdown and HTML reports
         }
     }
 }

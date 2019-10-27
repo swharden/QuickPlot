@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 
 namespace QuickPlotTests.Unit
 {
     [TestFixture]
-    class TestSubplot
+    class TestSubplot : Setup
     {
         [Test]
         public void Subplot_Default()
@@ -126,8 +127,6 @@ namespace QuickPlotTests.Unit
         [Test]
         public void Subplot_SharedX()
         {
-            // TODO: currently there is a problem because AutoAxis() is getting called during the render
-
             double[] xs = QuickPlot.Generate.Consecutative(100);
             double[] ys1 = QuickPlot.Generate.Sin(100);
             double[] ys2 = QuickPlot.Generate.Cos(100);
@@ -140,9 +139,51 @@ namespace QuickPlotTests.Unit
             plot1.Scatter(xs, ys1);
             plot2.Scatter(xs, ys2);
 
-            plot1.ShareY(plot2);
+            plot2.ShareX(plot1);
+            plot2.axes.Zoom(.5, .5);
 
-            plot1.axes.Zoom(.5, .5);
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
+        }
+
+        [Test]
+        public void Subplot_SharedY()
+        {
+            double[] xs = QuickPlot.Generate.Consecutative(100);
+            double[] ys1 = QuickPlot.Generate.Sin(100);
+            double[] ys2 = QuickPlot.Generate.Cos(100);
+
+            var figure = new QuickPlot.Figure();
+
+            var plot1 = figure.Subplot(2, 1, 1);
+            var plot2 = figure.Subplot(2, 1, 2);
+
+            plot1.Scatter(xs, ys1);
+            plot2.Scatter(xs, ys2);
+
+            plot2.ShareY(plot1);
+            plot2.axes.Zoom(.5, .5);
+
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
+        }
+
+        [Test]
+        public void Subplot_SharedXandY()
+        {
+            double[] xs = QuickPlot.Generate.Consecutative(100);
+            double[] ys1 = QuickPlot.Generate.Sin(100);
+            double[] ys2 = QuickPlot.Generate.Cos(100);
+
+            var figure = new QuickPlot.Figure();
+
+            var plot1 = figure.Subplot(2, 1, 1);
+            var plot2 = figure.Subplot(2, 1, 2);
+
+            plot1.Scatter(xs, ys1);
+            plot2.Scatter(xs, ys2);
+
+            plot2.ShareX(plot1);
+            plot2.ShareY(plot1);
+            plot2.axes.Zoom(.5, .5);
 
             Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
