@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Demos.Console", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Demos.WPF", "..\demos\WpfDemos\QuickPlot.Demos.WPF.csproj", "{5F80D20B-BCAD-4991-B65E-84B4CAEC9452}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlot.Tests", "QuickPlot.Tests\QuickPlot.Tests.csproj", "{BEB60894-6BB7-46E5-9B4D-E77C16B40EBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickPlotTests", "QuickPlotTests\QuickPlotTests.csproj", "{BEB60894-6BB7-46E5-9B4D-E77C16B40EBD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuickPlot.Tests.Integration
+namespace QuickPlotTests.Integration
 {
     [TestFixture]
     public class IntegrationTests

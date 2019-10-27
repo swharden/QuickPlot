@@ -39,5 +39,5 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: 'src/QuickPlot.Tests/QuickPlot.Tests.csproj'
+    projects: 'src/QuickPlotTests/QuickPlotTests.csproj'
     arguments: '--configuration $(buildConfiguration)'

@@ -2,14 +2,11 @@
 using System.Diagnostics;
 using System.Reflection;
 
-namespace QuickPlot.Tests.Unit
+namespace QuickPlotTests.Unit
 {
     [TestFixture]
-    class Subplot
+    class TestSubplot
     {
-        private readonly int width = 600;
-        private readonly int height = 400;
-
         [Test]
         public void Subplot_Default()
         {
@@ -19,7 +16,8 @@ namespace QuickPlot.Tests.Unit
             // by default (no calls to SubPlot) there is a single plot
             var figure = new QuickPlot.Figure();
             figure.plot.Scatter(xs, ys);
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
 
         [Test]
@@ -34,7 +32,7 @@ namespace QuickPlot.Tests.Unit
             figure.Subplot(1, 2, 2);
             figure.plot.Scatter(xs, ys);
 
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
 
         [Test]
@@ -49,7 +47,7 @@ namespace QuickPlot.Tests.Unit
             figure.Subplot(2, 1, 2);
             figure.plot.Scatter(xs, ys);
 
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
 
         [Test]
@@ -68,7 +66,7 @@ namespace QuickPlot.Tests.Unit
             figure.Subplot(2, 2, 4);
             figure.plot.Scatter(xs, ys);
 
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
 
         [Test]
@@ -85,7 +83,7 @@ namespace QuickPlot.Tests.Unit
             figure.Subplot(2, 2, 3, colSpan: 2);
             figure.plot.Scatter(xs, ys);
 
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
 
         [Test]
@@ -102,7 +100,51 @@ namespace QuickPlot.Tests.Unit
             figure.Subplot(2, 2, 4);
             figure.plot.Scatter(xs, ys);
 
-            figure.Save(width, height, MethodBase.GetCurrentMethod().Name + ".png");
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
+        }
+
+        [Test]
+        public void Subplot_NoSharedAxes()
+        {
+            double[] xs = QuickPlot.Generate.Consecutative(100);
+            double[] ys1 = QuickPlot.Generate.Sin(100);
+            double[] ys2 = QuickPlot.Generate.Cos(100);
+
+            var figure = new QuickPlot.Figure();
+
+            var plot1 = figure.Subplot(2, 1, 1);
+            var plot2 = figure.Subplot(2, 1, 2);
+
+            plot1.Scatter(xs, ys1);
+            plot2.Scatter(xs, ys2);
+
+            plot1.axes.Set(-20, 120, -2, 2);
+
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
+        }
+
+        [Test]
+        public void Subplot_SharedX()
+        {
+            // TODO: currently there is a problem because AutoAxis() is getting called during the render
+
+            double[] xs = QuickPlot.Generate.Consecutative(100);
+            double[] ys1 = QuickPlot.Generate.Sin(100);
+            double[] ys2 = QuickPlot.Generate.Cos(100);
+
+            var figure = new QuickPlot.Figure();
+
+            var plot1 = figure.Subplot(2, 1, 1);
+            var plot2 = figure.Subplot(2, 1, 2);
+
+            plot1.Scatter(xs, ys1);
+            plot2.Scatter(xs, ys2);
+
+            plot1.ShareY(plot2);
+
+            plot1.axes.Zoom(.5, .5);
+
+            Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
     }
 }
