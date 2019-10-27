@@ -31,14 +31,19 @@ namespace QuickPlotTests.Integration
 
         public void GenerateHTML()
         {
+            ReadAllSourceCode();
+
             StringBuilder sb = new StringBuilder("<h1>Test Output</h1>\n");
 
             string[] imagePaths = System.IO.Directory.GetFiles(Tools.outputFolder, "*.png");
             foreach (string path in imagePaths)
             {
-                string basename = System.IO.Path.GetFileName(path);
-                sb.AppendLine($"<h2><br><br>{System.IO.Path.GetFileNameWithoutExtension(basename)}</h2>");
-                sb.AppendLine($"<img src='{basename}'>");
+                string functionName = System.IO.Path.GetFileNameWithoutExtension(path);
+                sb.AppendLine($"<h2><br>{functionName}</h2>");
+                sb.AppendLine($"<img src='{functionName}.png'>");
+                sb.AppendLine("<pre style='font-family: monospace; background-color: #DDD; padding: 10px;'>");
+                sb.AppendLine(GetSource(functionName));
+                sb.AppendLine("</pre>");
             }
 
             sb.Insert(0, "<body style='background-color: #EEE; margin: 30px;'>");
@@ -49,6 +54,48 @@ namespace QuickPlotTests.Integration
 
             string htmlFilePath = System.IO.Path.Join(Tools.outputFolder, "testResults.html");
             System.IO.File.WriteAllText(htmlFilePath, sb.ToString());
+        }
+
+        string allSource = "";
+        public void ReadAllSourceCode()
+        {
+            string pathSrc = System.IO.Path.GetFullPath("../../../Integration");
+            string[] sourceFilePaths = System.IO.Directory.GetFiles(pathSrc, "Test*.cs");
+
+            allSource = "";
+            foreach (var path in sourceFilePaths)
+            {
+                Console.WriteLine($"including soure code from: {path}");
+                allSource += System.IO.File.ReadAllText(path) + "\n";
+            }
+        }
+
+        public string GetSource(string functionName)
+        {
+            int posStart = allSource.IndexOf($"public void {functionName}()");
+
+            if (posStart < 0)
+                throw new Exception($"function {functionName}() not found in source code");
+
+            // format the code to be a pretty string
+            string code = allSource;
+
+            int linesToSkip = 2;
+            code = code.Substring(posStart);
+            code = code.Substring(code.IndexOf("\n        {"));
+            code = code.Substring(0, code.IndexOf("\n        }"));
+            code = code.Trim();
+            string[] lines = code.Split('\n');
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Length > 12)
+                    lines[i] = lines[i].Substring(12);
+                if (i <= linesToSkip)
+                    lines[i] = "";
+                // special code replacements here
+            }
+            code = string.Join("\n", lines).Trim();
+            return code;
         }
     }
 }
