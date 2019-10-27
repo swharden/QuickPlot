@@ -31,6 +31,7 @@ namespace QuickPlot
         /// </summary>
         public Plot()
         {
+            AutoAxis();
         }
 
         #region add or remove plottables
@@ -44,6 +45,7 @@ namespace QuickPlot
                 style = new Style(colorIndex: plottables.Count);
             var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
+            AutoAxis();
         }
 
         /// <summary>
@@ -80,6 +82,10 @@ namespace QuickPlot
                 for (int i = 1; i < primaryPlottables.Count; i++)
                     axes.Expand(primaryPlottables[i].GetDataArea());
             }
+            else
+            {
+                axes.Set(-1, 1, -1, 1);
+            }
             axes.Zoom(1 - marginX, 1 - marginY);
 
             // auto axis for secondary XY
@@ -90,6 +96,10 @@ namespace QuickPlot
                 for (int i = 1; i < secondaryPlottables.Count; i++)
                     axes2.Expand(secondaryPlottables[i].GetDataArea());
             }
+            else
+            {
+                axes2.Set(null, null, -1, 1);
+            }
             axes2.Zoom(1 - marginX, 1 - marginY);
             axes2.x = axes.x;
         }
@@ -99,7 +109,7 @@ namespace QuickPlot
         /// </summary>
         public void ShareX(Plot source)
         {
-            axes.x = (source is null) ? new PlotSettings.Axis(axes.x.low, axes.x.high) : axes.x = source.axes.x;
+            axes.x = (source is null) ? new PlotSettings.Axis(axes.x.low, axes.x.high) : source.axes.x;
         }
 
         /// <summary>
@@ -107,7 +117,7 @@ namespace QuickPlot
         /// </summary>
         public void ShareY(Plot source)
         {
-            axes.y = (source is null) ? new PlotSettings.Axis(axes.y.low, axes.y.high) : axes.y = source.axes.y;
+            axes.y = (source is null) ? new PlotSettings.Axis(axes.y.low, axes.y.high) : source.axes.y;
         }
 
         #endregion
@@ -138,9 +148,6 @@ namespace QuickPlot
         /// </summary>
         private void UpdateTicks()
         {
-            if (!axes.x.isValid || !axes.y.isValid)
-                AutoAxis();
-
             axes.SetDataRect(layout.dataRect);
             axes2.SetDataRect(layout.dataRect);
 
@@ -165,9 +172,9 @@ namespace QuickPlot
             layout.y2LabelWidth = (y2Label.text is null) ? 0 : y2Label.fontSize + textPadPx;
             layout.xLabelHeight = (xLabel.text is null) ? 0 : xLabel.fontSize + textPadPx;
 
-            layout.yScaleWidth = (!axes.y.isValid) ? 0 : yTicks.biggestTickLabelSize.Width + textPadPx;
-            layout.y2ScaleWidth = (!axes2.y.isValid) ? 0 : y2Ticks.biggestTickLabelSize.Width + textPadPx;
-            layout.xScaleHeight = (!axes.x.isValid) ? 0 : xTicks.biggestTickLabelSize.Height + textPadPx;
+            layout.yScaleWidth = (!axes.y.display) ? 0 : yTicks.biggestTickLabelSize.Width + textPadPx;
+            layout.y2ScaleWidth = (!axes2.y.display) ? 0 : y2Ticks.biggestTickLabelSize.Width + textPadPx;
+            layout.xScaleHeight = (!axes.x.display) ? 0 : xTicks.biggestTickLabelSize.Height + textPadPx;
 
             layout.Update(plotRect);
         }

@@ -10,6 +10,7 @@ namespace QuickPlot.PlotSettings
         public double span { get { return high - low; } }
         public double center { get { return (high + low) / 2.0; } }
         public bool isValid { get { return (low < high); } }
+        public bool display = true; // TODO: replace this with layout fixed sizes
 
         public Axis(double low = 0, double high = 0)
         {
