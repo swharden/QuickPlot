@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace QuickPlotTests.Unit
+namespace QuickPlotTests.Integration
 {
     [SetUpFixture]
     public class Setup
@@ -10,12 +10,16 @@ namespace QuickPlotTests.Unit
         [OneTimeSetUp]
         public void ClearOutputFolder()
         {
+            System.Threading.Thread.Sleep(10);
+
             if (System.IO.Directory.Exists(Tools.outputFolder))
                 System.IO.Directory.Delete(Tools.outputFolder, true);
 
             System.IO.Directory.CreateDirectory(Tools.outputFolder);
 
             Console.WriteLine($"Cleared output folder: {Tools.outputFolder}");
+
+            System.Threading.Thread.Sleep(10);
         }
 
         [OneTimeTearDown]

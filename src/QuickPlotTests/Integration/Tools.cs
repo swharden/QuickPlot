@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QuickPlotTests.Unit
+namespace QuickPlotTests.Integration
 {
     public static class Tools
     {

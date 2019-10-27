@@ -3,10 +3,9 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace QuickPlotTests.Unit
+namespace QuickPlotTests.Integration
 {
-    [TestFixture]
-    class TestSubplot : Setup
+    class TestSubplot
     {
         [Test]
         public void Subplot_Default()

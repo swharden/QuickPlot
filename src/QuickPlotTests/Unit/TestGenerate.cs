@@ -9,7 +9,6 @@ namespace QuickPlotTests.Unit
     /// <summary>
     /// Tests that cover the QuickPlot.Generate module
     /// </summary>
-    [TestFixture]
     public class TestGenerate
     {
         [Test]
