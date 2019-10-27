@@ -3,14 +3,14 @@
   <Class Name="QuickPlot.Figure">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQIAgAEAAAAAAAAAAAAAAAAAEAAQAABAAIABAACA=</HashCode>
+      <HashCode>AAAAQIAAAAAAhAAAAAAAAAAAAABEAAQAABAAAAAAACA=</HashCode>
       <FileName>Figure.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuickPlot.Plot">
     <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABQJGAAYAghAAAABgFAAAAwAACAAAAgABAECAhAAAQ=</HashCode>
+      <HashCode>AABQJGAAYAghAAAABgFAAAAQAACAACAgABAECAhAAAQ=</HashCode>
       <FileName>Plot.cs</FileName>
     </TypeIdentifier>
   </Class>
