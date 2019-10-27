@@ -28,10 +28,10 @@ namespace QuickPlotTests.Integration
             figure.plot.Scatter(xs, ys);
             figure.plot.axes2.y.display = true;
 
-            figure.plot.title.text = "Label Display Test";
-            figure.plot.xLabel.text = "Primary Horizontal Axis";
-            figure.plot.yLabel.text = "Primary Axis";
-            figure.plot.y2Label.text = "Secondary Axis";
+            figure.plot.Title("Label Display Test");
+            figure.plot.XLabel("Primary Horizontal Axis");
+            figure.plot.YLabel("Primary Axis");
+            figure.plot.YLabel("Secondary Axis");
 
             Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
@@ -45,19 +45,10 @@ namespace QuickPlotTests.Integration
             figure.plot.Scatter(xs, ys);
             figure.plot.axes2.y.display = true;
 
-            figure.plot.title.text = "Label Display Test";
-            figure.plot.title.fontSize = 48;
-
-            figure.plot.xLabel.text = "Primary Horizontal Axis";
-            figure.plot.xLabel.fontSize = 36;
-
-            figure.plot.yLabel.text = "Primary Axis";
-            figure.plot.yLabel.fontSize = 36;
-
-            figure.plot.y2Label.text = "Secondary Axis";
-            figure.plot.y2Label.fontSize = 36;
-
-
+            figure.plot.Title("Label Display Test", fontSize: 48);
+            figure.plot.XLabel("Primary Horizontal Axis", fontSize: 36);
+            figure.plot.YLabel("Primary Axis", fontSize: 36);
+            figure.plot.YLabel("Secondary Axis", fontSize: 36);
             Tools.SaveFig(figure, MethodBase.GetCurrentMethod().Name);
         }
     }

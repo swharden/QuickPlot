@@ -40,12 +40,12 @@ namespace WinFormsDemos
             plotA = interactivePlot1.figure.Subplot(3, 2, 1);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
-            plotA.title.text = "plot A: shared X";
+            plotA.Title("plot A: shared X");
 
             plotB = interactivePlot1.figure.Subplot(3, 2, 2);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Sin(50));
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(50), QuickPlot.Generate.Cos(50));
-            plotB.title.text = "plot B: shared Y";
+            plotB.Title("plot B: shared Y");
 
             plotC = interactivePlot1.figure.Subplot(3, 2, 3, colSpan: 2);
             double[] x = QuickPlot.Generate.Consecutative(CenterSubplotPointsCount);
@@ -53,15 +53,15 @@ namespace WinFormsDemos
             double[] y2 = QuickPlot.Generate.Random(CenterSubplotPointsCount, seed: 1);
             interactivePlot1.figure.plot.Scatter(x, y1);
             interactivePlot1.figure.plot.Scatter(x, y2);
-            plotC.title.text = "plot C";
+            plotC.Title("plot C");
 
             plotD = interactivePlot1.figure.Subplot(3, 2, 5);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));
-            plotD.title.text = "plot D: shared X and Y";
+            plotD.Title("plot D: shared X and Y");
 
             plotE = interactivePlot1.figure.Subplot(3, 2, 6);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Cos(20));
-            plotE.title.text = "plot E: source axes";
+            plotE.Title("plot E: source axes");
         }
 
         private void btnUnshare_Click(object sender, EventArgs e)

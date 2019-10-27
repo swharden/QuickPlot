@@ -21,25 +21,14 @@ namespace WinFormsDemos
         {
             int pointCount = 100;
             double[] dataX = QuickPlot.Generate.Consecutative(pointCount);
-
-            //double[] data1 = QuickPlot.Generate.RandomWalk(pointCount, seed: 1);
-            //double[] data2 = QuickPlot.Generate.RandomWalk(pointCount, seed: 2);
-
             double[] data1 = QuickPlot.Generate.Sin(pointCount, mult: 0.01);
             double[] data2 = QuickPlot.Generate.Cos(pointCount, mult: 100);
 
-            var style1 = new QuickPlot.Style();
-            style1.paint.Color = SkiaSharp.SKColors.Blue;
-            interactivePlot1.figure.plot.Scatter(dataX, data1, style1);
-            interactivePlot1.figure.plot.yLabel.text = "Primary Vertical Axis";
-            interactivePlot1.figure.plot.yLabel.fontColor = SkiaSharp.SKColors.Blue;
+            interactivePlot1.figure.plot.Scatter(dataX, data1, color: SkiaSharp.SKColors.Blue);
+            interactivePlot1.figure.plot.YLabel("Primary Vertical Axis", color: SkiaSharp.SKColors.Blue);
 
-            var style2 = new QuickPlot.Style();
-            style2.paint.Color = SkiaSharp.SKColors.Red;
-            style2.secondY = true;
-            interactivePlot1.figure.plot.Scatter(dataX, data2, style2);
-            interactivePlot1.figure.plot.y2Label.text = "Secondary Vertical Axis";
-            interactivePlot1.figure.plot.y2Label.fontColor = SkiaSharp.SKColors.Red;
+            interactivePlot1.figure.plot.Scatter(dataX, data2, secondY: true, color: SkiaSharp.SKColors.Red);
+            interactivePlot1.figure.plot.YLabel("Secondary Vertical Axis", secondY: true, color: SkiaSharp.SKColors.Red);
         }
 
         private void btnZoomIn_Click(object sender, EventArgs e)

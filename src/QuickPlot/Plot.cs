@@ -4,15 +4,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
+/* Most functions in this module are user-facing.
+ * Users are encouraged only to work with Figure-level and Plot-level functions.
+ * These functions hide complexity and make refactoring easier.
+ * This file will be HUGE, but it is the primary interface for all plotting functions.
+ */
+
 namespace QuickPlot
 {
     public class Plot
     {
-        // users can reach in and customize labels directly
-        public readonly PlotSettings.Label title = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.Bold };
-        public readonly PlotSettings.Label yLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-        public readonly PlotSettings.Label xLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
-        public readonly PlotSettings.Label y2Label = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+        // TODO: make all properties private
+
+        readonly PlotSettings.Label title = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.Bold };
+        readonly PlotSettings.Label yLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+        readonly PlotSettings.Label xLabel = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
+        readonly PlotSettings.Label y2Label = new PlotSettings.Label { fontSize = 16, weight = SKFontStyleWeight.SemiBold };
 
         public readonly PlotSettings.Axes axes = new PlotSettings.Axes();
         public readonly PlotSettings.Axes axes2 = new PlotSettings.Axes();
@@ -40,14 +47,26 @@ namespace QuickPlot
         /// <summary>
         /// Plot data from arrays of matched X/Y points
         /// </summary>
-        public void Scatter(double[] xs, double[] ys, Style style = null)
+        public void Scatter(
+            double[] xs,
+            double[] ys,
+            string label = null,
+            SKColor? color = null,
+            bool secondY = false
+            )
         {
-            if (style is null)
-                style = new Style(colorIndex: plottables.Count);
+            var style = new Style(
+                label: label,
+                color: color,
+                plotNumber: plottables.Count,
+                secondY: secondY
+                );
+
             var scatterPlot = new Plottables.Scatter(xs, ys, style);
             plottables.Add(scatterPlot);
-            if (style.secondY)
-                axes2.y.display = true;
+
+            if (style.secondY) axes2.y.display = true;
+
             AutoAxis();
         }
 
@@ -75,7 +94,10 @@ namespace QuickPlot
         /// <summary>
         /// Automatically set axis limits to fit the data (with a margin of padding)
         /// </summary>
-        public void AutoAxis(double marginX = .05, double marginY = .1, bool primaryY = true, bool secondaryY = true)
+        public void AutoAxis(
+            double marginX = .05, double marginY = .1, 
+            bool primaryY = true, bool secondaryY = true
+            )
         {
             if (primaryY)
             {
@@ -125,6 +147,74 @@ namespace QuickPlot
         public void ShareY(Plot source)
         {
             axes.y = (source is null) ? new PlotSettings.Axis(axes.y.low, axes.y.high) : source.axes.y;
+        }
+
+        /// <summary>
+        /// Set text and style for the vertical axis label
+        /// </summary>
+        public void YLabel(
+            string text = null, 
+            float? fontSize = null, 
+            string fontName = null, 
+            SKColor? color = null, 
+            bool secondY = false
+            )
+        {
+            var lbl = (secondY) ? y2Label : yLabel;
+            var tck = (secondY) ? y2Ticks : yTicks;
+            lbl.text = text;
+            if (fontSize != null) lbl.fontSize = (float)fontSize;
+            if (fontName != null) lbl.fontName = fontName;
+            if (color != null)
+            {
+                lbl.fontColor = (SKColor)color;
+                if (secondY)
+                    y2Ticks.yTickColor = (SKColor)color;
+                else
+                    yTicks.yTickColor = (SKColor)color;
+            }
+        }
+
+        public void YTicks(
+            SKColor? color = null,
+            bool secondY = false
+            )
+        {
+            var ax = (secondY) ? axes2.y : axes.y;
+            //if (color!=null)
+
+        }
+
+        /// <summary>
+        /// Set text and style for the horizontal axis label
+        /// </summary>
+        public void XLabel(
+            string text = null, 
+            float? fontSize = null, 
+            string fontName = null,
+            SKColor? color = null
+            )
+        {
+            xLabel.text = text;
+            if (fontSize != null) xLabel.fontSize = (float)fontSize;
+            if (fontName != null) xLabel.fontName = fontName;
+            if (color != null) xLabel.fontColor = (SKColor)color;
+        }
+
+        /// <summary>
+        /// Set text and style for the plot title
+        /// </summary>
+        public void Title(
+            string text = null, 
+            float? fontSize = null, 
+            string fontName = null,
+            SKColor? color = null
+            )
+        {
+            title.text = text;
+            if (fontSize != null) title.fontSize = (float)fontSize;
+            if (fontName != null) title.fontName = fontName;
+            if (color != null) title.fontColor = (SKColor)color;
         }
 
         #endregion
@@ -262,17 +352,17 @@ namespace QuickPlot
 
         private void DrawFrame(SKCanvas canvas)
         {
-            SKPaint layoutFramePaint = new SKPaint()
+            using (var framePaint = new SKPaint())
             {
-                Color = SKColor.Parse("#000000"),
-                Style = SKPaintStyle.Stroke,
-                IsAntialias = false
-            };
-
-            SKRect outline = layout.dataRect;
-            outline.Right -= 1;
-            outline.Bottom -= 1;
-            canvas.DrawRect(outline, layoutFramePaint);
+                framePaint.Color = title.fontColor;
+                canvas.DrawLine(layout.dataRect.Left, layout.dataRect.Top, layout.dataRect.Right, layout.dataRect.Top, framePaint);
+                framePaint.Color = yTicks.yTickColor;
+                canvas.DrawLine(layout.dataRect.Left, layout.dataRect.Bottom, layout.dataRect.Left, layout.dataRect.Top, framePaint);
+                framePaint.Color = y2Ticks.yTickColor;
+                canvas.DrawLine(layout.dataRect.Right, layout.dataRect.Bottom, layout.dataRect.Right, layout.dataRect.Top, framePaint);
+                framePaint.Color = xTicks.xTickColor;
+                canvas.DrawLine(layout.dataRect.Left, layout.dataRect.Bottom, layout.dataRect.Right, layout.dataRect.Bottom, framePaint);
+            }
         }
 
         #endregion

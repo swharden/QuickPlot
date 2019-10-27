@@ -13,14 +13,24 @@ namespace QuickPlot
         public readonly SKPaint paint;
         public bool secondY = false;
 
-        public Style(int colorIndex = 0, SKColor? color = null, float lineWidth = 1, float markerSize = 3, string fontName = "Segoe UI", float fontSize = 12, string label = null)
+        public Style(
+            string label = null,
+            SKColor? color = null,
+            int plotNumber = 0,
+            bool secondY = false,
+            float lineWidth = 1, 
+            float markerSize = 3, 
+            string fontName = "Segoe UI", 
+            float fontSize = 12
+            )
         {
-            this.color = (color is null) ? IndexedColor(colorIndex) : (SKColor)color;
+            this.color = (color is null) ? IndexedColor(plotNumber) : (SKColor)color;
             this.lineWidth = lineWidth;
             this.markerSize = markerSize;
             this.fontName = fontName;
             this.fontSize = fontSize;
             this.label = label;
+            this.secondY = secondY;
             paint = new SKPaint { IsAntialias = true, Color = this.color };
         }
 

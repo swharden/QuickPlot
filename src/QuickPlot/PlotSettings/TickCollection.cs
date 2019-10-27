@@ -93,10 +93,15 @@ namespace QuickPlot.PlotSettings
         public double? fixedSpacing = null; // set this to manually define tick spacing
         public bool lockTickDensity = false;
 
+        public SKColor yTickColor, xTickColor, gridColor;
         public TickCollection(Side side)
         {
             this.side = side;
             ticks = new List<Tick>();
+
+            yTickColor = SKColors.Black;
+            xTickColor = SKColors.Black;
+            gridColor = SKColors.LightGray;
         }
 
         public void Generate(double low, double high, SKRect dataRect)
@@ -190,18 +195,18 @@ namespace QuickPlot.PlotSettings
 
         private void RenderBottom(SKCanvas canvas, Axes axes)
         {
-            SKPaint paintTick = new SKPaint()
+            var xTickPaint = new SKPaint()
             {
                 IsAntialias = true,
                 TextSize = 12,
                 TextAlign = SKTextAlign.Center,
-                Color = SKColor.Parse("#FF000000")
+                Color = xTickColor
             };
 
-            SKPaint paintGrid = new SKPaint()
+            var gridPaint = new SKPaint()
             {
                 IsAntialias = true,
-                Color = SKColor.Parse("#33000000")
+                Color = gridColor
             };
 
             SKRect dataRect = axes.GetDataRect();
@@ -213,27 +218,27 @@ namespace QuickPlot.PlotSettings
                     SKPoint dataTop = new SKPoint(xPixel, dataRect.Top);
                     SKPoint dataBot = new SKPoint(xPixel, dataRect.Bottom);
                     SKPoint tickBot = new SKPoint(xPixel, dataRect.Bottom + length);
-                    canvas.DrawLine(dataBot, tickBot, paintTick);
-                    canvas.DrawText(tick.label, xPixel, tickBot.Y + paintTick.TextSize, paintTick);
-                    canvas.DrawLine(dataBot, dataTop, paintGrid);
+                    canvas.DrawLine(dataBot, tickBot, xTickPaint);
+                    canvas.DrawText(tick.label, xPixel, tickBot.Y + xTickPaint.TextSize, xTickPaint);
+                    canvas.DrawLine(dataBot, dataTop, gridPaint);
                 }
             }
         }
 
         private void RenderLeft(SKCanvas canvas, Axes axes)
         {
-            SKPaint paintTick = new SKPaint()
+            var yTickPaint = new SKPaint()
             {
                 IsAntialias = true,
                 TextSize = 12,
                 TextAlign = SKTextAlign.Right,
-                Color = SKColor.Parse("#FF000000")
+                Color = yTickColor
             };
 
-            SKPaint paintGrid = new SKPaint()
+            var gridPaint = new SKPaint()
             {
                 IsAntialias = true,
-                Color = SKColor.Parse("#33000000")
+                Color = gridColor
             };
 
             SKRect dataRect = axes.GetDataRect();
@@ -245,21 +250,21 @@ namespace QuickPlot.PlotSettings
                     SKPoint dataLeft = new SKPoint(dataRect.Left, yPixel);
                     SKPoint dataRight = new SKPoint(dataRect.Right, yPixel);
                     SKPoint tickLeft = new SKPoint(dataRect.Left - length, yPixel);
-                    canvas.DrawLine(tickLeft, dataLeft, paintTick);
-                    canvas.DrawText(tick.label, tickLeft.X - 3, yPixel + paintTick.TextSize * 0.35f, paintTick);
-                    canvas.DrawLine(dataLeft, dataRight, paintGrid);
+                    canvas.DrawLine(tickLeft, dataLeft, yTickPaint);
+                    canvas.DrawText(tick.label, tickLeft.X - 3, yPixel + yTickPaint.TextSize * 0.35f, yTickPaint);
+                    canvas.DrawLine(dataLeft, dataRight, gridPaint);
                 }
             }
         }
 
         private void RenderRight(SKCanvas canvas, Axes axes)
         {
-            SKPaint paintTick = new SKPaint()
+            var yTickPaint = new SKPaint()
             {
                 IsAntialias = true,
                 TextSize = 12,
                 TextAlign = SKTextAlign.Left,
-                Color = SKColor.Parse("#FF000000")
+                Color = yTickColor
             };
 
             SKRect dataRect = axes.GetDataRect();
@@ -270,8 +275,8 @@ namespace QuickPlot.PlotSettings
                     float yPixel = axes.GetPixel(0, tick.value).Y;
                     SKPoint tickLeft = new SKPoint(dataRect.Right, yPixel);
                     SKPoint tickRight = new SKPoint(dataRect.Right + length, yPixel);
-                    canvas.DrawLine(tickLeft, tickRight, paintTick);
-                    canvas.DrawText(tick.label, tickRight.X + 3, yPixel + paintTick.TextSize * 0.35f, paintTick);
+                    canvas.DrawLine(tickLeft, tickRight, yTickPaint);
+                    canvas.DrawText(tick.label, tickRight.X + 3, yPixel + yTickPaint.TextSize * 0.35f, yTickPaint);
                 }
             }
         }
