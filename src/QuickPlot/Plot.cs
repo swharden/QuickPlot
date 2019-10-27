@@ -26,12 +26,18 @@ namespace QuickPlot
 
         private readonly List<Plottables.Plottable> plottables = new List<Plottables.Plottable>();
 
+        /// <summary>
+        /// A data-containing plot (housed inside a Figure)
+        /// </summary>
         public Plot()
         {
         }
 
         #region add or remove plottables
 
+        /// <summary>
+        /// Plot data from arrays of matched X/Y points
+        /// </summary>
         public void Scatter(double[] xs, double[] ys, Style style = null)
         {
             if (style is null)
@@ -40,6 +46,9 @@ namespace QuickPlot
             plottables.Add(scatterPlot);
         }
 
+        /// <summary>
+        /// Remove all plottables
+        /// </summary>
         public void Clear()
         {
             plottables.Clear();
@@ -49,7 +58,7 @@ namespace QuickPlot
 
         #region axis management
 
-        private List<Plottables.Plottable> GetPlottableList(bool secondaryAxis = false)
+        private List<Plottables.Plottable> GetPlottablesByAxis(bool secondaryAxis = false)
         {
             List<Plottables.Plottable> plist = new List<Plottables.Plottable>();
             foreach (Plottables.Plottable plottable in plottables)
@@ -64,7 +73,7 @@ namespace QuickPlot
         public void AutoAxis(double marginX = .05, double marginY = .1)
         {
             // auto axis for primary XY
-            var primaryPlottables = GetPlottableList(false);
+            var primaryPlottables = GetPlottablesByAxis(false);
             if (primaryPlottables.Count > 0)
             {
                 axes.Set(primaryPlottables[0].GetDataArea());
@@ -74,7 +83,7 @@ namespace QuickPlot
             axes.Zoom(1 - marginX, 1 - marginY);
 
             // auto axis for secondary XY
-            var secondaryPlottables = GetPlottableList(true);
+            var secondaryPlottables = GetPlottablesByAxis(true);
             if (secondaryPlottables.Count > 0)
             {
                 axes2.Set(secondaryPlottables[0].GetDataArea());
@@ -85,11 +94,17 @@ namespace QuickPlot
             axes2.x = axes.x;
         }
 
+        /// <summary>
+        /// Make this plot's horizontal axis match that of an existing plot (or null to reset)
+        /// </summary>
         public void ShareX(Plot source)
         {
             axes.x = (source is null) ? new PlotSettings.Axis(axes.x.low, axes.x.high) : axes.x = source.axes.x;
         }
 
+        /// <summary>
+        /// Make this plot's vertical axis match that of an existing plot (or null to reset)
+        /// </summary>
         public void ShareY(Plot source)
         {
             axes.y = (source is null) ? new PlotSettings.Axis(axes.y.low, axes.y.high) : axes.y = source.axes.y;
@@ -99,6 +114,9 @@ namespace QuickPlot
 
         #region rendering
 
+        /// <summary>
+        /// Draw the plot on the given SKCanvas
+        /// </summary>
         public void Render(SKCanvas canvas, SKRect plotRect)
         {
             // this is a chicken-and-egg problem
@@ -115,6 +133,9 @@ namespace QuickPlot
             DrawFrame(canvas);
         }
 
+        /// <summary>
+        /// Adjust the ticks to fit the current layout
+        /// </summary>
         private void UpdateTicks()
         {
             if (!axes.x.isValid || !axes.y.isValid)
@@ -131,6 +152,9 @@ namespace QuickPlot
                 layout.yScaleWidth = yTicks.biggestTickLabelSize.Width;
         }
 
+        /// <summary>
+        /// Adjust the layout to fit the size of all the labels
+        /// </summary>
         private void UpdateLayout(SKRect plotRect)
         {
             // TODO: currently there is no way to manually define these values. They are always auto-detected.
@@ -160,9 +184,9 @@ namespace QuickPlot
         {
             canvas.Save();
             canvas.ClipRect(axes.GetDataRect());
-            foreach (var primaryPlottable in GetPlottableList(false))
+            foreach (var primaryPlottable in GetPlottablesByAxis(false))
                 primaryPlottable.Render(canvas, axes);
-            foreach (var secondaryPlottable in GetPlottableList(true))
+            foreach (var secondaryPlottable in GetPlottablesByAxis(true))
                 secondaryPlottable.Render(canvas, axes2);
             canvas.Restore();
         }
