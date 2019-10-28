@@ -84,14 +84,14 @@ namespace QuickPlotTests.Integration
             code = code.Substring(code.IndexOf("\n        {"));
             code = code.Substring(0, code.IndexOf("\n        }"));
             code = code.Trim();
+            code = code.Trim(new char[] { '{', '}' });
             string[] lines = code.Split('\n');
-            for (int i = 1; i < lines.Length; i++)
+            for (int i = 0; i < lines.Length; i++)
             {
                 if (lines[i].Length > 12)
                     lines[i] = lines[i].Substring(12);
                 if (lines[i].Contains("Tools.SaveFig"))
                     lines[i] = $"figure.Save(600, 400, \"{functionName}.png\");";
-                // special code replacements here
             }
             code = string.Join("\n", lines).Trim();
             return code;
