@@ -45,7 +45,7 @@ namespace QuickPlot.WinForms
 
                 var color = SystemColors.Control;
                 string colorHex = "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
-                figure.style.bgColor = SKColor.Parse(colorHex);
+                figure.Style(bgColor: SKColor.Parse(colorHex));
 
                 var glColorFormat = new ColorFormat(8, 8, 8, 8);
                 var glGraphicsMode = new GraphicsMode(glColorFormat, 24, 8, 4);

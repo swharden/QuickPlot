@@ -35,7 +35,7 @@ namespace WinFormsDemos
         {
             int CenterSubplotPointsCount = 1000;
 
-            interactivePlot1.figure.Reset();
+            interactivePlot1.figure.Clear();
 
             plotA = interactivePlot1.figure.Subplot(3, 2, 1);
             interactivePlot1.figure.plot.Scatter(QuickPlot.Generate.Consecutative(20), QuickPlot.Generate.Sin(20));

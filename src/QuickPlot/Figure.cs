@@ -8,7 +8,7 @@ namespace QuickPlot
 {
     public class Figure
     {
-        public FigureSettings.FigureStyle style = new FigureSettings.FigureStyle();
+        private readonly FigureSettings.FigureStyle style = new FigureSettings.FigureStyle();
         public double renderTimeMsec { get; private set; }
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace QuickPlot
         /// </summary>
         public Figure()
         {
-            Reset();
+            Clear();
         }
 
         #region subplot management
@@ -51,10 +51,18 @@ namespace QuickPlot
         /// <summary>
         /// Clear all subplots (and data) and start over with a single full-size plot
         /// </summary>
-        public void Reset()
+        public void Clear()
         {
             subplots.Clear();
             Subplot(1, 1, 1);
+        }
+
+        /// <summary>
+        /// Clear all subplots (and data) and start over with a single full-size plot
+        /// </summary>
+        public void Reset()
+        {
+            Clear();
         }
 
         /// <summary>
@@ -135,6 +143,22 @@ namespace QuickPlot
                 encoded.SaveTo(fileStream);
                 Debug.WriteLine($"saved {filePath}");
             }
+        }
+
+        /// <summary>
+        /// Customize the style of the Figure (Plots have their own style functions)
+        /// </summary>
+        public void Style(
+            SKColor? bgColor = null, 
+            float? edgePadding = null,
+            float? subplotPaddingHorizontal = null,
+            float? subplotPaddingVertical = null
+            )
+        {
+            if (bgColor != null) style.bgColor = (SKColor)bgColor;
+            if (edgePadding != null) style.edges = (float)edgePadding;
+            if (subplotPaddingHorizontal != null) style.horizontal = (float)subplotPaddingHorizontal;
+            if (subplotPaddingVertical != null) style.vertical = (float)subplotPaddingVertical;
         }
 
         #endregion
