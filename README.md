@@ -1,4 +1,4 @@
-> **WARNING:** QuickPlot is early in development and not yet intended to be used. **[ScottPlot](https://github.com/swharden/ScottPlot)** is a mature and stable .NET library which can serve many plotting needs while QuickPlot is being developed.
+> **⚠️ WARNING:** QuickPlot development is on hiatus and this project is not intended to be used at this time. [ScottPlot](https://github.com/swharden/ScottPlot) is a mature and stable .NET library which can serve many plotting needs while the future of QuickPlot remains uncertain.
 
 ---
 
@@ -10,6 +10,9 @@
 **QuickPlot is a high-speed plotting library for .NET** that makes it easy to interactively display high density data (tens of millions of points). QuickPlot uses Google's Skia rendering engine (provided by [SkiaSharp](https://www.nuget.org/packages/SkiaSharp/)) which benefits from hardware acceleration (provided by [OpenTK.GLControl](https://www.nuget.org/packages/OpenTK.GLControl/)) on systems which support it. QuickPlot is written in .NET Standard so it can be used in both .NET Framework and .NET Core projects. An interactive user control is available for Windows Forms and WPF Applications. 
 
 ![](dev/screenshot.jpg)
+
+### Download Demo
+  * 64-bit Windows: [QuickPlot-Demo.zip](demos/QuickPlot-Demo.zip)
 
 ### Supported Platforms
 
